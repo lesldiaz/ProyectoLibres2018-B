@@ -51,3 +51,12 @@ Para conectar el sistema con la base de datos que acaba de modificar el archivo 
 ## Uso del Sistema
 
 Para el correcto uso del sistema se proporciona un [manual de usuario](https://github.com/franizus/SistemaGestionOA/blob/master/Manual-Usuario.pdf).
+
+## Manual de Instalación
+
+Proximamente
+
+## Aclaraciones
+
+Algunos archivos se encuentran desactualizados. Se tratará lo mas pronto posible actualizarlos para tener una versión funcional completa.
+
