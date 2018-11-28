@@ -47,7 +47,7 @@ http://localhost/sistemaoa/index.php
 
 ### Habilitacion de la base de datos
 
-Para que el sistema funcione correctamente se debe crear la base de datos `sistemaoa` en su computador. El script para la creacion de la base de datos se encuentra en el archivo `sistemaoa.sql`.http://ohmyz.sh/
+Para que el sistema funcione correctamente se debe crear la base de datos `sistemaoa` en su computador. El script para la creacion de la base de datos se encuentra en el archivo `sistemaoa.sql`.
 
 Para conectar el sistema con la base de datos que acaba de modificar el archivo `pdo.php.example`. Para esto se debe quitar la extension `.example` del archivo y modificar el contenido agregando `root` como usuario de la base de datos y vacio para la contraseña.
 
@@ -55,8 +55,5 @@ Para conectar el sistema con la base de datos que acaba de modificar el archivo 
 
 Para el correcto uso del sistema se proporciona un [manual de usuario](https://github.com/franizus/SistemaGestionOA/blob/master/Manual-Usuario.pdf).
 
-### Manual de Instalación
-
-Proximamente.
 
 
