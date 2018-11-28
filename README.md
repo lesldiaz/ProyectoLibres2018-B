@@ -2,7 +2,9 @@
 
 El Sistema OA es una herramienta diseñada para crear y gestionar objetos de aprendizaje de manera interactiva. Y se puede acceder desde el siguiente enlace:
 
-[http://sistema-oa.rf.gd](http://sistema-oa.rf.gd)
+[http://proyectolibres.000webhostapp.com/](http://proyectolibres.000webhostapp.com/)
+
+Es temporal.
 
 ## Primeros pasos
 
@@ -11,6 +13,7 @@ El Sistema OA es una herramienta diseñada para crear y gestionar objetos de apr
 - Sistema operativo (Windows, macOS o Linux)
 - [Xampp](https://www.apachefriends.org/index.html) debe ser instalado para el correcto funcionamiento del sistema. Xampp provee un servidor Apache, PHP en su ultima version y MySQL como gestor de base de datos.
 - [Git](https://git-scm.com/) para poder clonar el repositorio.
+- [PHPMailer](https://github.com/PHPMailer/PHPMailer). Una clase de transferencia y creación de correo electrónico con todas las funciones para PHP
 
 ### Instalación
 
@@ -52,11 +55,8 @@ Para conectar el sistema con la base de datos que acaba de modificar el archivo 
 
 Para el correcto uso del sistema se proporciona un [manual de usuario](https://github.com/franizus/SistemaGestionOA/blob/master/Manual-Usuario.pdf).
 
-## Manual de Instalación
+### Manual de Instalación
 
-Proximamente
+Proximamente.
 
-## Aclaraciones
-
-Algunos archivos se encuentran desactualizados. Se tratará lo mas pronto posible actualizarlos para tener una versión funcional completa.
 
