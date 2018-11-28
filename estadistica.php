@@ -176,11 +176,11 @@
 		<div id="graficaLineal" style="width: 100%; height: 500px; margin: 0 auto">
 </div>
         <?php
-          $result = $pdo->query("SELECT * FROM objetoaprendizaje oa JOIN profesor p ON oa.idProfesor = p.idProfesor");
+          $result = $pdo->query("SELECT * FROM objetoaprendizaje");
           foreach ($result as $row) {
             $id = $row['idOA'];
             $userID = false;
-            if (($_SESSION["userID"] == $row['idProfesor'] && $_SESSION["userType"] != "est") || $_SESSION["userType"] == "admin") {
+            if (($_SESSION["userID"] != $row['idProfesor'] && $_SESSION["userType"] != "est") || $_SESSION["userType"] == "admin") {
               $userID = true;
             }
             echo '<tr>';

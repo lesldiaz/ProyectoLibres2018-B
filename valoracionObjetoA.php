@@ -42,7 +42,10 @@
                 Nombre Objeto Aprendizaje
             </th>
             <th>
-                Calificación
+                Calificación Promedio
+            </th>
+			<th>
+                Nro Calificaciones
             </th>
         </tr>
         </thead>
@@ -66,7 +69,8 @@
                     $.each( result, function( key, value ) {
                         fila += '<tr>';
                         fila += '<td>' + value['nombre'] + '</td>';
-                        fila += '<td>' + value['calificacionObjeto'] + '</td>';
+                        fila += '<td>' + value['promedio'] + '</td>';
+						fila += '<td>' + value['numCalificaciones'] + '</td>';
                         fila += '</tr>';
                     });
                     $('.tbody').html(fila);

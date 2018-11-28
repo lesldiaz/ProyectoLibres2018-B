@@ -5,6 +5,7 @@
  * Date: 23/7/2018
  * Time: 23:28
  */
+
 require_once "pdo.php";
 $lstResultado= array();
 $sql="CALL cargarPuntuacion()";

@@ -31,7 +31,7 @@
         return;
     }
     if ( isset($_POST["idProfDel"]) ) {
-		echo "<script> confirm('¿Desea continuar?');</script>";
+		
 		$sql = "SELECT idOA, ruta_zip FROM objetoaprendizaje WHERE idAutor = :idProfesor";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(':idProfesor' => $_POST["idProfDel"]));
@@ -211,7 +211,7 @@
                 <h5 class="card-header bg-dark text-white">Nuevos Profesores</h5>
                 <div class="card-body">
                 <?php
-                    $result = $pdo->query("SELECT idProfesor, cedulaProf, nombresProf, apellidosProf, correoProf, nombreDepartamento FROM profesor p JOIN departamento d ON p.idDepartamento = d.idDepartamento WHERE usuarioProf = ''");
+                    $result = $pdo->query("SELECT idProfesor, cedulaProf, nombresProf, apellidosProf, correoProf, nombreDepartamento FROM profesor p JOIN departamento d ON p.idDepartamento = d.idDepartamento WHERE p.usuarioProf IS NULL; ");
                     $iterated = false;
                     $counter = 0;
                     foreach ($result as $row) {

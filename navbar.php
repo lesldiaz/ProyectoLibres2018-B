@@ -13,7 +13,7 @@
             ?>
             <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
                 <?php
-                if ( $_SESSION["userType"] == 'prof' ) {
+                if ( $_SESSION["userType"] != 'admin' ) {
                     ?>
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Crear">
                         <a class="nav-link" href="exe.php" target="_blank">
@@ -38,9 +38,16 @@
                         <li>
                             <a href="buscar.php">Buscar Objetos de Aprendizaje</a>
                         </li>
+						<li>
+                            <a href="misObjetos.php">Mis Objetos de Aprendizaje</a>
+                        </li>
+						<?php
+							if ( $_SESSION["userType"] == 'admin' ) {
+						?>
                         <li>
                             <a href="valoracionObjetoA.php">Puntuación Objetos de Aprendizaje</a>
                         </li>
+						<?php } ?>
 						<li>
                             <a href="descargas.php">Descargas de Objetos de Aprendizajes</a>
                         </li>

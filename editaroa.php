@@ -22,7 +22,7 @@
             ':institucion' => $_POST["institucionOA"],
             ':idOA' => $_POST["idOA"]));
         $_SESSION["oa"] = "Objeto de Aprendizaje editado correctamente.";
-        header( 'Location: buscar.php' ) ;
+        header( 'Location: misObjetos.php' ) ;
         return;
     }
 ?>
@@ -94,7 +94,7 @@
                             echo '<div class="form-group">';
                             echo '<div class="form-row">';
                             echo '<div class="col-4 offset-4">';
-                            echo '<button type="button" class="btn btn-danger btn-block" onclick="javascript:location.href=' . "'buscar.php'" . '">Cancelar</button>';
+                            echo '<button type="button" class="btn btn-danger btn-block" onclick="javascript:location.href=' . "'misObjetos.php'" . '">Cancelar</button>';
                             echo '</div>';
                             echo '<div class="col-4">';
                             echo '<input type="hidden" name="idOA" value="' . $_GET["id"] . '">';
