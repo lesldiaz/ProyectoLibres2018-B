@@ -94,44 +94,24 @@ if(isset($_POST['login']))
 		<div class="container">
 			
 			<div class="panel panel-default">
-  				<div class="panel-heading">Chat Application Login</div>
+  				<div class="panel-heading">Ingreso al Sistema</div>
 				<div class="panel-body">
 					<p class="text-danger"><?php echo $message; ?></p>
 					<form method="post">
 						<div class="form-group">
-							<label>Enter Username</label>
+							<label>Usuario</label>
 							<input type="text" name="username" class="form-control" required />
 						</div>
 						<div class="form-group">
-							<label>Enter Password</label>
+							<label>Contraseña</label>
 							<input type="password" name="password" class="form-control" required />
 						</div>
 						<div class="form-group">
-							<input type="submit" name="login" class="btn btn-info" value="Login" />
+							<input type="submit" name="login" class="btn btn-info" value="Ingresar" />
 						</div>
 					</form>
-					<br />
-					<br />
-					<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-					<!-- webslesson_mainblogsec_Blog1_1x1_as -->
-					<ins class="adsbygoogle"
-						 style="display:block"
-						 data-ad-client="ca-pub-4529508631166774"
-						 data-ad-host="ca-host-pub-1556223355139109"
-						 data-ad-host-channel="L0007"
-						 data-ad-slot="6573078845"
-						 data-ad-format="auto"></ins>
-					<script>
-					(adsbygoogle = window.adsbygoogle || []).push({});
-					</script>
-					<br />
-					<br />
-					<p><b>User 1</b></p>
-					<p><b>Username</b> - johnsmith<br /><b>Password</b> - password</p>
-					<p><b>Username</b> - peterParker<br /><b>Password</b> - password</p>
-					<p><b>Username</b> - davidMoore<br /><b>Password</b> - password</p>
-					<br />
-					<br />
+					<p><b>Ingresa como anónimo con las siguientes credenciales</b></p>
+					<p><b>Nombre de Usuario</b> - anonimo<br /><b>Contraseña</b> - anonimo</p>
 				</div>
 			</div>
 		</div>
