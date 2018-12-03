@@ -2,7 +2,9 @@
 
 El Sistema OA es una herramienta diseñada para crear y gestionar objetos de aprendizaje de manera interactiva. Y se puede acceder desde el siguiente enlace:
 
-[http://sistema-oa.rf.gd](http://sistema-oa.rf.gd)
+[http://proyectolibres.000webhostapp.com/](http://proyectolibres.000webhostapp.com/)
+
+Es temporal.
 
 ## Primeros pasos
 
@@ -11,6 +13,7 @@ El Sistema OA es una herramienta diseñada para crear y gestionar objetos de apr
 - Sistema operativo (Windows, macOS o Linux)
 - [Xampp](https://www.apachefriends.org/index.html) debe ser instalado para el correcto funcionamiento del sistema. Xampp provee un servidor Apache, PHP en su ultima version y MySQL como gestor de base de datos.
 - [Git](https://git-scm.com/) para poder clonar el repositorio.
+- [PHPMailer](https://github.com/PHPMailer/PHPMailer). Una clase de transferencia y creación de correo electrónico con todas las funciones para PHP
 
 ### Instalación
 
@@ -44,7 +47,7 @@ http://localhost/sistemaoa/index.php
 
 ### Habilitacion de la base de datos
 
-Para que el sistema funcione correctamente se debe crear la base de datos `sistemaoa` en su computador. El script para la creacion de la base de datos se encuentra en el archivo `sistemaoa.sql`.http://ohmyz.sh/
+Para que el sistema funcione correctamente se debe crear la base de datos `sistemaoa` en su computador. El script para la creacion de la base de datos se encuentra en el archivo `sistemaoa.sql`.
 
 Para conectar el sistema con la base de datos que acaba de modificar el archivo `pdo.php.example`. Para esto se debe quitar la extension `.example` del archivo y modificar el contenido agregando `root` como usuario de la base de datos y vacio para la contraseña.
 
@@ -52,6 +55,7 @@ Para conectar el sistema con la base de datos que acaba de modificar el archivo 
 
 Para el correcto uso del sistema se proporciona un [manual de usuario](https://github.com/franizus/SistemaGestionOA/blob/master/Manual-Usuario.pdf).
 
+<<<<<<< HEAD
 ## Manual de Instalación
 
 Proximamente
@@ -59,4 +63,7 @@ Proximamente
 ## Aclaraciones
 
 Algunos archivos se encuentran desactualizados. Se tratará lo mas pronto posible actualizarlos para tener una versión funcional completa.
+=======
+
+>>>>>>> 6fdd7c3d1e83192755b37f53f8a4604de9fb73db
 
