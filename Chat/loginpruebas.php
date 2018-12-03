@@ -47,13 +47,13 @@ if(isset($_POST['login']))
 			}
 			else
 			{
-				$message = '<label>Wrong Password</label>';
+				$message = '<label>Contraseña Incorrecta</label>';
 			}
 		}
 	}
 	else
 	{
-		$message = '<label>Wrong Username</labe>';
+		$message = '<label>Usuario No Registrado</labe>';
 	}
 }
 
