@@ -19,7 +19,14 @@ require_once "enviar_correo.php";
           ':idCarrera' => $_POST["carrera"],
           ':usuarioEst' => $_POST["usuario"],
           ':pwEst' => $pwd_hash));
-        
+		  
+        $nameto = $_POST["nombre"]. ' ' .$_POST["apellido"];
+		$subq = "INSERT INTO login (username, password) VALUES (:usern, :pass)";
+		$stmt1 = $pdo->prepare($subq);
+		$stmt1->execute(array(
+          ':usern' => $nameto,
+		  ':pass' => $pwd_hash));
+		  
         enviarcorreo($_POST["nombre"],$_POST["apellido"],$_POST["correo"]);
 		$_SESSION["reg"] = "Usuario estudiante creado correctamente. Inicie sesion para continuar";
         header( 'Location: index.php' ) ;

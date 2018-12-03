@@ -42,10 +42,10 @@
                 Nombre Objeto Aprendizaje
             </th>
             <th>
-                Calificación Promedio
+                Puntuación Promedio del OA
             </th>
 			<th>
-                Nro Calificaciones
+                Total de Usuarios que Calificaron
             </th>
         </tr>
         </thead>

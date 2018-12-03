@@ -1,7 +1,7 @@
 <?php
   require_once "pdo.php";
   require_once "enviar_correobloq.php";
-  include('Chat/database_connection.php');
+  #include('database_connection.php');
   session_start();
 
   if ( isset($_POST["inputUser"]) && isset($_POST["inputPW"]) && isset($_POST["userType"]) ) {
@@ -36,7 +36,7 @@
 	  $correo = 'correoEst';
     }
     $stmt = $pdo->prepare($sql);
-    $stmt->execute(array(':usuario' => $_POST["inputUser"]));
+	$stmt->execute(array(':usuario' => $_POST["inputUser"]));
     if ($stmt->rowCount() > 0) {
       $result = $stmt->fetch(PDO::FETCH_ASSOC);
       $passwd = $result[$pwType];
@@ -44,17 +44,24 @@
 	  $correo1 = $result[$correo];
 	  
 	  if ($blo == 1){
+		  
       if (password_verify($_POST["inputPW"], $passwd )) {
+		  
         $_SESSION["user"] = $_POST["inputUser"];
         $_SESSION["userType"] = $_POST["userType"];
         $_SESSION["userID"] = $result[$idType];
-		
         if ($_POST["userType"] != 'admin') {
-          $_SESSION["userName"] = $result[$nameType] . ' ' . $result[$apellidoType];
-        }else {
-			$_SESSION["userName"] = "Administrador";
+         $_SESSION["userName"] = $result[$nameType] . ' ' . $result[$apellidoType];
+			$sub_query = "CALL insertarDetallesChat(:userna);";
+			$statement = $pdo->prepare($sub_query);
+			$statement->execute(array(':userna' => $_SESSION["userName"]));
+		}else{
+		$admin = "admin";
+        $sub_query = " CALL insertarDetallesChat(:usern)";
+				$statement = $pdo->prepare($sub_query);
+				$statement->execute(array(':usern' => $admin));
 		}
-        $_SESSION["success"] = "Logged in.";
+		$_SESSION["success"] = "Logged in.";
         header( 'Location: index.php' ) ;
         return;
       } else {

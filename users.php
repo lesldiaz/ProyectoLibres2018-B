@@ -41,6 +41,22 @@
         $sql = "DELETE FROM profesor WHERE idProfesor = :idProfesor";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(':idProfesor' => $_POST["idProfDel"]));
+		
+		$sql2 = "SELECT nombresProf, apellidosProf FROM sistemaoa.profesor where idProfesor = :idProfesor";
+		$stmt2 = $pdo->prepare($sql2);
+		$stmt2->bindValue(":nombresProf",$nom);
+		$stmt2->bindValue(":apellidosProf",$ape);
+		$stmt2->execute(array(':idProfesor' => $_POST["idProfDel"]));
+			$arrDatos = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+			foreach ($arrDatos as $row)
+        {
+			$nameto1 = $row["nombresProf"] . ' ' . $row["apellidosProf"];
+		}
+		
+		$sql = "DELETE FROM login WHERE username = :userprof";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(':userprof' => $nameto1));
+		
         $_SESSION["delProf"] = "Profesor eliminado del sistema correctamente.";
         unset($_POST["idProfDel"]);
         header( 'Location: users.php' ) ;
@@ -78,25 +94,35 @@
 		
 			$sql2 = "SELECT nombresProf, apellidosProf,correoProf,usuarioProf,pwProf FROM sistemaoa.profesor where idProfesor = :idProfesor";
 			$stmt2 = $pdo->prepare($sql2);
+			/*
 			$stmt2->bindValue(":nombresProf",$nom);
 			$stmt2->bindValue(":apellidosProf",$ape);
 			$stmt2->bindValue(":correoProf",$correo);
-			$stmt2->bindValue(":correoProf",$userprof);
-			$stmt2->bindValue(":cedulaProf",$cedula);
+			$stmt2->bindValue(":usuarioProf",$userprof);
+			$stmt2->bindValue(":pwProf",$contra);
+			*/
 			$stmt2->execute(array(':idProfesor' => $_POST["idProfDesbloq"]));
 			$arrDatos = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 			foreach ($arrDatos as $row)
         {
-			$nameto = $row["nombresProf"] . ' ' . $_POST["apellidosProf"];
+			$nameto = $row["nombresProf"] . ' ' . $row["apellidosProf"];
 			$correo = $row["correoProf"];
             $usuario=$row["usuarioProf"];
 			$cedula =$row["cedulaProf"];
+			$pss = $row["pwProf"];
         }
+		/*
 		if (password_verify('', $contrasenia)) {
 			echo 'Password is valid!';
 		} else {
 			echo 'Invalid password.';
 		}
+		*/
+		$subq = "INSERT INTO login (username, password) VALUES (:usern, :pass)";
+		$stmt3 = $pdo->prepare($subq);
+		$stmt3->execute(array(
+          ':usern' => $nameto,
+		  ':pass' => $pss));
 		sendMailP($correo, $nameto,$usuario,$cedula);
 		//echo "<script> alert('correo enviado'); </script>";
 		

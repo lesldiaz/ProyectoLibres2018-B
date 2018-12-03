@@ -183,8 +183,11 @@
       }
     ?>
     <div class="container">
+		
         <?php
+		if ($_SESSION['userType'] != "admin"){
 		echo '<input type="text" style="display:none" id="idUsuario" value="'.$_SESSION['userName'].'">';
+		}
         ?>
 		
       <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar OA..." title="Ingrese un OA">
@@ -221,6 +224,7 @@
 
 
           <?php
+		  
           $result = $pdo->query("SELECT * FROM objetoaprendizaje");
           foreach ($result as $row) {
             $id = $row['idOA'];
@@ -232,6 +236,8 @@
             echo '<tr>';
             $sql = "SELECT * FROM rutaoa WHERE idOA = :idOA AND idUser = :idUser AND username = :userName";
             $stmt = $pdo->prepare($sql);
+			if ($_SESSION['userType'] != "admin")
+				
             $stmt->execute(array(':idOA' => $id, 'idUser' => $_SESSION["userID"], 'userName' => $_SESSION["userName"]));
             $ruta = '';
             if ($stmt->rowCount() > 0){
