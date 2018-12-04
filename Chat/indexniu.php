@@ -4,20 +4,15 @@ include('database_connection.php');
 
 session_start();
 
-#if(!isset($_SESSION['user_id']))
-#{
-#	header("location:login.php");
-#}
-
 ?>
 
-<html>  
+<html>
     <head>
 		<?php require "head.php"; ?>
-		</head>  
-    <body class="fixed-nav sticky-footer bg-dark" id="page-top">  
+		</head>
+    <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 		<?php require "navbar.php"?>
-		
+
 		 <div class="content-wrapper">
 			<?php if (isset($_SESSION["user_id"])){ ?>
 			<div class="container">
@@ -34,18 +29,18 @@ session_start();
 				<div id="user_details"></div>
 				<div id="user_model_details"></div>
 			</div>
-			
+
 			</div>
 			<?php }else{ ?>
 			<div class="jumbotron">
 			<img src="upload/logoEPN.png" style="float:right; width:100px;height:100px; margin:1em">
           <h3 class="display-2">Chat de Soporte en Linea - SIGOE</h3>
-          <p class="lead">Hola, este es el chat de soporte en linea del Sistema de Gestión de Objetos Aprendizaje, también llamado SIGOE. 
+          <p class="lead">Hola, este es el chat de soporte en linea del Sistema de Gestión de Objetos Aprendizaje, también llamado SIGOE.
 		  Utiliza las mismas credenciales de acceso al sistema principal y si no estas registrado, te invitamos a realizarlo.
 			<br> <br> <br>Que tengas un buen dia.<br> <br>
-			
+
 			Atentamente.<br>
-			
+
 			Desarrolladores SIGOE 2018-B <br></p>
 		</div>
 	<?php } ?>
@@ -53,7 +48,7 @@ session_start();
       require "footer.php";
     ?>
 		</div>
-    </body>  
+    </body>
 </html>
 
 <style>
@@ -67,7 +62,7 @@ session_start();
     border: 1px solid #CCC;
     border-radius: 3px;
 }
-
+#haihelou
 #group_chat_message
 {
 	width: 100%;
@@ -94,7 +89,7 @@ session_start();
     cursor: pointer;
 }
 
-</style>  
+</style>
 
 <div id="group_chat_dialog" title="Group Chat Window">
 	<div id="group_chat_history" style="height:300px; border:1px solid #ccc; overflow-y: scroll; margin-bottom:24px; padding:16px;">
@@ -120,7 +115,7 @@ session_start();
 </div>
 
 
-<script>  
+<script>
 $(document).ready(function(){
 
 	fetch_user();
@@ -245,7 +240,7 @@ $(document).ready(function(){
 			data:{is_type:is_type},
 			success:function()
 			{
-				
+
 			}
 		})
 	});
@@ -302,6 +297,6 @@ $(document).ready(function(){
 			resetForm: true
 		});
 	});
-	
-});  
+
+});
 </script>

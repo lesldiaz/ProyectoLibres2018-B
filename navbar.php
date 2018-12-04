@@ -42,18 +42,18 @@
                             <a href="misObjetos.php">Mis Objetos de Aprendizaje</a>
                         </li>
 						<!-- Esto es un comentario -->
-						
+
                         <li>
                             <a href="valoracionObjetoA.php">Puntuación Objetos de Aprendizaje</a>
                         </li>
-						
+
 						<li>
                             <a href="descargas.php">Descargas de Objetos de Aprendizajes</a>
                         </li>
 						<li>
                             <a href="graficacop.php">Graficar Estadisticas</a>
                         </li>
-						
+
                     </ul>
                 </li>
                 <?php
@@ -103,12 +103,12 @@
                             <i class="fa fa-fw fa-address-book"></i>
                             <span class="nav-link-text">Ayuda</span>
                         </a>
-						 <a class="nav-link" target = "_blank" href="Chat/index.php">
+						 <a class="nav-link"  href="Chat/indexniu.php">
                             <i class="fa fa-fw fa-external-link"></i>
                             <span class="nav-link-text">Chat en Linea</span>
                         </a>
                     </li>
-					
+
                 <?php } ?>
             </ul>
             <ul class="navbar-nav sidenav-toggler">
@@ -133,22 +133,22 @@
         <?php } ?>
 
         <ul class="navbar-nav ml-auto">
-			
+
 			<?php
             if ( ! isset($_SESSION["user"]) ) {
                 ?>
-				
+
                 <li class="nav-item">
                     <a class="nav-link" href="login.php">
                         <i class="fa fa-fw fa-sign-in"></i>Login</a>
                 </li>
             <?php } else { ?>
-			
+
 			<?php
             if ( $_SESSION["userType"] != "admin" ) {
                 ?>
 			<li class="nav-item">
-				<a class="nav-link" target = "_blank" href="indexchat.php">
+				<a class="nav-link"  href="Chat/indexniu.php">
 					<i class="fa fa-external-link"></i> Contáctanos</a>
 			</li>
 				<?php } ?>
@@ -168,7 +168,7 @@
                     <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
                         <i class="fa fa-fw fa-sign-out"></i>Logout</a>
                 </li>
-				
+
             <?php } ?>
         </ul>
 
