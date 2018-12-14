@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-11-2018 a las 23:37:04
+-- Tiempo de generación: 14-12-2018 a las 21:59:42
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.11
 
@@ -84,6 +84,17 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarDescarga` (IN `idDescargar`
 	update objetoaprendizaje set descargas=descargas+1 where idOA= idDescargar; 
     select 'Gracias por descargar el Objeto de Aprendizaje' as mensaje;
 end$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarDetallesChat` (IN `username` VARCHAR(255))  BEGIN
+
+DECLARE userid INT;
+SET userid:=0;
+SELECT l.user_id INTO userid FROM login l where l.username = username;
+
+INSERT INTO login_details(user_id)
+VALUES(userid);
+
+END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `registrarEstudiante` (IN `cedulaEst` VARCHAR(150), IN `nombresEst` VARCHAR(150), IN `apellidosEst` VARCHAR(150), IN `correoEst` VARCHAR(100), IN `idCarrera` INT(11), IN `usuarioEst` VARCHAR(150), IN `pwEst` VARCHAR(150))  BEGIN
 insert into estudiante(cedulaEst, nombresEst, apellidosEst, correoEst, idCarrera, usuarioEst, pwEst)
@@ -180,6 +191,21 @@ INSERT INTO `carrera` (`idCarrera`, `nombreCarrera`, `idFacultad`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `chat_message`
+--
+
+CREATE TABLE `chat_message` (
+  `chat_message_id` int(11) NOT NULL,
+  `to_user_id` int(11) NOT NULL,
+  `from_user_id` int(11) NOT NULL,
+  `chat_message` text NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `comentario`
 --
 
@@ -221,7 +247,8 @@ INSERT INTO `comentario` (`idComentario`, `detalleComent`, `idOA`, `idAutor`, `u
 (33, '', 7, 22, NULL, 'img/', '19/11/2018', ''),
 (36, 'skjfjdskf', 6, 2, 'mario giler', 'img/', '19/11/2018', ''),
 (37, 'sknfds', 3, 2, 'mario giler', 'img/', '19/11/2018', ''),
-(38, 'mejore sus preguntas', 2, 2, 'mario giler', 'img/', '19/11/2018', '');
+(38, 'mejore sus preguntas', 2, 2, 'mario giler', 'img/', '19/11/2018', ''),
+(41, 'nuevo comentario prueba', 3, 2, 'mario giler', 'img/', '27/11/2018', '');
 
 -- --------------------------------------------------------
 
@@ -291,7 +318,8 @@ INSERT INTO `estudiante` (`idEstudiante`, `cedulaEst`, `nombresEst`, `apellidosE
 (4, '1302207228', 'carlos', 'mendoza', 'carlosmendoza@gmail.com', 10, 'carlos', '$2y$10$CrBf6xmJSlwTAcF5VK1Do.XCf3Arq5CDarb.5bfMdm4KV5dRCd0l2', NULL, 1),
 (5, '1725937302', 'Steven', 'zambrano', 'stevenzambrano1@hotmail.com', 2, 'steven', '$2y$10$xtLBOeb3.1qD9HosKA3YWeDkB.ygo/fW3yAqphJHcnh88QKkObB9y', NULL, 1),
 (7, '0502873326', 'Fernando', 'Pasquel', 'kfcp1234@gmail.com', 3, 'fernando', '$2y$10$iot5juohdtU.RFQp9GRtfe.0OWWSzAT79x6i/NTt2JuP0m53GPtuq', NULL, 1),
-(10, '1725116386', 'Traecy', 'Diaz', 'lmdiaz36@gmail.com', 32, 'traecydiaz', '$2y$10$tIsuPtNaTlfqJdu9d8OrJu40NDtyKii/R51F6bodCDjejlBy2KzhC', NULL, 1);
+(10, '1725116386', 'Traecy', 'Diaz', 'lmdiaz36@gmail.com', 32, 'traecydiaz', '$2y$10$tIsuPtNaTlfqJdu9d8OrJu40NDtyKii/R51F6bodCDjejlBy2KzhC', NULL, 1),
+(17, '1725116311', 'Leslie', 'Diaz', 'lmdiaz36@gmail.com', 33, 'lesliediaz', '$2y$10$1ZuWe.wSfKS4G7mscv3Fg..62DT5/H5CbMdlYz/SXcr/.3ILywcom', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -339,6 +367,91 @@ INSERT INTO `imagen` (`idimagen`, `rutaImagen`) VALUES
 (1, 'img/wallpapers-hd.jpg'),
 (2, 'img/comprobante.jpg'),
 (3, 'img/paraisos-en-el-mar-wallpaper-4k-full-hd-fotosdelanaturaleza.es-2-1140x641.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `login`
+--
+
+CREATE TABLE `login` (
+  `user_id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `login`
+--
+
+INSERT INTO `login` (`user_id`, `username`, `password`) VALUES
+(1, 'admin', '$2y$10$nXfCxVyPD5M8nTsPR3Dk3.tBDBY2WZKrQqFuKXk7pGy/DjPkjNIKC');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `login_details`
+--
+
+CREATE TABLE `login_details` (
+  `login_details_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `last_activity` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_type` enum('no','yes') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `login_details`
+--
+
+INSERT INTO `login_details` (`login_details_id`, `user_id`, `last_activity`, `is_type`) VALUES
+(22, 1, '2018-12-01 02:29:52', 'no'),
+(23, 5, '2018-12-01 02:31:33', 'no'),
+(24, 1, '2018-12-01 02:33:31', 'no'),
+(25, 5, '2018-12-01 02:58:58', 'no'),
+(26, 1, '2018-12-01 02:59:59', 'no'),
+(27, 1, '2018-12-01 03:13:19', 'no'),
+(28, 5, '2018-12-01 03:14:45', 'no'),
+(29, 5, '2018-12-01 03:16:51', 'no'),
+(30, 1, '2018-12-01 03:30:21', 'no'),
+(31, 5, '2018-12-01 03:51:27', 'no'),
+(32, 1, '2018-12-01 03:53:37', 'no'),
+(33, 5, '2018-12-01 04:05:29', 'no'),
+(34, 6, '2018-12-01 04:36:00', 'no'),
+(35, 5, '2018-12-01 04:52:41', 'no'),
+(36, 1, '2018-12-01 04:44:14', 'no'),
+(37, 1, '2018-12-01 04:58:50', 'no'),
+(38, 5, '2018-12-01 05:37:41', 'no'),
+(39, 1, '2018-12-01 05:40:24', 'no'),
+(40, 1, '2018-12-01 05:47:53', 'no'),
+(41, 5, '2018-12-01 06:03:15', 'no'),
+(42, 5, '2018-12-03 03:13:28', 'no'),
+(43, 5, '2018-12-03 03:24:46', 'no'),
+(44, 5, '2018-12-03 04:02:51', 'no'),
+(45, 5, '2018-12-03 04:05:17', 'no'),
+(46, 5, '2018-12-03 04:37:28', 'no'),
+(47, 5, '2018-12-03 04:53:25', 'no'),
+(48, 1, '2018-12-03 04:58:07', 'no'),
+(49, 1, '2018-12-03 05:10:55', 'no'),
+(50, 5, '2018-12-03 05:13:35', 'no'),
+(51, 1, '2018-12-03 05:14:31', 'no'),
+(52, 5, '2018-12-03 22:04:33', 'no'),
+(53, 1, '2018-12-14 07:34:57', 'no'),
+(54, 1, '2018-12-14 07:54:10', 'no'),
+(55, 1, '2018-12-14 08:28:17', 'no'),
+(56, 1, '2018-12-14 08:49:48', 'no'),
+(57, 1, '2018-12-14 09:05:39', 'no'),
+(58, 5, '2018-12-14 09:21:04', 'no'),
+(59, 1, '2018-12-14 09:39:33', 'no'),
+(60, 1, '2018-12-14 09:41:15', 'no'),
+(61, 1, '2018-12-14 09:44:19', 'no'),
+(62, 1, '2018-12-14 09:50:00', 'no'),
+(63, 1, '2018-12-14 09:52:20', 'no'),
+(64, 1, '2018-12-14 09:55:50', 'no'),
+(65, 1, '2018-12-14 09:58:55', 'no'),
+(66, 1, '2018-12-14 10:01:01', 'no'),
+(67, 1, '2018-12-14 10:07:57', 'no'),
+(68, 5, '2018-12-14 10:25:32', 'no');
 
 -- --------------------------------------------------------
 
@@ -463,7 +576,7 @@ CREATE TABLE `objetoaprendizaje` (
 --
 
 INSERT INTO `objetoaprendizaje` (`idOA`, `nombre`, `autor`, `descripcion`, `fecha`, `p_clave`, `institucion`, `tamano`, `tipo`, `fecha_ing`, `ruta_zip`, `idAutor`, `idMateria`, `descargas`) VALUES
-(2, 'Fundamentos de Software Libre', 'Charles giler', 'Objeto de aprendizaje de metodos agiles', '2018-06-15', 'OAcharles', 'Escuela Politecnica Nacional', '1195349 bytes', 'WinRAR ZIP', '2018-06-15 00:00:00', 'zip/SCROM.zip', 3, 1, 2),
+(2, 'Fundamentos de Software Libre', 'Charles giler', 'Objeto de aprendizaje de metodos agiles', '2018-06-15', 'OAcharles', 'Escuela Politecnica Nacional', '1195349 bytes', 'WinRAR ZIP', '2018-06-15 00:00:00', 'zip/SCROM.zip', 3, 1, 4),
 (3, 'Interfaz de Usuario', 'Fernando Carrasco', 'Documento para saber sobre la interfaz de usuario', '2018-06-15', 'OAusuario', 'Escuela Politecnica Nacional', '111760 bytes', 'WinRAR ZIP', '2018-06-15 00:00:00', 'zip/DisenioDeInterfazDeUsuario.zip', 4, 2, 3),
 (4, 'DISEÑO A NIVEL DE COMPONENTES', 'Tamayo Edison', 'Son líneas de diseño bien definidas que adecuan la estructura de diseño, el interfaz y diseño.', '2018-01-02', 'Diseño a nivel de Componentes', 'Escuela Politecnica Nacional', '561523 bytes', 'WinRAR ZIP', '2018-01-02 00:00:00', 'zip/DisenioDeComponentes.zip', 2, 2, 2),
 (5, 'Refactorizar', 'Mario Giler', 'Concepto de refactorizar', '2018-07-11', 'refactorizar', 'Escuela Politecnica Nacional', '372035 bytes', 'WinRAR ZIP', '2018-07-11 00:00:00', 'zip/Refactorizar.zip', 2, 2, 1),
@@ -503,7 +616,8 @@ INSERT INTO `profesor` (`idProfesor`, `cedulaProf`, `nombresProf`, `apellidosPro
 (3, '1302207228', 'charles', 'giler', 'charlesgilermendoza@gmail.com', 10, 'charles', '$2y$10$4NVFBAbbgH4iE1Yx0qZ4Ce2uAqDaYxoq0OAeSVqFTHZfljB0CBsDa', NULL, NULL, 1),
 (4, '1722295134', 'fernando', 'carrasco', 'fernandocarrasco@gmail.com', 17, 'fernando', '$2y$10$hxBTuJOq272qfJ4idc9HJu0dEI0mEsFLa/YrpeVHg4ABivgOq9emS', NULL, NULL, 1),
 (5, '1000982882', 'luis', 'orquera', 'luis.orquera@gmail.com', 12, 'luis', '$2y$10$KDQrY3DsMjSeVaSvwdZewu3MTCetFmp2VMdRbF0IHicyKYFpu5iG6', NULL, NULL, 1),
-(22, '1725116311', 'Leslie', 'Diaz', 'leslie.diaz@epn.edu.ec', 17, 'Leslie', '$2y$10$ON8HYhQSx3CsvBBWHfX/DO1hUP9V8dED3kQWaRWegfCbuiC/gba4e', NULL, 1, 1);
+(23, '1103337398', 'Carmen', 'Yanangomez', 'lmdiaz36@gmail.com', 7, NULL, NULL, NULL, NULL, 0),
+(24, '1725116386', 'Traecy', 'Diaz', 'lmdiaz36@gmail.com', 10, 'traecydiaz', '$2y$10$yovcOPAc0B2lDeRUP.DZteesh1A5oJBYW.xH.G4IsW4xc6okdmlhS', NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -583,6 +697,12 @@ ALTER TABLE `carrera`
   ADD KEY `idFacultad` (`idFacultad`);
 
 --
+-- Indices de la tabla `chat_message`
+--
+ALTER TABLE `chat_message`
+  ADD PRIMARY KEY (`chat_message_id`);
+
+--
 -- Indices de la tabla `comentario`
 --
 ALTER TABLE `comentario`
@@ -615,6 +735,18 @@ ALTER TABLE `facultad`
 --
 ALTER TABLE `imagen`
   ADD PRIMARY KEY (`idimagen`);
+
+--
+-- Indices de la tabla `login`
+--
+ALTER TABLE `login`
+  ADD PRIMARY KEY (`user_id`);
+
+--
+-- Indices de la tabla `login_details`
+--
+ALTER TABLE `login_details`
+  ADD PRIMARY KEY (`login_details_id`);
 
 --
 -- Indices de la tabla `materias`
@@ -676,10 +808,16 @@ ALTER TABLE `carrera`
   MODIFY `idCarrera` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
+-- AUTO_INCREMENT de la tabla `chat_message`
+--
+ALTER TABLE `chat_message`
+  MODIFY `chat_message_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `comentario`
 --
 ALTER TABLE `comentario`
-  MODIFY `idComentario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `idComentario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT de la tabla `departamento`
@@ -691,7 +829,7 @@ ALTER TABLE `departamento`
 -- AUTO_INCREMENT de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
-  MODIFY `idEstudiante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idEstudiante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `facultad`
@@ -704,6 +842,18 @@ ALTER TABLE `facultad`
 --
 ALTER TABLE `imagen`
   MODIFY `idimagen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `login`
+--
+ALTER TABLE `login`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `login_details`
+--
+ALTER TABLE `login_details`
+  MODIFY `login_details_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT de la tabla `materias`
@@ -721,7 +871,7 @@ ALTER TABLE `objetoaprendizaje`
 -- AUTO_INCREMENT de la tabla `profesor`
 --
 ALTER TABLE `profesor`
-  MODIFY `idProfesor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `idProfesor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `puntuacion`
