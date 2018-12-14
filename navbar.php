@@ -38,9 +38,13 @@
                         <li>
                             <a href="buscar.php">Buscar Objetos de Aprendizaje</a>
                         </li>
-						<li>
+                        <?php
+                        if ( $_SESSION["userType"] != 'admin' ) {
+                            ?>
+                        <li>
                             <a href="misObjetos.php">Mis Objetos de Aprendizaje</a>
                         </li>
+                        <?php } ?>
 						<!-- Esto es un comentario -->
 
                         <li>

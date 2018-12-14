@@ -1,99 +1,65 @@
-<!--
-//index.php
-!-->
-
 <?php
 
 include('database_connection.php');
 
 session_start();
 
-if(!isset($_SESSION['user_id']))
-{
-	header("location:login.php");
-}
-
 ?>
 
-<html>  
+<html>
     <head>
-    	<script async='async' src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
-		<script>
-		  (adsbygoogle = window.adsbygoogle || []).push({
-			google_ad_client: "ca-pub-4529508631166774",
-			enable_page_level_ads: true
-		  });
-		</script>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Chat Application using PHP Ajax Jquery</title>  
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.css">
-		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  		<script src="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.js"></script>
-  		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
-    </head>  
-    <body>  
-        <div class="container">
-			<br />
-			
-			<h3 align="center">Tutorial - <a href="https://www.webslesson.info/2018/07/live-chat-system-in-php-using-ajax-jquery.html">Chat Application using PHP Ajax Jquery</a></h3><br />
-			<br />
-			<div class="row">
-				<div class="col-md-8 col-sm-6">
-					<h4>Online User</h4>
-				</div>
-				<div class="col-md-2 col-sm-3">
-					<input type="hidden" id="is_active_group_chat_window" value="no" />
-					<button type="button" name="group_chat" id="group_chat" class="btn btn-warning btn-xs">Group Chat</button>
-				</div>
-				<div class="col-md-2 col-sm-3">
-					<p align="right">Hi - <?php echo $_SESSION['username']; ?> - <a href="\ProyectoLibres2018-B\logout.php">Logout</a></p>
-				</div>
+		<?php require "head.php"; ?>
+		</head>
+    <body style="background-color:#343a40;" id="page-top">
+		<?php require "navbar.php"?>
+
+		 <div class="content-wrapper">
+			<?php if (isset($_SESSION["user_id"])){ ?>
+			<div class="container">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-8 col-sm-6">
+                <h4>Usuarios Disponibles</h4>
+              </div>
+              <div class="col-md-2 col-sm-3">
+                <input type="hidden" id="is_active_group_chat_window" value="no" />
+                <button type="button" align="right" name="group_chat" id="group_chat" class="btn btn-primary btn-xs">Chat Grupal</button>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <div id="user_details"></div>
+              <div id="user_model_details"></div>
+            </div>
+          </div>
+        </div>
+
 			</div>
-			<div class="table-responsive">
-				
-				<div id="user_details"></div>
-				<div id="user_model_details"></div>
-			</div>
-			<br />
-			<br />
-			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-				<!-- webslesson_mainblogsec_Blog1_1x1_as -->
-				<ins class="adsbygoogle"
-					 style="display:block"
-					 data-ad-client="ca-pub-4529508631166774"
-					 data-ad-host="ca-host-pub-1556223355139109"
-					 data-ad-host-channel="L0007"
-					 data-ad-slot="6573078845"
-					 data-ad-format="auto"></ins>
-				<script>
-				(adsbygoogle = window.adsbygoogle || []).push({});
-				</script>
-			<br />
-			<br />
+			<?php }else{ ?>
+			<div class="jumbotron">
+			<img src="upload/logoEPN.png" style="float:right; width:100px;height:100px; margin:1em">
+          <h3 class="display-2">Chat de Soporte en Linea - SIGOE</h3>
+          <p class="lead">Hola, este es el chat de soporte en linea del Sistema de Gestión de Objetos Aprendizaje, también llamado SIGOE.
+		  Utiliza las mismas credenciales de acceso al sistema principal y si no estas registrado, te invitamos a realizarlo.
+			<br> <br> <br>Que tengas un buen dia.<br> <br>
+
+			Atentamente.<br>
+
+			Desarrolladores SIGOE 2018-B <br></p>
 		</div>
-		<script>
-		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-		  ga('create', 'UA-87739877-1', 'auto');
-		  ga('send', 'pageview');
-
-		</script>
-    </body>  
+	<?php } ?>
+		 <?php
+      require "footer.php";
+    ?>
+		</div>
+    </body>
 </html>
 
 <style>
 
 .chat_message_area
 {
-	position: relative;
+  position:relative;
 	width: 100%;
 	height: auto;
 	background-color: #FFF;
@@ -127,10 +93,10 @@ if(!isset($_SESSION['user_id']))
     cursor: pointer;
 }
 
-</style>  
+</style>
 
-<div id="group_chat_dialog" title="Group Chat Window">
-	<div id="group_chat_history" style="height:400px; border:1px solid #ccc; overflow-y: scroll; margin-bottom:24px; padding:16px;">
+<div id="group_chat_dialog" title="Chat Grupal">
+	<div id="group_chat_history" style=" position:relative; height:250px; border:1px solid #ccc; overflow-y: scroll; margin-bottom:24px; padding:16px;">
 
 	</div>
 	<div class="form-group">
@@ -148,12 +114,12 @@ if(!isset($_SESSION['user_id']))
 		</div>
 	</div>
 	<div class="form-group" align="right">
-		<button type="button" name="send_group_chat" id="send_group_chat" class="btn btn-info">Send</button>
+		<button type="button" name="send_group_chat" id="send_group_chat" class="btn btn-info">Enviar</button>
 	</div>
 </div>
 
 
-<script>  
+<script>
 $(document).ready(function(){
 
 	fetch_user();
@@ -189,14 +155,14 @@ $(document).ready(function(){
 
 	function make_chat_dialog_box(to_user_id, to_user_name)
 	{
-		var modal_content = '<div id="user_dialog_'+to_user_id+'" class="user_dialog" title="You have chat with '+to_user_name+'">';
-		modal_content += '<div style="height:400px; border:1px solid #ccc; overflow-y: scroll; margin-bottom:24px; padding:16px;" class="chat_history" data-touserid="'+to_user_id+'" id="chat_history_'+to_user_id+'">';
+		var modal_content = '<div id="user_dialog_'+to_user_id+'" class="user_dialog" title="'+to_user_name+'">';
+		modal_content += '<div style="height:300px; border:1px solid #ccc; overflow-y: scroll; margin-bottom:24px; padding:16px;" class="chat_history" data-touserid="'+to_user_id+'" id="chat_history_'+to_user_id+'">';
 		modal_content += fetch_user_chat_history(to_user_id);
 		modal_content += '</div>';
 		modal_content += '<div class="form-group">';
 		modal_content += '<textarea name="chat_message_'+to_user_id+'" id="chat_message_'+to_user_id+'" class="form-control chat_message"></textarea>';
 		modal_content += '</div><div class="form-group" align="right">';
-		modal_content+= '<button type="button" name="send_chat" id="'+to_user_id+'" class="btn btn-info send_chat">Send</button></div></div>';
+		modal_content+= '<button type="button" name="send_chat" id="'+to_user_id+'" class="btn btn-info send_chat">Enviar</button></div></div>';
 		$('#user_model_details').html(modal_content);
 	}
 
@@ -209,10 +175,7 @@ $(document).ready(function(){
 			width:400
 		});
 		$('#user_dialog_'+to_user_id).dialog('open');
-		$('#chat_message_'+to_user_id).emojioneArea({
-			pickerPosition:"top",
-			toneStyle: "bullet"
-		});
+
 	});
 
 	$(document).on('click', '.send_chat', function(){
@@ -278,7 +241,7 @@ $(document).ready(function(){
 			data:{is_type:is_type},
 			success:function()
 			{
-				
+
 			}
 		})
 	});
@@ -335,6 +298,6 @@ $(document).ready(function(){
 			resetForm: true
 		});
 	});
-	
-});  
+
+});
 </script>
