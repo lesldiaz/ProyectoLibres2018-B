@@ -107,7 +107,7 @@
                             <i class="fa fa-fw fa-address-book"></i>
                             <span class="nav-link-text">Ayuda</span>
                         </a>
-						 <a class="nav-link"  href="Chat/indexniu.php">
+						 <a class="nav-link"  href="Chat/index.php">
                             <i class="fa fa-fw fa-external-link"></i>
                             <span class="nav-link-text">Chat en Linea</span>
                         </a>
@@ -152,7 +152,7 @@
             if ( $_SESSION["userType"] != "admin" ) {
                 ?>
 			<li class="nav-item">
-				<a class="nav-link"  href="Chat/indexniu.php">
+				<a class="nav-link"  href="Chat/index.php">
 					<i class="fa fa-external-link"></i> Contáctanos</a>
 			</li>
 				<?php } ?>

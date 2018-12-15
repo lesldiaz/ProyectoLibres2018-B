@@ -6,7 +6,7 @@ require_once "enviar_correo.php";
   if ( isset($_POST["cedula"]) && isset($_POST["nombre"]) && isset($_POST["apellido"]) && isset($_POST["usuario"])
     && isset($_POST["correo"]) && isset($_POST["carrera"]) && isset($_POST["pw"]) && isset($_POST["pwConf"]) ) {
     if ($_POST["pw"] == $_POST["pwConf"]) {
-      if (validarCedula($_POST["cedula"])) 
+      if (validarCedula($_POST["cedula"]))
       {
         $pwd_hash = password_hash($_POST["pw"], PASSWORD_DEFAULT);
         $sql =' CALL registrarEstudiante(:cedulaEst, :nombresEst, :apellidosEst, :correoEst, :idCarrera, :usuarioEst, :pwEst)';
@@ -19,15 +19,15 @@ require_once "enviar_correo.php";
           ':idCarrera' => $_POST["carrera"],
           ':usuarioEst' => $_POST["usuario"],
           ':pwEst' => $pwd_hash));
-		  
-        $nameto = $_POST["nombre"]. ' ' .$_POST["apellido"];
-		$subq = "INSERT INTO login (username, password) VALUES (:usern, :pass)";
-		$stmt1 = $pdo->prepare($subq);
-		$stmt1->execute(array(
-          ':usern' => $nameto,
-		  ':pass' => $pwd_hash));
-		  
-        enviarcorreo($_POST["nombre"],$_POST["apellido"],$_POST["correo"]);
+          $user = $_POST["nombre"].' '.$_POST["apellido"];
+          $sql1 = 'INSERT INTO login (usuario,username,password) VALUES (:usuarionom, :usuarioEst,:pwEst)';
+          $stmt1 = $pdo->prepare($sql1);
+          $stmt1->execute(array(
+            ':usuarionom' => $user
+            ':usuarioEst' => $_POST["usuario"],
+            ':pwEst' => $pwd_hash));
+
+		   enviarcorreo($_POST["nombre"],$_POST["apellido"],$_POST["correo"]);
 		$_SESSION["reg"] = "Usuario estudiante creado correctamente. Inicie sesion para continuar";
         header( 'Location: index.php' ) ;
         return;
@@ -47,8 +47,8 @@ require_once "enviar_correo.php";
   ?>
 
   <style>
-    .bottom5 { 
-        margin-bottom:70px; 
+    .bottom5 {
+        margin-bottom:70px;
     }
   </style>
 </head>
@@ -115,15 +115,15 @@ require_once "enviar_correo.php";
             <input class="form-control" id="usuario" name="usuario" type="text" maxlength="15" placeholder="Ingrese su usuario" required>
           </div>
           <div class="form-group">
-            <div class="form-row"> 
-              <div class="col-md-6"> 
-                <label for="pw">Contraseña</label> 
-                <input class="form-control" id="pw" name="pw" type="password" placeholder="Contraseña" required> 
-              </div> 
-              <div class="col-md-6"> 
-                <label for="pwconfirm">Confirmar contraseña</label> 
-                <input class="form-control" id="pwConf" name="pwConf" type="password" placeholder="Confirmar contraseña" required> 
-              </div> 
+            <div class="form-row">
+              <div class="col-md-6">
+                <label for="pw">Contraseña</label>
+                <input class="form-control" id="pw" name="pw" type="password" placeholder="Contraseña" required>
+              </div>
+              <div class="col-md-6">
+                <label for="pwconfirm">Confirmar contraseña</label>
+                <input class="form-control" id="pwConf" name="pwConf" type="password" placeholder="Confirmar contraseña" required>
+              </div>
             </div>
           </div>
           <input class="btn btn-primary btn-block" type="submit" value="Registrarse">

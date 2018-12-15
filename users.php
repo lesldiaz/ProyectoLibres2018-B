@@ -12,14 +12,21 @@
         $sql = "UPDATE profesor SET
                 usuarioProf = :usuarioProf,
                 pwProf = :pwProf,
-				bloqueo = :bloqueo
+				        bloqueo = :bloqueo
                 WHERE idProfesor = :idProfesor";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(
             ':usuarioProf' => $_POST["usuario"],
             ':pwProf' => $pwd_hash,
-			':bloqueo' => $bloq,
+			      ':bloqueo' => $bloq,
             ':idProfesor' => $_POST["idProfAdd"]));
+            $user = $_POST["nomProf"];
+            $sql="update login set username = :usuarioProf, password=:pwProf where usuario='".$user."' ";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array(
+              ':usuarioProf' => $_POST["usuario"],
+              ':pwProf' => $pwd_hash));
+
         $_SESSION["addProf"] = "Profesor agregado al sistema correctamente. Recuerde desbloquearlo.";
         //sendMailP($_POST["mailProf"], $_POST["nomProf"], $_POST["usuario"], $_POST["pw"]);
         unset($_POST["usuario"]);
@@ -31,7 +38,7 @@
         return;
     }
     if ( isset($_POST["idProfDel"]) ) {
-		
+
 		$sql = "SELECT idOA, ruta_zip FROM objetoaprendizaje WHERE idAutor = :idProfesor";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(':idProfesor' => $_POST["idProfDel"]));
@@ -41,22 +48,12 @@
         $sql = "DELETE FROM profesor WHERE idProfesor = :idProfesor";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(':idProfesor' => $_POST["idProfDel"]));
-		
-		$sql2 = "SELECT nombresProf, apellidosProf FROM sistemaoa.profesor where idProfesor = :idProfesor";
-		$stmt2 = $pdo->prepare($sql2);
-		$stmt2->bindValue(":nombresProf",$nom);
-		$stmt2->bindValue(":apellidosProf",$ape);
-		$stmt2->execute(array(':idProfesor' => $_POST["idProfDel"]));
-			$arrDatos = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-			foreach ($arrDatos as $row)
-        {
-			$nameto1 = $row["nombresProf"] . ' ' . $row["apellidosProf"];
-		}
-		
-		$sql = "DELETE FROM login WHERE username = :userprof";
+
+        $sql =' CALL borrarLoginChat(:idProfesor)';
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(':userprof' => $nameto1));
-		
+        $stmt->execute(array(
+          ':idProfesor' => $_POST["idProfDel"]));
+
         $_SESSION["delProf"] = "Profesor eliminado del sistema correctamente.";
         unset($_POST["idProfDel"]);
         header( 'Location: users.php' ) ;
@@ -91,7 +88,7 @@
 			$stmt1 = $pdo->prepare($sql1);
 			$stmt1->execute(array(':idProfesor' => $_POST["idProfDesbloq"]));
 			$_SESSION["delProf"] = "Profesor desbloqueado correctamente. Credenciales de acceso enviadas al correo del usuario";
-		
+
 			$sql2 = "SELECT nombresProf, apellidosProf,correoProf,usuarioProf,pwProf FROM sistemaoa.profesor where idProfesor = :idProfesor";
 			$stmt2 = $pdo->prepare($sql2);
 			/*
@@ -118,20 +115,15 @@
 			echo 'Invalid password.';
 		}
 		*/
-		$subq = "INSERT INTO login (username, password) VALUES (:usern, :pass)";
-		$stmt3 = $pdo->prepare($subq);
-		$stmt3->execute(array(
-          ':usern' => $nameto,
-		  ':pass' => $pss));
 		sendMailP($correo, $nameto,$usuario,$cedula);
 		//echo "<script> alert('correo enviado'); </script>";
-		
+
         unset($_POST["idProfDesbloq"]);
 		header( 'Location: users.php' ) ;
 		return;
 		}
-	}	
-		
+	}
+
     if ( isset($_POST["idEstDel"]) ) {
 		$sql = "SELECT idOA, ruta_zip FROM objetoaprendizaje WHERE idAutor = :idEstudiante";
         $stmt = $pdo->prepare($sql);
@@ -142,12 +134,18 @@
         $sql = "DELETE FROM estudiante WHERE idEstudiante = :idEstudiante";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(':idEstudiante' => $_POST["idEstDel"]));
+
+        $sql =' CALL borrarLoginChat2(:idEstudiante)';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(
+          ':idEstudiante' => $_POST["idEstDel"]));
+
         $_SESSION["delProf"] = "Estudiante eliminado del sistema correctamente.";
         unset($_POST["idEstDel"]);
         header( 'Location: users.php' ) ;
         return;
     }
-	
+
 	if ( isset($_POST["idEstBloq"]) ) {
 		$sql = "UPDATE sistemaoa.estudiante SET bloqueo = 0 where idEstudiante = :idEstudiante";
 		$stmt = $pdo->prepare($sql);
@@ -157,7 +155,7 @@
         header( 'Location: users.php' ) ;
         return;
 	}
-	
+
 	if ( isset($_POST["idEstDesbloq"]) ) {
 		$sql = "UPDATE sistemaoa.estudiante SET bloqueo = 1 where idEstudiante = :idEstudiante";
 		$stmt = $pdo->prepare($sql);
@@ -167,12 +165,12 @@
 		$nombre= $row['nombresEst'];
 		enviarcorreobloc($nombre,$correo);
         unset($_POST["idEstDesbloq"]);
-		
+
         header( 'Location: users.php' ) ;
-		
+
         return;
 	}
-	
+
 ?>
 
 <!DOCTYPE html>
@@ -223,7 +221,7 @@
             echo('<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>');
             echo($_SESSION["delProf"]);
             echo('</div>');
-            unset($_SESSION["delProf"]);
+            unset($_SESSION["delProf"]); #lala
         }
     ?>
     <div class="container">
@@ -368,13 +366,13 @@
                         echo '<div class="form-row">';
                         echo '<div class="col-4 offset-8">';
                         echo '<input type="hidden" name="idProfDel" value="' . $id . '">';
-						
+
                         echo '<input class="btn btn-danger btn-block" type="submit" value="Borrar">';
 						echo '</div>';
                         echo '</div>';
                         echo '</div>';
                         echo '</form>';
-						
+
 						echo '<form method="post">';
                         echo '<div class="form-group top5">';
                         echo '<div class="form-row">';
@@ -385,19 +383,19 @@
                         echo '</div>';
                         echo '</div>';
                         echo '</form>';
-						
+
 						echo '<form method="post">';
                         echo '<div class="form-group top5">';
                         echo '<div class="form-row">';
                         echo '<div class="col-4 offset-8">';
-						
+
                         echo '<input type="hidden" name="idProfDesbloq" value="' . $id . '">';
 						echo '<input class="btn btn-danger btn-block"  type="submit" value="Desbloquear">';
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
-                        echo '</form>';						
-						
+                        echo '</form>';
+
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
@@ -488,19 +486,19 @@
                         echo '</div>';
                         echo '</div>';
                         echo '</form>';
-						
+
 						echo '<form method="post">';
                         echo '<div class="form-group top5">';
                         echo '<div class="form-row">';
                         echo '<div class="col-4 offset-8">';
-						
+
                         echo '<input type="hidden" name="idEstDesbloq" value="' . $id . '">';
 						echo '<input class="btn btn-danger btn-block"  type="submit" value="Desbloquear">';
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
-                        echo '</form>';		
-						
+                        echo '</form>';
+
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';

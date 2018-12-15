@@ -6,7 +6,7 @@ require_once "cedula.php";
   //session_start();
   if ( isset($_POST["cedula"]) && isset($_POST["nombre"]) && isset($_POST["apellido"])
     && isset($_POST["correo"]) && isset($_POST["departamento"]) ) {
-    if (validarCedula($_POST["cedula"])) 
+    if (validarCedula($_POST["cedula"]))
     {
         $sql =' CALL registrarProfesor(:cedulaProf, :nombresProf, :apellidosProf, :correoProf, :idDepartamento, :bloqueo)';
         $pwd_hash = password_hash($_POST["nombre"], PASSWORD_DEFAULT);
@@ -18,7 +18,11 @@ require_once "cedula.php";
       ':correoProf' => $_POST["correo"],
       ':idDepartamento' => $_POST["departamento"],
 	  ':bloqueo' => 0));
-      
+    $user= $_POST["nombre"].' '.$_POST["apellido"];
+    $sql="INSERT INTO login (usuario) VALUES (:usuarionom)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(array(
+      ':usuarionom' => $user));
       //$nameto = $_POST["nombre"] . ' ' . $_POST["apellido"];
       //sendMailP($_POST["correo"], $nameto,$_POST["nombre"],$_POST["nombre"]);
 	  $_SESSION["reg"] = "Formulario enviado correctamente! El administrador le enviara su usuario y contraseña a su correo.";
