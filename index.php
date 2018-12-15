@@ -36,10 +36,10 @@
       }
     ?>
       <div class="jumbotron">
-          <img src="images/logoEPN.png" style="float:right; width:300px;height:300px; margin:1em">
-          <h1 class="display-2">SISTEMA DE GESTIÓN DE OBJETOS DE APRENDIZAJE</h1>
-          <p class="lead">Esta herramienta es desarrollada por estudiantes de la Escuela Politécnica Nacional para la creación y gestión de objetos de aprendizaje. Es una herramienta gratuita la cual permite expandir y compartir conocimiento en diversas áreas  mediante la utilización  de herramientas de aprendizaje.</p>
-          <p class="lead">Un Objeto de Aprendizaje es un conjunto de recursos digitales, autocontenible y reutilizable, con un propósito educativo y constituido por al menos tres componentes internos: contenidos, actividades de aprendizaje y elementos de contextualización.</p>
+          <img src="images/logoEPN.png" style="float:right; width:100px;height:100px; margin:1em">
+          <h1>SISTEMA DE GESTIÓN DE OBJETOS DE APRENDIZAJE</h1>
+          <p class="lead" align="justify">Esta herramienta es desarrollada por estudiantes de la Escuela Politécnica Nacional para la creación y gestión de objetos de aprendizaje. Es una herramienta gratuita la cual permite expandir y compartir conocimiento en diversas áreas  mediante la utilización  de herramientas de aprendizaje.</p>
+          <p class="lead" align="justify">Un Objeto de Aprendizaje es un conjunto de recursos digitales, autocontenible y reutilizable, con un propósito educativo y constituido por al menos tres componentes internos: contenidos, actividades de aprendizaje y elementos de contextualización.</p>
 
           <hr class="my-3">
 

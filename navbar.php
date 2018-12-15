@@ -45,19 +45,35 @@
                             <a href="misObjetos.php">Mis Objetos de Aprendizaje</a>
                         </li>
                         <?php } ?>
-						<!-- Esto es un comentario -->
-
                         <li>
                             <a href="valoracionObjetoA.php">Puntuación Objetos de Aprendizaje</a>
                         </li>
 
-						<li>
+						            <li>
                             <a href="descargas.php">Descargas de Objetos de Aprendizajes</a>
                         </li>
-						<li>
+						            <li>
                             <a href="graficacop.php">Graficar Estadisticas</a>
                         </li>
 
+                    </ul>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components2">
+                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents2" data-parent="#exampleAccordion">
+                        <i class="fa fa-handshake-o"></i>
+                        <span class="nav-link-text"> Foro Abierto</span>
+                    </a>
+                    <ul class="sidenav-second-level collapse" id="collapseComponents2">
+
+                        <li>
+                            <a href="nuevoTema.php">Crear un nuevo tema de discusión</a>
+                        </li>
+                        <li>
+                            <a href="#">Mis Entradas</a>
+                        </li>
+                        <li>
+                            <a href="#">Todas las entradas</a>
+                        </li>
                     </ul>
                 </li>
                 <?php
@@ -77,7 +93,7 @@
                     ?>
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Crear">
                         <a class="nav-link" href="AyudaInProf.php">
-                            <i class="fa fa-fw fa-file-text-o"></i>
+                            <i class="fa fa-question-circle"></i>
                             <span class="nav-link-text">Ayuda</span>
                         </a>
                     </li>
@@ -89,7 +105,7 @@
                     ?>
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Crear">
                         <a class="nav-link" href="AyudaInEstudiant.php">
-                            <i class="fa fa-fw fa-file-text-o"></i>
+                            <i class="fa fa-question-circle"></i>
                             <span class="nav-link-text">Ayuda</span>
                         </a>
                     </li>
@@ -104,11 +120,11 @@
                             <span class="nav-link-text">Usuarios</span>
                         </a>
                         <a class="nav-link" href="AyudaInAdmin.php">
-                            <i class="fa fa-fw fa-address-book"></i>
+                            <i class="fa fa-question-circle"></i>
                             <span class="nav-link-text">Ayuda</span>
                         </a>
-						 <a class="nav-link"  href="Chat/index.php">
-                            <i class="fa fa-fw fa-external-link"></i>
+						            <a class="nav-link"  href="Chat/index.php">
+                            <i class="fa fa-users"></i>
                             <span class="nav-link-text">Chat en Linea</span>
                         </a>
                     </li>
@@ -153,7 +169,7 @@
                 ?>
 			<li class="nav-item">
 				<a class="nav-link"  href="Chat/index.php">
-					<i class="fa fa-external-link"></i> Contáctanos</a>
+					<i class="fa fa-users"></i> Contáctanos</a>
 			</li>
 				<?php } ?>
                 <li class="nav-item">

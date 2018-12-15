@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-12-2018 a las 21:59:42
+-- Tiempo de generación: 15-12-2018 a las 11:16:31
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.11
 
@@ -26,6 +26,22 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `borrarLoginChat` (IN `idProfesor` INT(11))  BEGIN
+DECLARE usern VARCHAR(15);
+SET usern:=' ';
+SELECT P.usuarioProf INTO usern FROM profesor p
+                   WHERE p.idProfesor = idProfesor;
+DELETE FROM login WHERE username = usern;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `borrarLoginChat2` (IN `idEstudiante` INT(11))  BEGIN
+DECLARE usern VARCHAR(15);
+SET usern:=' ';
+SELECT P.usuarioEst INTO usern FROM estudiante p
+                   WHERE p.idEstudiante = idEstudiante;
+DELETE FROM login WHERE username = usern;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `cargarComentarios` (IN `tmpIdOA` INT(11))  BEGIN
 SELECT idComentario,detalleComent, userNameAutor, fechaComentario, pathImagen, pathVideo
                     FROM comentario c
@@ -94,6 +110,10 @@ SELECT l.user_id INTO userid FROM login l where l.username = username;
 INSERT INTO login_details(user_id)
 VALUES(userid);
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarTemaDis` (IN `asunto` VARCHAR(200), IN `descripcion` TEXT, IN `autor` VARCHAR(100), IN `userType` VARCHAR(100), IN `fechaapertura` DATE, IN `nombreadjunto` VARCHAR(100))  BEGIN
+INSERT INTO foro (asunto,descripcion,autor,userType,fechaapertura,nombreadjunto) values (asunto,descripcion,autor,userType,fechaapertura,nombreadjunto);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `registrarEstudiante` (IN `cedulaEst` VARCHAR(150), IN `nombresEst` VARCHAR(150), IN `apellidosEst` VARCHAR(150), IN `correoEst` VARCHAR(100), IN `idCarrera` INT(11), IN `usuarioEst` VARCHAR(150), IN `pwEst` VARCHAR(150))  BEGIN
@@ -248,7 +268,8 @@ INSERT INTO `comentario` (`idComentario`, `detalleComent`, `idOA`, `idAutor`, `u
 (36, 'skjfjdskf', 6, 2, 'mario giler', 'img/', '19/11/2018', ''),
 (37, 'sknfds', 3, 2, 'mario giler', 'img/', '19/11/2018', ''),
 (38, 'mejore sus preguntas', 2, 2, 'mario giler', 'img/', '19/11/2018', ''),
-(41, 'nuevo comentario prueba', 3, 2, 'mario giler', 'img/', '27/11/2018', '');
+(41, 'nuevo comentario prueba', 3, 2, 'mario giler', 'img/', '27/11/2018', ''),
+(42, 'Que es esto', NULL, NULL, NULL, NULL, '', NULL);
 
 -- --------------------------------------------------------
 
@@ -351,6 +372,22 @@ INSERT INTO `facultad` (`idFacultad`, `nombreFacultad`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `foro`
+--
+
+CREATE TABLE `foro` (
+  `idForo` int(11) NOT NULL,
+  `asunto` varchar(200) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `descripcion` text COLLATE utf8mb4_spanish_ci NOT NULL,
+  `autor` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `userType` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `fechaapertura` date NOT NULL,
+  `nombreadjunto` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `imagen`
 --
 
@@ -376,16 +413,17 @@ INSERT INTO `imagen` (`idimagen`, `rutaImagen`) VALUES
 
 CREATE TABLE `login` (
   `user_id` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `usuario` varchar(200) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `login`
 --
 
-INSERT INTO `login` (`user_id`, `username`, `password`) VALUES
-(1, 'admin', '$2y$10$nXfCxVyPD5M8nTsPR3Dk3.tBDBY2WZKrQqFuKXk7pGy/DjPkjNIKC');
+INSERT INTO `login` (`user_id`, `usuario`, `username`, `password`) VALUES
+(1, 'Administrador', 'admin', '$2y$10$nXfCxVyPD5M8nTsPR3Dk3.tBDBY2WZKrQqFuKXk7pGy/DjPkjNIKC');
 
 -- --------------------------------------------------------
 
@@ -451,7 +489,10 @@ INSERT INTO `login_details` (`login_details_id`, `user_id`, `last_activity`, `is
 (65, 1, '2018-12-14 09:58:55', 'no'),
 (66, 1, '2018-12-14 10:01:01', 'no'),
 (67, 1, '2018-12-14 10:07:57', 'no'),
-(68, 5, '2018-12-14 10:25:32', 'no');
+(68, 5, '2018-12-14 10:25:32', 'no'),
+(69, 1, '2018-12-14 21:29:49', 'no'),
+(70, 9, '2018-12-15 00:40:15', 'no'),
+(71, 1, '2018-12-15 08:14:59', 'no');
 
 -- --------------------------------------------------------
 
@@ -568,7 +609,7 @@ CREATE TABLE `objetoaprendizaje` (
   `ruta_zip` varchar(200) NOT NULL,
   `idAutor` int(11) DEFAULT NULL,
   `idMateria` int(11) DEFAULT NULL,
-  `descargas` int(11) DEFAULT NULL
+  `descargas` int(11) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -731,6 +772,12 @@ ALTER TABLE `facultad`
   ADD PRIMARY KEY (`idFacultad`);
 
 --
+-- Indices de la tabla `foro`
+--
+ALTER TABLE `foro`
+  ADD PRIMARY KEY (`idForo`);
+
+--
 -- Indices de la tabla `imagen`
 --
 ALTER TABLE `imagen`
@@ -817,7 +864,7 @@ ALTER TABLE `chat_message`
 -- AUTO_INCREMENT de la tabla `comentario`
 --
 ALTER TABLE `comentario`
-  MODIFY `idComentario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `idComentario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT de la tabla `departamento`
@@ -838,6 +885,12 @@ ALTER TABLE `facultad`
   MODIFY `idFacultad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT de la tabla `foro`
+--
+ALTER TABLE `foro`
+  MODIFY `idForo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de la tabla `imagen`
 --
 ALTER TABLE `imagen`
@@ -853,7 +906,7 @@ ALTER TABLE `login`
 -- AUTO_INCREMENT de la tabla `login_details`
 --
 ALTER TABLE `login_details`
-  MODIFY `login_details_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `login_details_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT de la tabla `materias`
