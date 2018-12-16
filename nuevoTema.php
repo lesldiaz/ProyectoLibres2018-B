@@ -100,7 +100,7 @@ require_once "enviar_correoAprendizaje.php";
                     ajax.open('POST', 'upload2.php');
                     ajax.send(formdata);
                     alert("Nuevo Tema de Discusion Agregado!");
-					          javascript: location.href = 'index.php';
+					          javascript: location.href = 'busTemas.php';
                 }
             }
 

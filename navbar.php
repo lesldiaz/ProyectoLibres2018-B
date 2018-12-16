@@ -72,7 +72,7 @@
                             <a href="#">Mis Entradas</a>
                         </li>
                         <li>
-                            <a href="#">Todas las entradas</a>
+                            <a href="busTemas.php">Todas las entradas</a>
                         </li>
                     </ul>
                 </li>

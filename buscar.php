@@ -109,7 +109,10 @@
         /* Black w/ opacity */
     }
     /* Modal Content */
-
+    .jumbotron{
+    min-height: 100px;
+    text-align:center;
+    }
     .modalmy-content {
         display: -ms-flexbox;
         display: flex;
@@ -183,15 +186,15 @@
       }
     ?>
     <div class="container">
-		
+
         <?php
 		if ($_SESSION['userType'] != "admin"){
 		echo '<input type="text" style="display:none" id="idUsuario" value="'.$_SESSION['userName'].'">';
 		}
         ?>
-		
+
       <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar OA..." title="Ingrese un OA">
-	  
+
 	   <div class="form-group">
                                 <label for="materias">Materias</label>
                                 <select id="cbxMaterias" class="form-control form-group">
@@ -207,12 +210,12 @@
 								<option>Ecologia y Medio Ambiente</option>
 								<option>Metalurgia</option>
 								<option>Minerologia</option>
-								
+
                                 </select>
-								
+
        </div>
-	   
-	   
+
+
       <table id="myTable">
         <tr class="header">
           <th style="width:20%;">Nombre</th>
@@ -224,7 +227,7 @@
 
 
           <?php
-		  
+
           $result = $pdo->query("SELECT * FROM objetoaprendizaje");
           foreach ($result as $row) {
             $id = $row['idOA'];
@@ -232,12 +235,12 @@
             if ($_SESSION["userID"] == $row['idAutor'] || $_SESSION["userType"] == "admin") {
               $userID = true;
             }
-			
+
             echo '<tr>';
             $sql = "SELECT * FROM rutaoa WHERE idOA = :idOA AND idUser = :idUser AND username = :userName";
             $stmt = $pdo->prepare($sql);
 			if ($_SESSION['userType'] != "admin")
-				
+
             $stmt->execute(array(':idOA' => $id, 'idUser' => $_SESSION["userID"], 'userName' => $_SESSION["userName"]));
             $ruta = '';
             if ($stmt->rowCount() > 0){
@@ -251,7 +254,7 @@
               echo '<td>' . $row['nombre'] . '</td>';
             }
 			#$sql1 = "SELECT AVG(p.calificacionObjeto) as promedio FROM puntuacion WHERE idOA = :idOA GROUP BY p.idObjetosAprendizaje";
-			 
+
             #$stmt = $pdo->prepare($sql);
             #$stmt->execute(array(':idOA' => $id, 'idUser' => $_SESSION["userID"], 'userName' => $_SESSION["userName"]));
             echo '<td>' . $row['autor'] . '</td>';
@@ -455,7 +458,7 @@
             echo '<div class="col-3">';
             echo '<a class="btn btn-primary btn-block" id="Descargar'.$row['idOA'].'" href="zip/'. $row['ruta_zip'] . '" download>Descargar</a>';
             echo '</div>';
-            
+
 			if ($_SESSION["userType"] == "admin") {
               /*echo '<div class="col-3">';
               echo '<button type="button" class="btn btn-primary btn-block" onclick="javascript:location.href=' . "'editaroa.php?id=" . $id . "'" . '">Editar</button>';
@@ -469,7 +472,7 @@
               echo '</form>';
               echo '</div>';
             }
-			
+
             echo '</div>';
             echo '</div>';
             echo '</div>';
@@ -562,7 +565,7 @@
                         var result = $.parseJSON(data);
                         $.each( result, function( key, value ) {
                             $("#cbxMaterias").append("<option>"+value['nombreMateria']+"</option>");
-							
+
                         });
                 });
             });
@@ -605,10 +608,10 @@ $('[id*="Descargar"]').click(function () {
         });
 
     });
-	
 
 
-           
+
+
 
 
    /* $("#btnCalificar3").click(function(){
