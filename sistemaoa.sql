@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-12-2018 a las 11:16:31
+-- Tiempo de generación: 17-12-2018 a las 23:50:42
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.11
 
@@ -110,6 +110,10 @@ SELECT l.user_id INTO userid FROM login l where l.username = username;
 INSERT INTO login_details(user_id)
 VALUES(userid);
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarRespDis` (IN `idForo` INT, IN `asunto` VARCHAR(200), IN `descripcion` TEXT, IN `autor` VARCHAR(100), IN `userType` VARCHAR(100), IN `fechaapertura` DATETIME, IN `nombreadjunto` VARCHAR(100))  BEGIN
+insert into resforo(idForo,asunto,descripcion,autor,userType,fechaapertura,nombreadjunto) values (idForo,asunto,descripcion,autor,userType,fechaapertura,nombreadjunto);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarTemaDis` (IN `asunto` VARCHAR(200), IN `descripcion` TEXT, IN `autor` VARCHAR(100), IN `userType` VARCHAR(100), IN `fechaapertura` DATE, IN `nombreadjunto` VARCHAR(100))  BEGIN
@@ -222,6 +226,13 @@ CREATE TABLE `chat_message` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `chat_message`
+--
+
+INSERT INTO `chat_message` (`chat_message_id`, `to_user_id`, `from_user_id`, `chat_message`, `timestamp`, `status`) VALUES
+(1, 0, 1, '\n\n			hsdfij', '2018-12-17 22:46:11', 1);
 
 -- --------------------------------------------------------
 
@@ -381,9 +392,25 @@ CREATE TABLE `foro` (
   `descripcion` text COLLATE utf8mb4_spanish_ci NOT NULL,
   `autor` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
   `userType` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `fechaapertura` date NOT NULL,
+  `fechaapertura` datetime NOT NULL,
   `nombreadjunto` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `foro`
+--
+
+INSERT INTO `foro` (`idForo`, `asunto`, `descripcion`, `autor`, `userType`, `fechaapertura`, `nombreadjunto`) VALUES
+(5, 'Tooltip', 'Tooltips and popovers can be placed within modals as needed. When modals are closed, any tooltips and popovers within are also automatically dismissed.', 'autor', 'userType', '2018-11-03 00:00:00', NULL),
+(6, 'asunto1', 'descripcion1', 'autor1', 'userType1', '2018-11-03 00:00:00', NULL),
+(7, 'asunto2', 'descripcion2', 'autor2', 'userType2', '2018-11-03 00:00:00', NULL),
+(8, 'Re: Tooltip', 'sdnfk', 'Leslie Diaz', 'est', '2018-12-17 00:00:00', NULL),
+(9, 'Re: Tooltip', 'dfd', 'Leslie Diaz', 'est', '2018-12-17 00:00:00', NULL),
+(10, 'Re: Tooltip', 'jkghj', 'Leslie Diaz', 'est', '2018-12-17 00:00:00', NULL),
+(11, 'Re: Tooltip', 'klnd', 'Leslie Diaz', 'est', '2018-12-17 00:00:00', NULL),
+(12, 'Hola', 'Mundo', 'Leslie Diaz', 'est', '2018-12-17 00:00:00', NULL),
+(13, 'Hola Mundo', 'sfdsf', 'Leslie Diaz', 'est', '2018-12-17 00:00:00', NULL),
+(14, 'Jai Jelou', 'nsdfkjdkfl', 'Leslie Diaz', 'est', '2018-12-17 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -492,7 +519,8 @@ INSERT INTO `login_details` (`login_details_id`, `user_id`, `last_activity`, `is
 (68, 5, '2018-12-14 10:25:32', 'no'),
 (69, 1, '2018-12-14 21:29:49', 'no'),
 (70, 9, '2018-12-15 00:40:15', 'no'),
-(71, 1, '2018-12-15 08:14:59', 'no');
+(71, 1, '2018-12-15 08:14:59', 'no'),
+(72, 1, '2018-12-17 22:46:28', 'no');
 
 -- --------------------------------------------------------
 
@@ -687,6 +715,30 @@ INSERT INTO `puntuacion` (`idPuntuacion`, `calificacionObjeto`, `idObjetosAprend
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `resforo`
+--
+
+CREATE TABLE `resforo` (
+  `idRespuesta` int(11) NOT NULL,
+  `idForo` int(11) NOT NULL,
+  `asunto` varchar(200) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `descripcion` text COLLATE utf8mb4_spanish_ci NOT NULL,
+  `autor` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `userType` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `fechaapertura` datetime NOT NULL,
+  `nombreadjunto` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `resforo`
+--
+
+INSERT INTO `resforo` (`idRespuesta`, `idForo`, `asunto`, `descripcion`, `autor`, `userType`, `fechaapertura`, `nombreadjunto`) VALUES
+(1, 5, 'Re: Tooltip', 'Esta es mi respuesta', 'Leslie Diaz', 'est', '2018-12-17 23:27:55', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `rutaoa`
 --
 
@@ -826,6 +878,12 @@ ALTER TABLE `puntuacion`
   ADD KEY `FK_idObjetoAprendizaje` (`idObjetosAprendizaje`);
 
 --
+-- Indices de la tabla `resforo`
+--
+ALTER TABLE `resforo`
+  ADD PRIMARY KEY (`idRespuesta`);
+
+--
 -- Indices de la tabla `rutaoa`
 --
 ALTER TABLE `rutaoa`
@@ -858,7 +916,7 @@ ALTER TABLE `carrera`
 -- AUTO_INCREMENT de la tabla `chat_message`
 --
 ALTER TABLE `chat_message`
-  MODIFY `chat_message_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `chat_message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `comentario`
@@ -888,7 +946,7 @@ ALTER TABLE `facultad`
 -- AUTO_INCREMENT de la tabla `foro`
 --
 ALTER TABLE `foro`
-  MODIFY `idForo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idForo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `imagen`
@@ -906,7 +964,7 @@ ALTER TABLE `login`
 -- AUTO_INCREMENT de la tabla `login_details`
 --
 ALTER TABLE `login_details`
-  MODIFY `login_details_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `login_details_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT de la tabla `materias`
@@ -931,6 +989,12 @@ ALTER TABLE `profesor`
 --
 ALTER TABLE `puntuacion`
   MODIFY `idPuntuacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de la tabla `resforo`
+--
+ALTER TABLE `resforo`
+  MODIFY `idRespuesta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `rutaoa`

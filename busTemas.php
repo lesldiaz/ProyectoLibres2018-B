@@ -2,40 +2,6 @@
   require_once "pdo.php";
   require_once "delete.php";
   session_start();
-/*
-  if ( isset($_POST["idForoComment"]) && isset($_POST["comment"]) ) {
-      $nombre = $_FILES['imagen']['name'];
-      //$cd=$_FILES['imagen']['tmp_name'];
-      $ruta = "foroimg/" . $_FILES['imagen']['name'];
-      $destino = "foroimg/".$nombrer;
-      $resultado = @move_uploaded_file($_FILES["imagen"]["tmp_name"], $ruta);
-      $sql = "CALL insertarComentario (:detalleComent, :idOA, :idAutor, :userNameAutor, :rutaArchivo, :fechaComentario, :rutaVideo)";
-      $stmt = $pdo->prepare($sql);
-      $fecha=date("d") . "/" . date("m") . "/" . date("Y");
-    $stmt->execute(array(
-      ':detalleComent' => $_POST["comment"],
-      ':idOA' => $_POST["idOAComment"],
-      ':idAutor' => $_SESSION["userID"],
-	  ':userNameAutor' => $_SESSION["userName"],
-        ':rutaArchivo' => $destino,
-        ':fechaComentario' => $fecha,
-        ':rutaVideo'=> $_POST["videoYoutube"]));
-    $_SESSION["oa"] = "Comentario agregado correctamente.";
-    unset($_POST["idOAComment"]);
-    unset($_POST["comment"]);
-    header( 'Location: buscar.php' );
-    return;
-  }
-
-  if ( isset($_POST["idForoDelete"])) ) {
-    deleteOA($_POST["idOARuta"], $_POST["idOADelete"]);
-    $_SESSION["oa"] = "Objeto de Aprendizaje eliminado del sistema correctamente.";
-    unset($_POST["idOADelete"]);
-    unset($_POST["idOARuta"]);
-    header( 'Location: buscar.php' );
-    return;
-  }
-*/
 ?>
 
 <!DOCTYPE html>
@@ -232,13 +198,33 @@
                   echo '<div class="modal-header">';
                     echo '<h4 class="modal-title">'.$name.'</h4>';
                     echo '<button type="button" class="close" data-dismiss="modal">&times;</button>';
-
-                  echo '</div>';
-                  echo '<div class="modal-body">';
-                    echo '<p>Some text in the modal.</p>';
-                  echo '</div>';
-                  echo '<div class="modal-footer">';
-                    echo '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+                    echo '</div>';
+                    echo '<div class="modal-body">';
+                    echo '<h6><b>Descripción: </b></h6>';
+                    echo '<p align="justify">'.$row["descripcion"].'</p>';
+                    echo '<p align="justify"> Tema iniciado por <b>'.$row["autor"].'</b> el <b>'.$row["fechaapertura"].'</b> </p>';
+                    echo '<p><b>Archivo Adjunto:</b> <a href="foroimg/'.$row["nombreadjunto"].'" target="_blank" class="tooltip-test" title="Tooltip">'.$row["nombreadjunto"].'</a></p>';
+                    echo '<hr>';
+                    echo '<div class="row bottom10">';
+                    echo '<div class="col-3">';
+                    echo '<b>Respuestas:</b>';
+                    echo '</div>';
+                    echo '<div class="comments">';
+                    echo '<ul class="list-group">';
+                    //Comentario -Respuestas
+                    echo '<p> Hola Comente</p>';
+                    echo '</ul>';
+                    echo '</div>';
+                    echo '</div>';
+                    //Comentario
+                    echo '</div>';
+                    echo '<div class="modal-footer">';
+                    echo '<form action="nuevaRes.php" method="post">
+                          <input type="hidden" name="idForoR" value="'.$row["idForo"].'"/>
+                          <input type="hidden" name="asuntoForoR" value="'.$row["asunto"].'"/>';
+                    echo '<input class="btn btn-primary" type="submit" value="Agregar Respuesta" onclick="ir()">';
+                    echo '</form>';
+                    echo '<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>';
                   echo '</div>';
                 echo '</div>';
 
@@ -293,6 +279,9 @@
             modal.style.display = "none";
           }
         }
+      }
+      function ir(){
+        window.location="nuevaRes.php";
       }
 
       function showHide(div) {

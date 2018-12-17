@@ -1,6 +1,6 @@
 <?php
     require_once "pdo.php";
-    include_once "regTema.php";
+    include_once "regRes.php";
     session_start();
 	$ejemplo='foroimg/';
     $fileName = $ejemplo.$_FILES["file1"]["name"]; // The file name
@@ -11,13 +11,13 @@
 
     if (!$fileTmpLoc) { // if file not chosen
         //echo "ERROR: Please browse for a file before clicking the upload button.";
-        insertema($_POST["nombreOA"],$_POST["descripcion"],$_POST["autorOA"],$_SESSION['userType'],$_POST["fechaCreacionOA"],'');
+        insertresp($_POST["idForoR"],$_POST["nombreOA"],$_POST["descripcion"],$_POST["autorOA"],$_SESSION['userType'],$_POST["fechaCreacionOA"],'');
         exit();
     }
 
     if(move_uploaded_file($fileTmpLoc,$fileName)){
         echo "sucessful";
-        insertema($_POST["nombreOA"],$_POST["descripcion"],$_POST["autorOA"],$_SESSION['userType'],$_POST["fechaCreacionOA"],$fileName);
+        insertresp($_POST["idForoR"],$_POST["nombreOA"],$_POST["descripcion"],$_POST["autorOA"],$_SESSION['userType'],$_POST["fechaCreacionOA"],$fileName);
 
     } else {
         echo "move_uploaded_file function failed";

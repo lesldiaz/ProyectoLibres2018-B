@@ -1,5 +1,4 @@
 <?php
-require_once "enviar_correoAprendizaje.php";
     session_start();
 ?>
 
@@ -31,17 +30,17 @@ require_once "enviar_correoAprendizaje.php";
     <div class="content-wrapper bg-light">
         <div class="container">
             <div class="jumbotron">
-                <h2 class="display-5 text-center">Añadir nuevo tema de discusión</h2>
+                <h2 class="display-5 text-center">Añadir respuesta</h2>
             </div>
         </div>
         <div class="row bottom5">
             <div class="col-6 offset-3">
                 <div class="card">
                     <div class="card-body">
-                        <form method="post">
+                        <form method="post" >
                                 <div class="form-group">
                                     <label for="nombreOA">Asunto</label>
-                                    <input type="text" class="form-control" id="nombreOA" placeholder="Tema o Asunto" required>
+                                    <input type="text" class="form-control" id="nombreOA" value="Re: <?php echo $_POST["asuntoForoR"]?>" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="descripcion">Descripción</label>
@@ -52,8 +51,8 @@ require_once "enviar_correoAprendizaje.php";
                                     <input type="text" class="form-control" id="autorOA" value="<?php echo $_SESSION["userName"]?>" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label for="fechaCreacionOA">Fecha de apertura: <?php echo date("Y-m-d");?> </label>
-                                    <input type="hidden" class="form-control" id="fechaCreacionOA" value="<?php echo date("Y-m-d H:i:s");?>">
+                                  <input type="hidden" class="form-control" id="idForo" value="<?php echo $_POST["idForoR"];?>">
+                                  <input type="hidden" class="form-control" id="fechaCreacionOA" value="<?php echo date("Y-m-d H:i:s");?>">
                                 </div>
                                 <div class="form-group">
                                     <label for="file1">Adjuntar un archivo</label>
@@ -91,7 +90,7 @@ require_once "enviar_correoAprendizaje.php";
                     '' || document.getElementById('autorOA').value == '') {
                         alert("Error: Uno o más campos vacios");
                 } else {
-					             var file = _("file1").files[0];
+					          var file = _("file1").files[0];
                     //alert(file.name+" | "+file.size+" | "+file.type);
                     var formdata = new FormData();
                     formdata.append("file1", file);
@@ -99,11 +98,12 @@ require_once "enviar_correoAprendizaje.php";
                     formdata.append("descripcion", _("descripcion").value);
                     formdata.append("autorOA", _("autorOA").value);
                     formdata.append("fechaCreacionOA", _("fechaCreacionOA").value);
+                    formdata.append("idForoR", _("idForo").value);
                     var ajax = new XMLHttpRequest();
                     ajax.upload.addEventListener("progress", progressHandler, false);
-                    ajax.open('POST', 'upload2.php');
+                    ajax.open('POST', 'upload3.php');
                     ajax.send(formdata);
-                    alert("Tema de Discusion Agregado Existosamente");
+                    alert("Respuesta Agregada Correctamente");
 					          javascript: location.href = 'busTemas.php';
                 }
             }
