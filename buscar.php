@@ -6,7 +6,6 @@
   if ( isset($_POST["idOAComment"]) && isset($_POST["comment"]) ) {
       $nombre = $_FILES['imagen']['name'];
       $nombrer = strtolower($nombre);
-      //$cd=$_FILES['imagen']['tmp_name'];
       $ruta = "img/" . $_FILES['imagen']['name'];
       $destino = "img/".$nombrer;
       $resultado = @move_uploaded_file($_FILES["imagen"]["tmp_name"], $ruta);
@@ -195,9 +194,9 @@
 
       <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar OA..." title="Ingrese un OA">
 
-	   <div class="form-group">
-                                <label for="materias">Materias</label>
-                                <select id="cbxMaterias" class="form-control form-group">
+	     <div class="form-group">
+         <label for="materias">Materias</label>
+              <select id="cbxMaterias" class="form-control form-group">
 								<option>Fisica</option>
 								<option>Algebra Lineal</option>
 								<option>Calculo</option>
@@ -210,8 +209,7 @@
 								<option>Ecologia y Medio Ambiente</option>
 								<option>Metalurgia</option>
 								<option>Minerologia</option>
-
-                                </select>
+              </select>
 
        </div>
 
@@ -448,15 +446,14 @@
             } else {
               echo '<div class="col-3">';
             }
-            if ($ruta == '')
-            {
-              echo '<button type="button" class="btn btn-primary btn-block" onclick="unzip(' . "'" . $row['ruta_zip'] . "', '" . $id . "'" . ')">Descomprimir</button>';
+            /*if ($ruta == ''){
+              echo '<button type="button" class="btn btn-primary btn-block" onclick="unzip("'.$row['ruta_zip'].'","' .$id.'")">Descomprimir</button>';
             } else {
               echo '<button type="button" class="btn btn-primary btn-block disabled">Descomprimir</button>';
-            }
+            }*/
             echo '</div>';
             echo '<div class="col-3">';
-            echo '<a class="btn btn-primary btn-block" id="Descargar'.$row['idOA'].'" href="zip/'. $row['ruta_zip'] . '" download>Descargar</a>';
+            echo '<a class="btn btn-primary btn-block" id="Descargar'.$row['idOA'].'" href="'.$row['ruta_zip'].'" download>Descargar</a>';
             echo '</div>';
 
 			if ($_SESSION["userType"] == "admin") {
