@@ -4,7 +4,7 @@
     require_once "pdo.php";
     session_start();
 
-    $filepath = 'zip/' . $_POST["zip_path"];
+    $filepath = $_POST["zip_path"];
     $name = basename($filepath,".zip");
     $zip = new ZipArchive;
     $descomp = $_SESSION["userID"] . '-' . $_SESSION["userType"];

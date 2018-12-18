@@ -200,10 +200,12 @@
                     echo '<button type="button" class="close" data-dismiss="modal">&times;</button>';
                     echo '</div>';
                     echo '<div class="modal-body">';
+                    echo '<p align="justify"><small><i> Tema iniciado por <b>'.$row["autor"].'</b> el <b>'.$row["fechaapertura"].'</b></i></small> </p>';
                     echo '<h6><b>Descripción: </b></h6>';
                     echo '<p align="justify">'.$row["descripcion"].'</p>';
-                    echo '<p align="justify"> Tema iniciado por <b>'.$row["autor"].'</b> el <b>'.$row["fechaapertura"].'</b> </p>';
+                    if($row["nombreadjunto"]){
                     echo '<p><b>Archivo Adjunto:</b> <a href="foroimg/'.$row["nombreadjunto"].'" target="_blank" class="tooltip-test" title="Tooltip">'.$row["nombreadjunto"].'</a></p>';
+                    }
                     echo '<hr>';
                     echo '<div class="row bottom10">';
                     echo '<div class="col-3">';
@@ -212,7 +214,38 @@
                     echo '<div class="comments">';
                     echo '<ul class="list-group">';
                     //Comentario -Respuestas
-                    echo '<p> Hola Comente</p>';
+                    $sql="CALL cargarRespuestas(:idForo)";
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute(array(
+                      ':idForo' => $id));
+                    $ro = false;
+                    foreach ($stmt as $comment) {
+                      $ro = true;
+                    }
+                    echo '<ul>';
+                    if($ro){
+                      $sql="CALL cargarRespuestas(:idForo)";
+                      $stmt = $pdo->prepare($sql);
+                      $stmt->execute(array(
+                        ':idForo' => $id));
+                    foreach ($stmt as $comment) {
+                      echo '<li class="list-group-item" style="list-style:none;">';
+                      echo '<h6><b>'.$comment["asunto"].'</b></h6>';
+                      //echo '<h6><b>Descripción: </b></h6>';
+                      echo '<p align="justify">'.$comment["descripcion"].'</p>';
+                      echo '<p align="justify"><small><i><b>'.$comment["autor"].'</b> el <b>'.$comment["fechaapertura"].'</b></i></small> </p>';
+                      if($comment["nombreadjunto"]){
+                      echo '<p><b>Archivo Adjunto:</b> <a href="foroimg/'.$comment["nombreadjunto"].'" target="_blank" class="tooltip-test" title="Tooltip">'.$comment["nombreadjunto"].'</a></p>';
+                      }
+                      echo '</li>';
+                    }
+                  } else {
+                      echo '<li style="list-style:none;">';
+                      echo '<br>';
+                      echo '<h6 align="center"><b>Aún no hay respuestas</b></h6>';
+                      echo '</li>';
+                    }
+                    echo '</ul>';
                     echo '</ul>';
                     echo '</div>';
                     echo '</div>';

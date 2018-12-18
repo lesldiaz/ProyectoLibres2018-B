@@ -11,5 +11,5 @@
             ':autor' => $autor,
             ':userType' => $userType,
             ':fecha' => $fecha,
-            ':ruta' => $fileName));
+            ':ruta' => $filename));
     }

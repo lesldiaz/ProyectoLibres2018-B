@@ -3,6 +3,7 @@
     include_once "regTema.php";
     session_start();
 	$ejemplo='foroimg/';
+    $nombrearchivo = $_FILES["file1"]["name"];
     $fileName = $ejemplo.$_FILES["file1"]["name"]; // The file name
     $fileTmpLoc = $_FILES["file1"]["tmp_name"]; // File in the PHP tmp folder
     $fileType = $_FILES["file1"]["type"]; // The type of file it is
@@ -17,7 +18,7 @@
 
     if(move_uploaded_file($fileTmpLoc,$fileName)){
         echo "sucessful";
-        insertema($_POST["nombreOA"],$_POST["descripcion"],$_POST["autorOA"],$_SESSION['userType'],$_POST["fechaCreacionOA"],$fileName);
+        insertema($_POST["nombreOA"],$_POST["descripcion"],$_POST["autorOA"],$_SESSION['userType'],$_POST["fechaCreacionOA"],$nombrearchivo);
 
     } else {
         echo "move_uploaded_file function failed";
