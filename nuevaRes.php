@@ -50,10 +50,9 @@
                                     <label for="autorOA">Autor</label>
                                     <input type="text" class="form-control" id="autorOA" value="<?php echo $_SESSION["userName"]?>" readonly>
                                 </div>
-                                <div class="form-group">
-                                  <input type="hidden" class="form-control" id="idForo" value="<?php echo $_POST["idForoR"];?>">
-                                  <input type="hidden" class="form-control" id="fechaCreacionOA" value="<?php echo date("Y-m-d H:i:s");?>">
-                                </div>
+                                
+                                 <input type="hidden" class="form-control" id="idForo" value="<?php echo $_POST["idForoR"];?>">
+                                
                                 <div class="form-group">
                                     <label for="file1">Adjuntar un archivo</label>
                                     <input type="file" class="form-control" name="file1" id="file1">
@@ -97,7 +96,7 @@
                     formdata.append("nombreOA", _("nombreOA").value);
                     formdata.append("descripcion", _("descripcion").value);
                     formdata.append("autorOA", _("autorOA").value);
-                    formdata.append("fechaCreacionOA", _("fechaCreacionOA").value);
+                    //formdata.append("fechaCreacionOA", _("fechaCreacionOA").value);
                     formdata.append("idForoR", _("idForo").value);
                     var ajax = new XMLHttpRequest();
                     ajax.upload.addEventListener("progress", progressHandler, false);

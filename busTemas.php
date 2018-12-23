@@ -1,6 +1,7 @@
 <?php
   require_once "pdo.php";
   require_once "delete.php";
+  require_once "fechaCastellano.php";
   session_start();
 ?>
 
@@ -162,37 +163,63 @@
 
       <?php
       $result = $pdo->query("SELECT * FROM foro");
-      $iterated=false;
-      foreach ($result as $row) {
-        $iterated=true;
-      }
+		$iterated=false;
+		foreach ($result as $row) {
+			$iterated=true;
+		}
       if ($iterated){ ?>
       <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar Tema..." title="Ingrese el Tema de Discusion a Buscar">
       <table id="myTable">
         <tr class="header">
           <th style="width:20%;">Tema</th>
-          <th style="width:20%;">Empezado por</th>
-          <th style="width:20%;">Fecha de Apertura</th>
-          <th style="width:20%;">Opciones</th>
-        </tr>
+          <th style="width:20%;">Comenzado por</th>
+		  <th style="width:10%;">Réplicas</th>
+          <th style="width:20%;">Último Mensaje</th>
+        </tr> 
     <?php
           $result = $pdo->query("SELECT * FROM foro");
-          $iterated=false;
+          //$iterated=false;
           foreach ($result as $row) {
             $id = $row['idForo'];
-            $iterated=true;
+            //$iterated=true;
             $userID = false;
             $name = $row['asunto'];
             if ($_SESSION["userName"] == $row['autor']) {
-              $userID = true;
+					$userID = true;
             }
-		        echo '<tr>';
-            echo '<td>' . $row['asunto'] . '</td>';
+		    echo '<tr>';
+			echo '<td><a href="foroActual.php?foroID='.$id.'">'.$row["asunto"].'</a></td>';
             echo '<td>' . $row['autor'] . '</td>';
-            echo '<td>' . date("d-m-Y",strtotime($row['fechaapertura'])) . '</td>';
-            echo '<td> <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal' . $id . '">Visualizar</button> </td>';
+			//Ultimo Mensaje
+			 $sql="SELECT * FROM resforo WHERE idForo = :idForo";
+             $stmt = $pdo->prepare($sql);
+             $stmt->execute(array(':idForo' => $id));
+             $es = false;
+             foreach ($stmt as $comment) {
+                 $es = true;
+             }
+			 if (!$es){
+				 echo '<td> 0 </td>';
+				 echo '<td> No existen mensajes aún.</td>';
+			 }else {
+				$sql="SELECT autor,fechaapertura,COUNT(*) AS numero FROM resforo WHERE idForo = :idForo ORDER by fechaapertura desc LIMIT 1 ";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute(array(':idForo' => $id));
+				foreach ($stmt as $respu) {
+					$fecha = fechaCastellano($respu["fechaapertura"]);
+					$hora= date("H:i:s",strtotime($respu["fechaapertura"]));
+				 echo '<td>'.$respu["numero"].'</td>';
+                 echo '<td>'.$respu["autor"].' </br> <small>'.$fecha.' '.$hora.'</small></td>';
+				} 
+            
+			 }
+			/*echo '<form action="#" method="post">
+			<input type="hidden" name="idForo" value="'.$id.'" />
+			<td> <input type="submit" class="btn btn-info btn-lg" value="Visualizar"/> </td>
+			</form>';*/
+            //echo '<td> <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal' . $id . '">Visualizar</button> </td>';
             echo '</tr>';
-            echo '<div id="myModal' . $id . '" class="modal fade" role="dialog">';
+           /* echo '<div id="myModal' . $id . '" class="modal fade" role="dialog">';
               echo '<div class="modal-dialog">';
                 echo '<div class="modal-content">';
                   echo '<div class="modal-header">';
@@ -263,7 +290,8 @@
 
               echo '</div>';
             echo '</div>';
-        } ?>
+       */
+	   } ?>
       </table>
     <?php }else {
       echo '<div class="row bottom5 top5">';

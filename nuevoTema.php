@@ -51,10 +51,7 @@ require_once "enviar_correoAprendizaje.php";
                                     <label for="autorOA">Autor</label>
                                     <input type="text" class="form-control" id="autorOA" value="<?php echo $_SESSION["userName"]?>" readonly>
                                 </div>
-                                <div class="form-group">
-                                    <label for="fechaCreacionOA">Fecha de apertura: <?php echo date("Y-m-d");?> </label>
-                                    <input type="hidden" class="form-control" id="fechaCreacionOA" value="<?php echo date("Y-m-d H:i:s");?>">
-                                </div>
+                               
                                 <div class="form-group">
                                     <label for="file1">Adjuntar un archivo</label>
                                     <input type="file" class="form-control" name="file1" id="file1">
@@ -98,7 +95,7 @@ require_once "enviar_correoAprendizaje.php";
                     formdata.append("nombreOA", _("nombreOA").value);
                     formdata.append("descripcion", _("descripcion").value);
                     formdata.append("autorOA", _("autorOA").value);
-                    formdata.append("fechaCreacionOA", _("fechaCreacionOA").value);
+                    //formdata.append("fechaCreacionOA", _("fechaCreacionOA").value);
                     var ajax = new XMLHttpRequest();
                     ajax.upload.addEventListener("progress", progressHandler, false);
                     ajax.open('POST', 'upload2.php');

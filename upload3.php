@@ -12,13 +12,13 @@
 
     if (!$fileTmpLoc) { // if file not chosen
         //echo "ERROR: Please browse for a file before clicking the upload button.";
-        insertresp($_POST["idForoR"],$_POST["nombreOA"],$_POST["descripcion"],$_POST["autorOA"],$_SESSION['userType'],$_POST["fechaCreacionOA"],'');
+        insertresp($_POST["idForoR"],$_POST["nombreOA"],$_POST["descripcion"],$_POST["autorOA"],$_SESSION['userType'],'');
         exit();
     }
 
     if(move_uploaded_file($fileTmpLoc,$fileName)){
         echo "sucessful";
-        insertresp($_POST["idForoR"],$_POST["nombreOA"],$_POST["descripcion"],$_POST["autorOA"],$_SESSION['userType'],$_POST["fechaCreacionOA"],$nombrearchivo);
+        insertresp($_POST["idForoR"],$_POST["nombreOA"],$_POST["descripcion"],$_POST["autorOA"],$_SESSION['userType'],$nombrearchivo);
 
     } else {
         echo "move_uploaded_file function failed";
