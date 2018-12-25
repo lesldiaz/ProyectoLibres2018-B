@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-12-2018 a las 23:50:42
--- Versión del servidor: 10.1.36-MariaDB
--- Versión de PHP: 7.2.11
+-- Tiempo de generación: 25-12-2018 a las 02:36:12
+-- Versión del servidor: 10.1.37-MariaDB
+-- Versión de PHP: 7.3.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -26,6 +26,19 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `borrarAdjF` (IN `idF` INT)  BEGIN
+UPDATE foro SET nombreadjunto = NULL WHERE idForo = idF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `borrarAdjFR` (IN `idR` INT)  BEGIN
+UPDATE resforo SET nombreadjunto = NULL WHERE idRespuesta = idR;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `borrarForo` (IN `idForoR` INT)  BEGIN
+DELETE FROM foro WHERE idForo=idForoR;
+DELETE FROM resforo WHERE idForo=idForoR;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `borrarLoginChat` (IN `idProfesor` INT(11))  BEGIN
 DECLARE usern VARCHAR(15);
 SET usern:=' ';
@@ -40,6 +53,10 @@ SET usern:=' ';
 SELECT P.usuarioEst INTO usern FROM estudiante p
                    WHERE p.idEstudiante = idEstudiante;
 DELETE FROM login WHERE username = usern;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `borrarResp` (IN `idR` INT)  BEGIN
+DELETE FROM resforo WHERE idRespuesta=idR;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `cargarComentarios` (IN `tmpIdOA` INT(11))  BEGIN
@@ -112,12 +129,60 @@ VALUES(userid);
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarRespDis` (IN `idForo` INT, IN `asunto` VARCHAR(200), IN `descripcion` TEXT, IN `autor` VARCHAR(100), IN `userType` VARCHAR(100), IN `fechaapertura` DATETIME, IN `nombreadjunto` VARCHAR(100))  BEGIN
-insert into resforo(idForo,asunto,descripcion,autor,userType,fechaapertura,nombreadjunto) values (idForo,asunto,descripcion,autor,userType,fechaapertura,nombreadjunto);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarRespDis` (IN `idForo` INT, IN `asunto` VARCHAR(200), IN `descripcion` TEXT, IN `autor` VARCHAR(100), IN `userType` VARCHAR(100), IN `nombreadjunto` VARCHAR(100))  BEGIN
+DECLARE fecha DATETIME;
+SELECT NOW() INTO fecha;
+insert into resforo(idForo,asunto,descripcion,autor,userType,fechaapertura,nombreadjunto) values (idForo,asunto,descripcion,autor,userType,fecha,nombreadjunto);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarTemaDis` (IN `asunto` VARCHAR(200), IN `descripcion` TEXT, IN `autor` VARCHAR(100), IN `userType` VARCHAR(100), IN `fechaapertura` DATE, IN `nombreadjunto` VARCHAR(100))  BEGIN
-INSERT INTO foro (asunto,descripcion,autor,userType,fechaapertura,nombreadjunto) values (asunto,descripcion,autor,userType,fechaapertura,nombreadjunto);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarTemaDis` (IN `asunto` VARCHAR(200), IN `descripcion` TEXT, IN `autor` VARCHAR(100), IN `userType` VARCHAR(100), IN `nombreadjunto` VARCHAR(100))  BEGIN
+DECLARE fecha DATETIME;
+SELECT NOW() INTO fecha;
+INSERT INTO foro (asunto,descripcion,autor,userType,fechaapertura,nombreadjunto) values (asunto,descripcion,autor,userType,fecha,nombreadjunto);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modForo` (IN `idF` INT, IN `asun` VARCHAR(200), IN `descrip` TEXT, IN `nomad` VARCHAR(100))  BEGIN
+DECLARE fecha DATETIME;
+SELECT NOW() INTO fecha;
+UPDATE foro SET 
+asunto = asun,
+descripcion = descrip,
+fechaapertura = fecha,
+nombreadjunto = nomad
+WHERE idForo = idF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modForoF` (IN `idF` INT, IN `asun` VARCHAR(200), IN `descrip` TEXT)  BEGIN
+DECLARE fecha DATETIME;
+SELECT NOW() INTO fecha;
+UPDATE foro SET 
+asunto = asun,
+descripcion = descrip,
+fechaapertura = fecha
+WHERE idForo = idF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modResp` (IN `idR` INT, IN `asun` VARCHAR(200), IN `descrip` TEXT, IN `nomad` VARCHAR(100), IN `edau` INT)  BEGIN
+DECLARE fecha DATETIME;
+SELECT NOW() INTO fecha;
+UPDATE resforo SET 
+asunto = asun,
+descripcion = descrip,
+fechaapertura = fecha,
+nombreadjunto = nomad,
+edAutor = edau
+WHERE idRespuesta = idR;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modRespF` (IN `idR` INT, IN `asun` VARCHAR(200), IN `descrip` TEXT, IN `edau` INT)  BEGIN
+DECLARE fecha DATETIME;
+SELECT NOW() INTO fecha;
+UPDATE resforo SET 
+asunto = asun,
+descripcion = descrip,
+fechaapertura = fecha,
+edAutor = edau
+WHERE idRespuesta = idR;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `registrarEstudiante` (IN `cedulaEst` VARCHAR(150), IN `nombresEst` VARCHAR(150), IN `apellidosEst` VARCHAR(150), IN `correoEst` VARCHAR(100), IN `idCarrera` INT(11), IN `usuarioEst` VARCHAR(150), IN `pwEst` VARCHAR(150))  BEGIN
@@ -392,7 +457,7 @@ CREATE TABLE `foro` (
   `descripcion` text COLLATE utf8mb4_spanish_ci NOT NULL,
   `autor` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
   `userType` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `fechaapertura` datetime NOT NULL,
+  `fechaapertura` datetime DEFAULT CURRENT_TIMESTAMP,
   `nombreadjunto` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
@@ -401,16 +466,7 @@ CREATE TABLE `foro` (
 --
 
 INSERT INTO `foro` (`idForo`, `asunto`, `descripcion`, `autor`, `userType`, `fechaapertura`, `nombreadjunto`) VALUES
-(5, 'Tooltip', 'Tooltips and popovers can be placed within modals as needed. When modals are closed, any tooltips and popovers within are also automatically dismissed.', 'autor', 'userType', '2018-11-03 00:00:00', NULL),
-(6, 'asunto1', 'descripcion1', 'autor1', 'userType1', '2018-11-03 00:00:00', NULL),
-(7, 'asunto2', 'descripcion2', 'autor2', 'userType2', '2018-11-03 00:00:00', NULL),
-(8, 'Re: Tooltip', 'sdnfk', 'Leslie Diaz', 'est', '2018-12-17 00:00:00', NULL),
-(9, 'Re: Tooltip', 'dfd', 'Leslie Diaz', 'est', '2018-12-17 00:00:00', NULL),
-(10, 'Re: Tooltip', 'jkghj', 'Leslie Diaz', 'est', '2018-12-17 00:00:00', NULL),
-(11, 'Re: Tooltip', 'klnd', 'Leslie Diaz', 'est', '2018-12-17 00:00:00', NULL),
-(12, 'Hola', 'Mundo', 'Leslie Diaz', 'est', '2018-12-17 00:00:00', NULL),
-(13, 'Hola Mundo', 'sfdsf', 'Leslie Diaz', 'est', '2018-12-17 00:00:00', NULL),
-(14, 'Jai Jelou', 'nsdfkjdkfl', 'Leslie Diaz', 'est', '2018-12-17 00:00:00', NULL);
+(32, 'Hola', 'Solo Texto jbjj', 'Administrador', 'admin', '2018-12-24 18:33:22', 'Tulips.jpg');
 
 -- --------------------------------------------------------
 
@@ -726,15 +782,9 @@ CREATE TABLE `resforo` (
   `autor` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
   `userType` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
   `fechaapertura` datetime NOT NULL,
-  `nombreadjunto` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL
+  `nombreadjunto` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `edAutor` int(11) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
-
---
--- Volcado de datos para la tabla `resforo`
---
-
-INSERT INTO `resforo` (`idRespuesta`, `idForo`, `asunto`, `descripcion`, `autor`, `userType`, `fechaapertura`, `nombreadjunto`) VALUES
-(1, 5, 'Re: Tooltip', 'Esta es mi respuesta', 'Leslie Diaz', 'est', '2018-12-17 23:27:55', NULL);
 
 -- --------------------------------------------------------
 
@@ -946,7 +996,7 @@ ALTER TABLE `facultad`
 -- AUTO_INCREMENT de la tabla `foro`
 --
 ALTER TABLE `foro`
-  MODIFY `idForo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `idForo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT de la tabla `imagen`
@@ -994,7 +1044,7 @@ ALTER TABLE `puntuacion`
 -- AUTO_INCREMENT de la tabla `resforo`
 --
 ALTER TABLE `resforo`
-  MODIFY `idRespuesta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idRespuesta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `rutaoa`
