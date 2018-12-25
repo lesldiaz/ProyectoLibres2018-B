@@ -158,9 +158,9 @@
 		foreach ($stmt as $row) {
 				$fecha = fechaCastellano($row["fechaapertura"]);
 				$hora= date("H:i:s",strtotime($row["fechaapertura"]));
-				echo '<div class="panel-heading"> <hr> <h2>'.$row["asunto"].'</h2> 
+				echo '<div class="panel-heading"> <hr> <h2>'.$row["asunto"].'</h2>
 					de '.$row["autor"].' - '.$fecha.', '.$hora.'</div>
-					</br> 
+					</br>
 					<div class="panel-body">
 					<ul>
 					<li style="list-style:none;"><p align="justify">'.$row["descripcion"].'</p></li>';
@@ -168,7 +168,7 @@
 					echo '<li style="list-style:none;"><p><b>Archivo Adjunto:</b> <a href="foroimg/'.$row["nombreadjunto"].'" target="_blank">'.$row["nombreadjunto"].'</a></p></li>';
 					}
 					echo '<table border=0>
-  
+
 					<tr>
 					<th style="width:30%;"></th>
 					<th style="width:30%;"></th>
@@ -179,9 +179,9 @@
                     <th style="width:10%;"><input class="btn btn-primary" type="submit" value="Responder" onclick="ir()"></th>
                     </form>
 					</tr>
-					</table> 
+					</table>
 					';
-					
+
 					$sql="SELECT * FROM resforo WHERE idForo = :idForo";
 					$si=false;
 					$stmt = $pdo->prepare($sql);
@@ -200,35 +200,56 @@
 						echo '<hr>';
 							echo '<h2>'.$row1["asunto"].'</h2>
 							de '.$row1["autor"].' - '.$fecha1.', '.$hora1.' </br>';
+              if ($row1["edAutor"]==1){
+                echo '<li style="list-style:none;"><h6 align="justify">Esta respuesta ha sido modificada por el autor del foro</h6></li>';
+              }
 							echo '<br>';
 							echo '<li style="list-style:none;"><p align="justify">'.$row1["descripcion"].'</p></li>';
 							if($row1["nombreadjunto"]){
-							echo '<li style="list-style:none;"><p><b>Archivo Adjunto:</b> <a href="foroimg/'.$row["nombreadjunto"].'" target="_blank">'.$row["nombreadjunto"].'</a></p></li>';
+							echo '<li style="list-style:none;"><p><b>Archivo Adjunto:</b> <a href="foroimg/respimg/'.$row1["nombreadjunto"].'" target="_blank">'.$row1["nombreadjunto"].'</a></p></li>';
 							}
-							if ($row1["autor"]==$_SESSION["userName"] && $row1["userType"]==$_SESSION["userType"]){
+							if (($row1["autor"]==$_SESSION["userName"] && $row1["userType"]==$_SESSION["userType"]) || $_SESSION["userName"] == $row["autor"]){
 							echo '<li style="list-style:none;">
 							<table border="0">
 							<tr>
 							<th style="width:30%;"></th>
 							<th style="width:30%;"></th>
 							<th style="width:30%;"></th>
-							<th style="width:20%;"><button type="button" class="btn btn-info">Editar</button> </th>
-							<th style="width:20%;"><button type="button" class="btn btn-danger">Borrar</button> </th>
+							<th style="width:20%;"><a class="btn btn-primary" href="editarRespuesta.php?id='.$row1["idRespuesta"].'"> Editar </a> </th>
+							<th style="width:20%;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalBorrar'.$row1["idRespuesta"].'">Borrar</button></th>
 							</tr>
+              <div id="modalBorrar'.$row1["idRespuesta"].'" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+              <div class="modal-header" style="background-color: #d9534f;">
+               <h4 class="modal-title" style="color:#f9f9f9;"> Eliminar Respuesta: <b>'.$row1["asunto"].'</b></h4>
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+               </div>
+               <div class="modal-body">
+               <p>¿Está seguro de eliminar este foro?</p>
+               </div>
+               <div class="modal-footer">
+               <a class="btn btn-danger" href="borrarRespuesta.php?idForo='.$_GET["foroID"].'&idRespuesta='.$row1["idRespuesta"].'"> Eliminar </a>
+               <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+               </div>
+               </div>
+               </div>
+               </div>
 							</li></table>';
 							}
 						echo '<hr></ul>';
-						} 
+						}
 					}else {
 						echo '<h4 align="center"> Aun no existen respuestas. </h4>';
 					}
 					echo '</ul>
 					</div>
 					';
-				} 
+				}
 				?>
-			
-		
+
+
 		</div>
     </div>
 

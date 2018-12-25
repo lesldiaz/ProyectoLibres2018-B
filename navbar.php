@@ -69,7 +69,7 @@
                             <a href="nuevoTema.php">Crear un nuevo tema de discusión</a>
                         </li>
                         <li>
-                            <a href="#">Mis Entradas</a>
+                            <a href="misForos.php">Mis Entradas</a>
                         </li>
                         <li>
                             <a href="busTemas.php">Todas las entradas</a>
