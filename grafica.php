@@ -76,6 +76,8 @@ Highcharts.chart('container', {
             }
         }
     },
+	
+	//corregir , pues se tienen datos quemados
     series: [{
         name: 'Brands',
         colorByPoint: true,
