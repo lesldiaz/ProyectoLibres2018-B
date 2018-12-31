@@ -109,10 +109,14 @@ Highcharts.chart('container', {
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Time right now is: </title>
+	</head>
+	<body>
 	<script>
-	var time = new Date();
-	console.log(time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds());
-	</script>
+	let d = new Date();
+	document.body.innerHTML = "<h1>Time right now is:  " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
+	"</h1>"
+
+
 
 });
 </script>
