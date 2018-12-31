@@ -103,5 +103,16 @@ Highcharts.chart('container', {
             y: 1.64
         }]
     }]
+	
+	
+	
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Time right now is: </title>
+	<script>
+	var time = new Date();
+	console.log(time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds());
+	</script>
+
 });
 </script>
