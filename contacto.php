@@ -3,24 +3,24 @@ require_once 'compruebaDB.php';
 if ($_POST[accion] == enviar) {
     $para = "moises_rodiguez@hotmail.com";
     $titulo = 'Contacto Hotel';
-    $mensaje = "Nombre: " . $_POST[nombre] . "apellido1: " . $_POST[apellido1] .
+    $mensaje = "Nombre: " . $_POST[nombre] . "apellido1: " . $_POST[apellido1] .  //datos del contacto
             "apellido2: " . $_POST[apellido2] . $_POST[comentario];
-    $cabeceras = 'From: ' . $_POST[email] . "\r\n" .
+    $cabeceras = 'From: ' . $_POST[email] . "\r\n" .     //cabecera
             'Reply-To: ' . $_POST[email] . "\r\n" .
             'X-Mailer: PHP/' . phpversion();
 
     $bol = mail($para, $titulo, $mensaje, $cabeceras);
 
     if ($bol) {
-        $estado = "enviado";
+        $estado = "enviado";       // mensaje de estado enviado 
     } else {
-        $estado = "No enviado";
+        $estado = "No enviado";   //mensaje de estado no enviado
     }
 }
 
 require_once '../../Model/datosHotel.php';
     
-    $idImgLogo = "logoHotel";
+    $idImgLogo = "logoHotel";         //logotipo 
  
     $logo = datosHotel::getNombreImagen($idImgLogo);
   
@@ -38,7 +38,7 @@ $idImagenSocial = array("facebook", "googlePlus", "instagram", "twitter");
     $idImagen2 = array("facebook", "googlePlus", "instagram", "twitter");
     
     $urlSociales = array(
-        'facebook' => datosHotel::getUrlSocial($idImagen2[0]),
+        'facebook' => datosHotel::getUrlSocial($idImagen2[0]),    
         'googlePlus' => datosHotel::getUrlSocial($idImagen2[1]),
         'instagram' => datosHotel::getUrlSocial($idImagen2[2]),
         'twitter' => datosHotel::getUrlSocial($idImagen2[3]),  
