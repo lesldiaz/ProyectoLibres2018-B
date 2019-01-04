@@ -1,7 +1,7 @@
 <?php
     require_once "pdo.php";
     $nombreCarrera=$_POST['nombreCarrera'];
-    $lstMaterias= array();               // <array para la lista de materias-->
+    $lstMaterias= array();              
     $sql="CALL consultarMaterias(:nameCarrera)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(array(':nameCarrera' => $nombreCarrera)); 
