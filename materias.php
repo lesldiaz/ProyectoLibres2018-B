@@ -1,18 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mjg70
- * Date: 21/7/2018
- * Time: 16:19
- */
+
 
     require_once "pdo.php";
     $nombreCarrera=$_POST['nombreCarrera'];
-    $lstMaterias= array();
+    $lstMaterias= array();               // <array para la lista de materias-->
     $sql="CALL consultarMaterias(:nameCarrera)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute(array(':nameCarrera' => $nombreCarrera));
-    while ($row = $stmt->fetch()){
+    $stmt->execute(array(':nameCarrera' => $nombreCarrera)); 
+    while ($row = $stmt->fetch()){    //llenar aray de lista de maerias
         array_push($lstMaterias, $row);
     }
     echo json_encode($lstMaterias);
