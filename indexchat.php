@@ -45,7 +45,7 @@ include "db.php";
 				$nombre = $_POST['nombre'];
 				$mensaje = $_POST['mensaje'];
 				$consulta = "INSERT INTO chat (nombre, mensaje) VALUES ('$nombre', '$mensaje')";  //linea de consulta a la base de datos
-				$ejecutar = $conexion->query($consulta);  //conexion para la consulta
+				$ejecutar = $conexion->query($consulta);  
 
 				if ($ejecutar) {
 					echo "<embed loop='false' src='beep.mp3' hidden='true' autoplay='true'>";
