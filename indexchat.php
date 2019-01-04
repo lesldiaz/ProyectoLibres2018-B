@@ -22,7 +22,7 @@ include "db.php";
 			req.send();
 		}
 
-		//linea que hace que se refreseque la pagina cada segundo
+		//linea que hace que se refresque la pagina cada segundo
 		setInterval(function(){ajax();}, 1000);
 	</script>
 </head>
@@ -44,11 +44,8 @@ include "db.php";
 				
 				$nombre = $_POST['nombre'];
 				$mensaje = $_POST['mensaje'];
-
-
-				$consulta = "INSERT INTO chat (nombre, mensaje) VALUES ('$nombre', '$mensaje')";
-
-				$ejecutar = $conexion->query($consulta);
+				$consulta = "INSERT INTO chat (nombre, mensaje) VALUES ('$nombre', '$mensaje')";  //linea de consulta a la base de datos
+				$ejecutar = $conexion->query($consulta);  //conexion para la consulta
 
 				if ($ejecutar) {
 					echo "<embed loop='false' src='beep.mp3' hidden='true' autoplay='true'>";
