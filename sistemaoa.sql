@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-12-2018 a las 02:36:12
+-- Tiempo de generación: 04-01-2019 a las 06:08:33
 -- Versión del servidor: 10.1.37-MariaDB
 -- Versión de PHP: 7.3.0
 
@@ -466,7 +466,8 @@ CREATE TABLE `foro` (
 --
 
 INSERT INTO `foro` (`idForo`, `asunto`, `descripcion`, `autor`, `userType`, `fechaapertura`, `nombreadjunto`) VALUES
-(32, 'Hola', 'Solo Texto jbjj', 'Administrador', 'admin', '2018-12-24 18:33:22', 'Tulips.jpg');
+(32, 'Hola', 'Solo Texto jbjj', 'Administrador', 'admin', '2018-12-24 18:33:22', 'Tulips.jpg'),
+(33, 'Software Libre', 'Escriba un comentario sobre el software libre.', 'Leslie Diaz', 'est', '2018-12-31 17:29:36', '');
 
 -- --------------------------------------------------------
 
@@ -576,7 +577,8 @@ INSERT INTO `login_details` (`login_details_id`, `user_id`, `last_activity`, `is
 (69, 1, '2018-12-14 21:29:49', 'no'),
 (70, 9, '2018-12-15 00:40:15', 'no'),
 (71, 1, '2018-12-15 08:14:59', 'no'),
-(72, 1, '2018-12-17 22:46:28', 'no');
+(72, 1, '2018-12-17 22:46:28', 'no'),
+(73, 1, '2018-12-31 22:47:20', 'no');
 
 -- --------------------------------------------------------
 
@@ -996,7 +998,7 @@ ALTER TABLE `facultad`
 -- AUTO_INCREMENT de la tabla `foro`
 --
 ALTER TABLE `foro`
-  MODIFY `idForo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `idForo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT de la tabla `imagen`
@@ -1014,7 +1016,7 @@ ALTER TABLE `login`
 -- AUTO_INCREMENT de la tabla `login_details`
 --
 ALTER TABLE `login_details`
-  MODIFY `login_details_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `login_details_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT de la tabla `materias`
@@ -1044,7 +1046,7 @@ ALTER TABLE `puntuacion`
 -- AUTO_INCREMENT de la tabla `resforo`
 --
 ALTER TABLE `resforo`
-  MODIFY `idRespuesta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idRespuesta` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `rutaoa`
