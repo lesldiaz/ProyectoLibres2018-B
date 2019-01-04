@@ -5,7 +5,7 @@
     $stmt = $pdo->prepare($sql);
     $stmt->execute(array(
         ':idRespuesta' => $_GET["idRespuesta"]));
-    $dir = "foroimg/";
+    $dir = "foroimg/respimg/";
     $dir.= $_GET["nombre"];
      unlink($dir);
      header("Location: editarRespuesta.php?id=".$_GET["idRespuesta"]."");
