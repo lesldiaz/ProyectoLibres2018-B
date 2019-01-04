@@ -58,19 +58,24 @@
 
                     </ul>
                 </li>
+
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components2">
                     <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents2" data-parent="#exampleAccordion">
                         <i class="fa fa-handshake-o"></i>
                         <span class="nav-link-text"> Foro Abierto</span>
                     </a>
                     <ul class="sidenav-second-level collapse" id="collapseComponents2">
-
+                      <?php
+                      if ( $_SESSION["userType"] != 'admin' ) {
+                          ?>
                         <li>
                             <a href="nuevoTema.php">Crear un nuevo tema de discusión</a>
                         </li>
+
                         <li>
                             <a href="misForos.php">Mis Entradas</a>
                         </li>
+                      <?php } ?>
                         <li>
                             <a href="busTemas.php">Todas las entradas</a>
                         </li>
