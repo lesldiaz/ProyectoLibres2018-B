@@ -170,7 +170,7 @@
             <?php } else { ?>
 
 			<?php
-            if ( $_SESSION["userType"] != "admin" ) {
+        if ( $_SESSION["userType"] != "admin" ) {
                 ?>
 			<li class="nav-item">
 				<a class="nav-link"  href="Chat/index.php">
