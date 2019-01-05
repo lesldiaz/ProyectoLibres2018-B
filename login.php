@@ -35,6 +35,7 @@
 	  $bloqueoEst = 'bloqueo';
 	  $correo = 'correoEst';
     }
+	
     $stmt = $pdo->prepare($sql);
     $stmt->execute(array(':usuario' => $_POST["inputUser"]));
     if ($stmt->rowCount() > 0) {
