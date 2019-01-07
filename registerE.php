@@ -23,7 +23,7 @@ require_once "enviar_correo.php";
           $sql1 = 'INSERT INTO login (usuario,username,password) VALUES (:usuarionom, :usuarioEst,:pwEst)';
           $stmt1 = $pdo->prepare($sql1);
           $stmt1->execute(array(
-            ':usuarionom' => $user
+            ':usuarionom' => $user,
             ':usuarioEst' => $_POST["usuario"],
             ':pwEst' => $pwd_hash));
 
