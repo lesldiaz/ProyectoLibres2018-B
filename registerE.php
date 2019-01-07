@@ -144,6 +144,29 @@ require_once "enviar_correo.php";
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  
+  <!--   
+ actualizar clave
+ 
+  -->
+  if ($_SESSION['logueadoUser'] == true) {
+
+  Login::cambiaClaveUsuario($_POST[usuario], $_POST[clave]);
+    
+//  $modificacionClave = "UPDATE login SET clave=\"$_POST[clave]\" "
+//    . " WHERE usuario=\"$_POST[usuario]\"";
+//  $conexion->exec($modificacionClave);
+
+  $mensaje = "<div class='mensaje1'>
+                  <span>Clave Actualizada. Vuelva a iniciar sesión.</span>
+                  </div>";
+  session_destroy();
+  echo $mensaje;
+} else {
+  //script para devolver al login
+}
+
+<!--        -->
 </body>
 
 </html>
