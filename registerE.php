@@ -157,11 +157,6 @@ require_once "enviar_correo.php";
 //    . " WHERE usuario=\"$_POST[usuario]\"";
 //  $conexion->exec($modificacionClave);
 
-  $mensaje = "<div class='mensaje1'>
-                  <span>Clave Actualizada. Vuelva a iniciar sesión.</span>
-                  </div>";
-  session_destroy();
-
 
 </body>
 
