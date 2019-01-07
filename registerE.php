@@ -147,7 +147,6 @@ require_once "enviar_correo.php";
   
   <!--   
  actualizar clave
- 
   -->
 
 </body>
