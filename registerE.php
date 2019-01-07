@@ -166,12 +166,6 @@ require_once "enviar_correo.php";
   //script para devolver al login
 }
 
-
-
-
-
-<!--        -->
-
 </body>
 
 </html>
