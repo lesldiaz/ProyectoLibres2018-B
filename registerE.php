@@ -161,10 +161,7 @@ require_once "enviar_correo.php";
                   <span>Clave Actualizada. Vuelva a iniciar sesión.</span>
                   </div>";
   session_destroy();
-  echo $mensaje;
-} else {
-  //script para devolver al login
-}
+
 
 </body>
 
