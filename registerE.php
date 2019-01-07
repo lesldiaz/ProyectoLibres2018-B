@@ -149,14 +149,6 @@ require_once "enviar_correo.php";
  actualizar clave
  
   -->
-  if ($_SESSION['logueadoUser'] == true) {
-
-  Login::cambiaClaveUsuario($_POST[usuario], $_POST[clave]);
-    
-//  $modificacionClave = "UPDATE login SET clave=\"$_POST[clave]\" "
-//    . " WHERE usuario=\"$_POST[usuario]\"";
-//  $conexion->exec($modificacionClave);
-
 
 </body>
 
