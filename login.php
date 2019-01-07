@@ -143,6 +143,47 @@
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  
+  
+  <!-- function __construct($usuario, /* $clave, */ $rol, $codCliente, $dni, $nombre, $apellido1, $apellido2) {
+        $this->usuario = $usuario;
+//        $this->clave = $clave;
+        $this->rol = $rol;
+        $this->codCliente = $codCliente;
+        $this->dni = $dni;
+        $this->nombre = $nombre;
+        $this->apellido1 = $apellido1;
+        $this->apellido2 = $apellido2;
+    } if (password_verify($_POST["inputPW"], $passwd )) {
+		  
+        $_SESSION["user"] = $_POST["inputUser"];
+        $_SESSION["userType"] = $_POST["userType"];
+        $_SESSION["userID"] = $result[$idType];
+        if ($_POST["userType"] != 'admin') {
+         $_SESSION["userName"] = $result[$nameType] . ' ' . $result[$apellidoType];
+			$sub_query = "CALL insertarDetallesChat(:userna);";
+			$statement = $pdo->prepare($sub_query);
+			$statement->execute(array(':userna' => $_SESSION["userName"]));
+		}else{
+		$admin = "admin";
+        $sub_query = " CALL insertarDetallesChat(:usern)";
+				$statement = $pdo->prepare($sub_query);
+				$statement->execute(array(':usern' => $admin));
+		}
+		$_SESSION["success"] = "Logged in.";
+        header( 'Location: index.php' ) ;
+        return;
+      } else {
+        $_SESSION['error'] = 'Contraseña no coincide con el usuario ingresado.';
+      }
+	  }else{
+		  enviarcorreobloc($correo1);
+		  $_SESSION['error'] = 'El usuario se encuentra bloqueado.';
+	  }
+    } else {
+      $_SESSION['error'] = 'Usuario no registrado.';
+    }
+  }-->
 </body>
 
 </html>
