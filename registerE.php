@@ -117,11 +117,12 @@ require_once "enviar_correo.php";
           <div class="form-group">
             <div class="form-row">
               <div class="col-md-6">
-                <label for="pw">Contraseña</label>
+                <label for="pw">Contraseña</label>  <!--etiqueta para contraseña-->
                 <input class="form-control" id="pw" name="pw" type="password" placeholder="Contraseña" required>
               </div>
               <div class="col-md-6">
-                <label for="pwconfirm">Confirmar contraseña</label>
+                <label for="pwconfirm">Confirmar contraseña</label> <!--etiqueta de confirmacion de contraseña-->
+				
                 <input class="form-control" id="pwConf" name="pwConf" type="password" placeholder="Confirmar contraseña" required>
               </div>
             </div>
@@ -143,6 +144,11 @@ require_once "enviar_correo.php";
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  
+  <!--   
+ actualizar clave
+  -->
+
 </body>
 
 </html>

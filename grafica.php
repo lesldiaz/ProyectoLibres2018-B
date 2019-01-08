@@ -5,14 +5,11 @@
   <?php
     require "head.php";
   ?>
-
   <style>
     .bottom5 { 
         margin-bottom:70px; 
     }
   </style> 
-
-
 	
 </head>
 
@@ -21,9 +18,7 @@
 <div id="cuerpo"></div>
 <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
  
-
 </body>
-
 
 </html>
 <script src="Highcharts/code/highcharts.js"></script>
@@ -31,7 +26,6 @@
 <script src="Highcharts/code/modules/export-data.js"></script>
 <script src="vendor/jquery/jquery.js"></script>
 <script src="vendor/jquery/jquery.min.js"></script>
-
 
 <script type="text/javascript">
 var lst=[];
