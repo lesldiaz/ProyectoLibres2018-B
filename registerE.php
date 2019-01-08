@@ -20,10 +20,10 @@ require_once "enviar_correo.php";
           ':usuarioEst' => $_POST["usuario"],
           ':pwEst' => $pwd_hash));
           $user = $_POST["nombre"].' '.$_POST["apellido"];
-          $sql1 = 'INSERT INTO login (usuario,username,password) VALUES (:usuarionom, :usuarioEst,:pwEst)';
+          $sql1 = "INSERT INTO login (usuario,username,password) VALUES (:usuarionom, :usuarioEst, :pwEst)";
           $stmt1 = $pdo->prepare($sql1);
           $stmt1->execute(array(
-            ':usuarionom' => $user
+            ':usuarionom' => $user,
             ':usuarioEst' => $_POST["usuario"],
             ':pwEst' => $pwd_hash));
 
