@@ -6,7 +6,7 @@ require_once("phpmailer/src/Exception.php");
 //Load composer's autoloader
 require 'vendor/autoload.php';
 
-function enviarcorreoRespuesta($nomapa,$correo,$nomforo, $autores)
+function enviarcorreoRespuesta($nomapa,$correo,$nomforo, $autores,$descripcion,$fecha)
 {
 	$mail = new PHPMailer\PHPMailer\PHPMailer;                             // Passing `true` enables exceptions
     try {
@@ -34,8 +34,10 @@ function enviarcorreoRespuesta($nomapa,$correo,$nomforo, $autores)
 				$asunto.=$nomforo;
 
         //Content
-				$cuerpo	= 'Hola <strong>' . $nomapa.'</strong>, se ha registrado una nueva respuesta a tu foro '.$nomforo.' por parte de '.$autores.'.<br/>
-                  Revisa el apartado mis foros para más información. <br/>
+				$cuerpo	= 'Hola <strong>' . $nomapa.'</strong>, se ha registrado una nueva respuesta a tu foro <i><u>'.$nomforo.'</i></u> por parte de '.$autores.' a las '.$fecha.'.<br/>
+                  <b>Comentario añadido:</b> <br/>
+									<p>'.$descripcion.'</p><br/>
+									Revisa el apartado mis foros para más información. <br/>
 									<br/>
 									<br/>
 									<br/>
