@@ -9,14 +9,12 @@ if ( isset($_POST["textarea"])){
         ':detalleComentario' => $_POST["textarea"]));
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <?php
     require "head.php"; //la funcion requiere en cada script toma la funcionalidad de dicho script y lo replica en este documento. Sirve para codigo limpio
     ?>
-
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 <?php
