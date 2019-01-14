@@ -127,7 +127,7 @@ function fetch_is_type_status($user_id, $connect)
 }
 
 
-public function modUsuario() {
+//public function modUsuario() {
         $conexion = sistemaoa::connectDB();
         $modificacion = "UPDATE user SET nombre=\"$this->nombre\", apellido1=\"$this->apellido1\", "
                 . "apellido2=\"$this->apellido2\""
