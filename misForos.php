@@ -326,12 +326,6 @@
                 . "JOIN cliente c ON (c.codCliente = r.codCliente) " 
                 . $orderBy . " LIMIT " . $inicio . "," . $tamano_pagina;
         
-        $consulta = $conexion->query($seleccion);        
-        }
-        
-        
-        return $reservas;
-
     }
 */
 	   } ?>
