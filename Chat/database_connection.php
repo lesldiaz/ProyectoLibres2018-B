@@ -4,7 +4,7 @@
 
 //usar root para el uso de la base de datos y dejar la contraseña vacia cuando se instancie.
 
-$connect = new PDO("mysql:host=localhost;dbname=sistemaoa;charset=utf8mb4", "root", "");
+$connect = new PDO("mysql:host=localhost;dbname=sistemaoa;charset=utf8mb4", "root", "root");
 
 date_default_timezone_set('Asia/Kolkata');
 
@@ -125,6 +125,17 @@ function fetch_is_type_status($user_id, $connect)
 	}
 	return $output;
 }
+
+
+public function modUsuario() {
+        $conexion = sistemaoa::connectDB();
+        $modificacion = "UPDATE user SET nombre=\"$this->nombre\", apellido1=\"$this->apellido1\", "
+                . "apellido2=\"$this->apellido2\""
+                . " WHERE codCliente=\"$this->codCliente\"";
+        $conexion->query($modificacion);
+    }
+    
+
 
 function fetch_group_chat_history($connect)
 {
