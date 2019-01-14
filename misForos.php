@@ -316,17 +316,6 @@
             echo '</div>';
        */
 	   
-	   
-	   /*
-
-    public static function getReservas($orderBy, $inicio, $tamano_pagina) {
-        $conexion = HotelDB::connectDB();
-        $seleccion = "SELECT * FROM reserva r "
-                . "JOIN habitacion h ON (r.codHabitacion = h.codHabitacion) "
-                . "JOIN cliente c ON (c.codCliente = r.codCliente) " 
-                . $orderBy . " LIMIT " . $inicio . "," . $tamano_pagina;
-    }
-*/
 	   } ?>
       </table>
     <?php }else {
