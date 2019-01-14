@@ -322,16 +322,7 @@
 	   
 	   
 	   /*
-	   /**
-    * Método que devuelve una lista de reservas con paginación
-    * @param String $orderBy Campo y orden ASC o DESC. EJEMPLO:
-     *  ORDER BY fechaEntrada, r.codHabitacion ASC
-    * @param Int $inicio Número de fila desde el que se empiezan a mostrar resultados
-    * @param Int $tamano_pagina Entero con el tamaño de página. Número de resultados
-     *  por página
-    * @return Array Array de objetos con el listado de reservas
-    * 
-    */
+
     public static function getReservas($orderBy, $inicio, $tamano_pagina) {
         $conexion = HotelDB::connectDB();
         $seleccion = "SELECT * FROM reserva r "
@@ -353,41 +344,7 @@
         return $reservas;
 
     }
-    
-     /**
-    * Método que elimina la reserva que tenga el código de habitacion, cliente y fechas
-      *  que se pasen por parámetro.
-    * @param String $codHabitacion Código de la habitacion reservada.
-    * @param String $codCliente Código del cliente que ha reservado la habitación.
-    * @param String $fecha Fecha de la reserva.
-    */
-    public static function deleteReserva($codHabitacion,$codCliente,$fecha){
-        $conexion = HotelDB::connectDB();
-        $borrado = "DELETE FROM reserva WHERE codHabitacion=" . $codHabitacion
-                . " AND codCliente=" . $codCliente . " AND " . $fecha;
-        $conexion->query($borrado);
-    }
-    
-    /**
-    * Método que modifica los datos de la reserva creada (new Reserva()).
-    * @param String $fechaOriginal Fecha original en la que se realizó la reserva
-    */
-    public function modReserva($fechaOriginal) {
-        $conexion = HotelDB::connectDB();
-        $modificacion = "UPDATE reserva SET  fechaEntrada=\"$this->fechaEntrada\", "
-                . "fechaSalida=\"$this->fechaSalida\" "
-                . "WHERE codHabitacion=\"$this->codHabitacion\" "
-                . "AND codCliente=\"$this->codCliente\" "
-                . "AND fechaEntrada=\"$fechaOriginal\"";
-        
-        $conexion->query($modificacion);
-    }
-    
-    /**
-    * Método que guarda en bbdd una reserva creada (new Reserva()).
-    * Uso en la web de administración.
-    */
-	   */
+*/
 	   } ?>
       </table>
     <?php }else {
