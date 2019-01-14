@@ -317,8 +317,6 @@
        */
 	   
 	   
-	    
-	   
 	   /*
 
     public static function getReservas($orderBy, $inicio, $tamano_pagina) {
