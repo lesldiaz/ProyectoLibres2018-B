@@ -2,6 +2,8 @@
 
 //database_connection.php
 
+//usar root para el uso de la base de datos y dejar la contraseña vacia cuando se instancie.
+
 $connect = new PDO("mysql:host=localhost;dbname=sistemaoa;charset=utf8mb4", "root", "");
 
 date_default_timezone_set('Asia/Kolkata');

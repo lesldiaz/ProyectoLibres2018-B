@@ -166,7 +166,8 @@
 					<li style="list-style:none;"><p align="justify">'.$row["descripcion"].'</p></li>';
 					if($row["nombreadjunto"]){
 					echo '<li style="list-style:none;"><p><b>Archivo Adjunto:</b> <a href="foroimg/'.$row["nombreadjunto"].'" target="_blank">'.$row["nombreadjunto"].'</a></p></li>';
-					}
+          echo '<div><img src="foroimg/'.$row['nombreadjunto'].'" style="width: 30%; height: 30%">';
+          }
 					echo '<table border=0>
 
 					<tr>
@@ -207,7 +208,8 @@
 							echo '<li style="list-style:none;"><p align="justify">'.$row1["descripcion"].'</p></li>';
 							if($row1["nombreadjunto"]){
 							echo '<li style="list-style:none;"><p><b>Archivo Adjunto:</b> <a href="foroimg/respimg/'.$row1["nombreadjunto"].'" target="_blank">'.$row1["nombreadjunto"].'</a></p></li>';
-							}
+              echo '<div><img src="foroimg/respimg/'.$row['nombreadjunto'].'" style="width: 30%; height: 30%">';
+              }
 							if (($row1["autor"]==$_SESSION["userName"] && $row1["userType"]==$_SESSION["userType"]) || $_SESSION["userName"] == $row["autor"]){
 							echo '<li style="list-style:none;">
 							<table border="0">

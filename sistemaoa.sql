@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-01-2019 a las 06:08:33
+-- Tiempo de generación: 08-01-2019 a las 06:43:43
 -- Versión del servidor: 10.1.37-MariaDB
 -- Versión de PHP: 7.3.0
 
@@ -96,6 +96,17 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `consultarMatProf` (IN `idMat` INT)  BEGIN
 select p.correoProf from profesor p where p.idMateria=idMat;
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `datosAutor` (IN `idForo` INT)  BEGIN
+declare tipo varchar(100);
+declare nom varchar(100);
+SELECT userType INTO tipo FROM foro f where f.idForo=idForo;
+IF tipo = 'est' then
+SELECT correoEst as correo, concat_ws(' ', nombresEst, apellidosEst) AS persona, asunto FROM estudiante, foro f where f.idForo=idForo having persona = (select autor from foro f where f.idForo=idForo);
+ELSE
+SELECT correoProf as correo, concat_ws(' ', nombresProf, apellidosProf) AS persona, asunto FROM profesor, foro f where f.idForo=idForo having persona = (select autor from foro f where f.idForo=idForo);
+end if;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarCalificacion` (IN `idObjetoAprendizaje` INT, IN `valorObjeto` INT, IN `idUsuario` INT)  begin
@@ -193,6 +204,14 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `registrarProfesor` (IN `cedulaProf` VARCHAR(150), IN `nombresProf` VARCHAR(150), IN `apellidosProf` VARCHAR(150), IN `correoProf` VARCHAR(100), IN `idDepartamento` INT(11), IN `bloqueo` INT)  BEGIN
 insert into profesor(cedulaProf, nombresProf, apellidosProf, correoProf, idDepartamento, usuarioProf, pwProf, bloqueo)
 values(cedulaProf, nombresProf, apellidosProf, correoProf, idDepartamento, NULL, NULL, bloqueo);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `reqCodResp` (IN `idForo` INT, IN `asunto` VARCHAR(200), IN `descripcion` TEXT, IN `autor` VARCHAR(100), IN `userType` VARCHAR(100))  BEGIN
+SELECT idRespuesta from resforo r where r.idForo = idForo AND r.asunto=asunto AND r.descripcion=descripcion AND r.autor = autor AND r.userType=userType;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `reqFecha` (IN `idResp` INT)  BEGIN
+SELECT fechaapertura FROM resforo r where r.idRespuesta = idResp;
 END$$
 
 DELIMITER ;
@@ -297,7 +316,12 @@ CREATE TABLE `chat_message` (
 --
 
 INSERT INTO `chat_message` (`chat_message_id`, `to_user_id`, `from_user_id`, `chat_message`, `timestamp`, `status`) VALUES
-(1, 0, 1, '\n\n			hsdfij', '2018-12-17 22:46:11', 1);
+(1, 0, 1, '\n\n			hsdfij', '2018-12-17 22:46:11', 1),
+(2, 0, 2, '\n\n			Soy un usuario anonimo, me comunicaré personalmente con ud sr administrador<br>', '2019-01-04 05:31:39', 1),
+(3, 1, 2, 'Hola admin', '2019-01-04 05:31:57', 1),
+(4, 1, 2, 'Respondame rapido\n', '2019-01-04 05:32:07', 1),
+(5, 0, 3, '\n\n			Hola anonimo<br>', '2019-01-07 09:49:43', 1),
+(6, 2, 3, 'Hola anonimo', '2019-01-07 09:49:57', 0);
 
 -- --------------------------------------------------------
 
@@ -415,8 +439,8 @@ INSERT INTO `estudiante` (`idEstudiante`, `cedulaEst`, `nombresEst`, `apellidosE
 (4, '1302207228', 'carlos', 'mendoza', 'carlosmendoza@gmail.com', 10, 'carlos', '$2y$10$CrBf6xmJSlwTAcF5VK1Do.XCf3Arq5CDarb.5bfMdm4KV5dRCd0l2', NULL, 1),
 (5, '1725937302', 'Steven', 'zambrano', 'stevenzambrano1@hotmail.com', 2, 'steven', '$2y$10$xtLBOeb3.1qD9HosKA3YWeDkB.ygo/fW3yAqphJHcnh88QKkObB9y', NULL, 1),
 (7, '0502873326', 'Fernando', 'Pasquel', 'kfcp1234@gmail.com', 3, 'fernando', '$2y$10$iot5juohdtU.RFQp9GRtfe.0OWWSzAT79x6i/NTt2JuP0m53GPtuq', NULL, 1),
-(10, '1725116386', 'Traecy', 'Diaz', 'lmdiaz36@gmail.com', 32, 'traecydiaz', '$2y$10$tIsuPtNaTlfqJdu9d8OrJu40NDtyKii/R51F6bodCDjejlBy2KzhC', NULL, 1),
-(17, '1725116311', 'Leslie', 'Diaz', 'lmdiaz36@gmail.com', 33, 'lesliediaz', '$2y$10$1ZuWe.wSfKS4G7mscv3Fg..62DT5/H5CbMdlYz/SXcr/.3ILywcom', NULL, 1);
+(17, '1725116311', 'Leslie', 'Diaz', 'lmdiaz36@gmail.com', 33, 'lesliediaz', '$2y$10$1ZuWe.wSfKS4G7mscv3Fg..62DT5/H5CbMdlYz/SXcr/.3ILywcom', NULL, 1),
+(18, '1725116386', 'Traecy', 'Diaz', 'lmdiaz36@gmail.com', 11, 'traecydiaz', '$2y$10$enjSHIC4pFaw.Ya3ELMHCOxlwlAIf2Sl68czmIEuC1V9sfTX4SG0K', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -467,7 +491,8 @@ CREATE TABLE `foro` (
 
 INSERT INTO `foro` (`idForo`, `asunto`, `descripcion`, `autor`, `userType`, `fechaapertura`, `nombreadjunto`) VALUES
 (32, 'Hola', 'Solo Texto jbjj', 'Administrador', 'admin', '2018-12-24 18:33:22', 'Tulips.jpg'),
-(33, 'Software Libre', 'Escriba un comentario sobre el software libre.', 'Leslie Diaz', 'est', '2018-12-31 17:29:36', '');
+(33, 'Software Libre', 'Escriba un comentario sobre el software libre.', 'Leslie Diaz', 'est', '2018-12-31 17:29:36', ''),
+(34, 'Hola', 'Mundo', 'mario giler', 'prof', '2019-01-07 04:37:36', '');
 
 -- --------------------------------------------------------
 
@@ -507,7 +532,9 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`user_id`, `usuario`, `username`, `password`) VALUES
-(1, 'Administrador', 'admin', '$2y$10$nXfCxVyPD5M8nTsPR3Dk3.tBDBY2WZKrQqFuKXk7pGy/DjPkjNIKC');
+(1, 'Administrador', 'admin', '$2y$10$nXfCxVyPD5M8nTsPR3Dk3.tBDBY2WZKrQqFuKXk7pGy/DjPkjNIKC'),
+(2, 'Anonimo', 'anonimo', '$2y$10$rCgRmI9hw9qgLBv3BPBKue84TOGD7nne7i/Io5kV7LrEDilcGwmh6'),
+(3, 'Traecy Diaz', 'traecydiaz', '$2y$10$enjSHIC4pFaw.Ya3ELMHCOxlwlAIf2Sl68czmIEuC1V9sfTX4SG0K');
 
 -- --------------------------------------------------------
 
@@ -578,7 +605,11 @@ INSERT INTO `login_details` (`login_details_id`, `user_id`, `last_activity`, `is
 (70, 9, '2018-12-15 00:40:15', 'no'),
 (71, 1, '2018-12-15 08:14:59', 'no'),
 (72, 1, '2018-12-17 22:46:28', 'no'),
-(73, 1, '2018-12-31 22:47:20', 'no');
+(73, 1, '2018-12-31 22:47:20', 'no'),
+(74, 1, '2019-01-04 05:24:24', 'no'),
+(75, 2, '2019-01-04 05:32:09', 'no'),
+(76, 3, '2019-01-07 09:50:00', 'no'),
+(77, 2, '2019-01-07 09:50:20', 'no');
 
 -- --------------------------------------------------------
 
@@ -968,7 +999,7 @@ ALTER TABLE `carrera`
 -- AUTO_INCREMENT de la tabla `chat_message`
 --
 ALTER TABLE `chat_message`
-  MODIFY `chat_message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `chat_message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `comentario`
@@ -986,7 +1017,7 @@ ALTER TABLE `departamento`
 -- AUTO_INCREMENT de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
-  MODIFY `idEstudiante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `idEstudiante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `facultad`
@@ -998,7 +1029,7 @@ ALTER TABLE `facultad`
 -- AUTO_INCREMENT de la tabla `foro`
 --
 ALTER TABLE `foro`
-  MODIFY `idForo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `idForo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT de la tabla `imagen`
@@ -1010,13 +1041,13 @@ ALTER TABLE `imagen`
 -- AUTO_INCREMENT de la tabla `login`
 --
 ALTER TABLE `login`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `login_details`
 --
 ALTER TABLE `login_details`
-  MODIFY `login_details_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `login_details_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT de la tabla `materias`
@@ -1046,7 +1077,7 @@ ALTER TABLE `puntuacion`
 -- AUTO_INCREMENT de la tabla `resforo`
 --
 ALTER TABLE `resforo`
-  MODIFY `idRespuesta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idRespuesta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `rutaoa`
