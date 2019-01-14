@@ -325,7 +325,6 @@
                 . "JOIN habitacion h ON (r.codHabitacion = h.codHabitacion) "
                 . "JOIN cliente c ON (c.codCliente = r.codCliente) " 
                 . $orderBy . " LIMIT " . $inicio . "," . $tamano_pagina;
-        
     }
 */
 	   } ?>
