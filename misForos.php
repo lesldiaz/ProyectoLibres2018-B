@@ -328,12 +328,7 @@
         
         $consulta = $conexion->query($seleccion);
         
-        $reservas = [];
-
-        while ($registro = $consulta->fetchObject()) {
-            $reservas[] = new Reserva($registro->codHabitacion, $registro->codCliente, 
-                    $registro->fechaEntrada, $registro->fechaSalida, $registro->DNI,
-                    $registro->nombre, $registro->apellido1, $registro->apellido2);
+        
         }
         
         
