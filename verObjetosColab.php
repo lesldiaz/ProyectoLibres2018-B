@@ -2,8 +2,7 @@
   require_once "pdo.php";
   require_once "delete.php";
   session_start();
-
-  if ( isset($_POST["idOAComment"]) && isset($_POST["comment"]) ) {
+if ( isset($_POST["idOAComment"]) && isset($_POST["comment"]) ) {
       $nombre = $_FILES['imagen']['name'];
       $nombrer = strtolower($nombre);
       //$cd=$_FILES['imagen']['tmp_name'];
@@ -24,18 +23,12 @@
     $_SESSION["oa"] = "Comentario agregado correctamente.";
     unset($_POST["idOAComment"]);
     unset($_POST["comment"]);
-    header( 'Location: buscar.php' );
+    $loc="Location: verObjetosColab.php?idC=";
+    $loc.=$_GET["idC"];
+    header($loc);
     return;
   }
 
-  if ( isset($_POST["idOADelete"]) && isset($_POST["idOARuta"]) ) {
-    deleteOA($_POST["idOARuta"], $_POST["idOADelete"]);
-    $_SESSION["oa"] = "Objeto de Aprendizaje eliminado del sistema correctamente.";
-    unset($_POST["idOADelete"]);
-    unset($_POST["idOARuta"]);
-    header( 'Location: buscar.php' );
-    return;
-  }
 ?>
 
 <!DOCTYPE html>
@@ -109,10 +102,7 @@
         /* Black w/ opacity */
     }
     /* Modal Content */
-    .jumbotron{
-    min-height: 100px;
-    text-align:center;
-    }
+
     .modalmy-content {
         display: -ms-flexbox;
         display: flex;
@@ -186,86 +176,39 @@
       }
     ?>
     <div class="container">
-
-        <?php
-		if ($_SESSION['userType'] != "admin"){
-		echo '<input type="text" style="display:none" id="idUsuario" value="'.$_SESSION['userName'].'">';
-		}
-        ?>
+      <div class="jumbotron">
+          <h4 class="display-5 text-center">Aportes del Colaborador<img src="images/logoEPN.png" width="5%", height="5%"></h4>
+      </div>
 
       <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar OA..." title="Ingrese un OA">
-
-	   <div class="form-group">
-                                <label for="materias">Materias</label>
-                                <select id="cbxMaterias" class="form-control form-group">
-								<option>Fisica</option>
-								<option>Algebra Lineal</option>
-								<option>Calculo</option>
-								<option>Probabilidad</option>
-								<option>Matematica</option>
-								<option>Quimica</option>
-								<option>Ecuaciones Diferenciales</option>
-								<option>Programacion</option>
-								<option>Sismologia</option>
-								<option>Ecologia y Medio Ambiente</option>
-								<option>Metalurgia</option>
-								<option>Minerologia</option>
-
-                                </select>
-
-       </div>
 
 
       <table id="myTable">
         <tr class="header">
-          <th style="width:20%;">Nombre</th>
-          <th style="width:20%;">Autor</th>
-          <th style="width:20%;">Año</th>
+          <th style="width:20%;">Nombre OA</th>
+          <th style="width:20%;">Fecha de Publicación</th>
           <th style="width:20%;">Palabras Clave</th>
-            <th style="width:20%;">Visualizar Comentarios</th>
+            <th style="width:20%;">Visualizar</th>
         </tr>
 
 
           <?php
 
-          $result = $pdo->query("SELECT * FROM objetoaprendizaje");
-          foreach ($result as $row) {
-            $id = $row['idOA'];
-            $userID = false;
-            if ($_SESSION["userID"] == $row['idAutor'] || $_SESSION["userType"] == "admin") {
-              $userID = true;
-            }
-
+		  $sql1 = "SELECT * FROM objetoaprendizaje WHERE idAutor = :idAutor";
+		  $stmt1 = $pdo->prepare($sql1);
+		  $stmt1->execute(array(':idAutor' => $_GET["idC"]));
+          foreach ($stmt1 as $row1) {
+            $id = $row1['idOA'];
             echo '<tr>';
-            $sql = "SELECT * FROM rutaoa WHERE idOA = :idOA AND idUser = :idUser AND username = :userName";
-            $stmt = $pdo->prepare($sql);
-			if ($_SESSION['userType'] != "admin")
-
-            $stmt->execute(array(':idOA' => $id, 'idUser' => $_SESSION["userID"], 'userName' => $_SESSION["userName"]));
-            $ruta = '';
-            if ($stmt->rowCount() > 0){
-              $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-              $ruta = $resultado['rutaoa'];
-              echo '<td>';
-              echo '<a href="' . $ruta . '" target="_blank">' . $row['nombre'] . '</a>';
-              echo '</td>';
-            }
-            else{
-              echo '<td>' . $row['nombre'] . '</td>';
-            }
-			#$sql1 = "SELECT AVG(p.calificacionObjeto) as promedio FROM puntuacion WHERE idOA = :idOA GROUP BY p.idObjetosAprendizaje";
-
-            #$stmt = $pdo->prepare($sql);
-            #$stmt->execute(array(':idOA' => $id, 'idUser' => $_SESSION["userID"], 'userName' => $_SESSION["userName"]));
-            echo '<td>' . $row['autor'] . '</td>';
-            echo '<td>' . date("d-m-Y",strtotime($row['fecha'])) . '</td>';
-            echo '<td>' . $row['p_clave'] . '</td>';
+            echo '<td>' . $row1['nombre'] . '</td>';
+            echo '<td>' . date("d-m-Y",strtotime($row1['fecha'])) . '</td>';
+            echo '<td>' . $row1['p_clave'] . '</td>';
             echo '<td> <div onclick="openModal(' . "'myModal" . $id . "'" . ')" class="arrow"></div> </td>';
             echo '</tr>';
             echo '<div id="myModal' . $id . '" class="modalmy">';
             echo '<div class="modalmy-content">';
             echo '<div class="modal-header">';
-            echo '<h4 class="modal-title">' . $row['nombre'] . '</h4>';
+            echo '<h4 class="modal-title">' . $row1['nombre'] . '</h4>';
             echo '<button type="button" class="close" onclick="getElementById(' . "'myModal" . $id . "'" . ').style.display =' . "'none'" . ';">&times;</button>';
             echo '</div>';
 
@@ -278,37 +221,14 @@
             echo '<div onclick="showHide(' . "'myDiv" . $id . "'" . ')" class="arrow"></div>';
             echo '</div>';
             echo '</div>';
-            echo '<input type="text" style="display:none" id="ObjA' .$row['idOA'].'" value="' .$row['idOA'].'">';
+            echo '<input type="text" style="display:none" id="ObjA' .$row1['idOA'].'" value="' .$row1['idOA'].'">';
             echo '<div id="myDiv' . $id . '">';
-			if (!$userID){
-              echo '<div class="row top5">';
-              echo '<div class="col-3 text-right padding5">';
-              echo '<b>Calificación:</b>';
-              echo '</div>';
-              echo '<div class="col text-justify padding15">';
-              echo '<input type="radio" id="rating-5" name="rating" value="5" /><label for="rating-5">5</label>';
-              echo '<input type="radio" id="rating-4" name="rating" value="4" /><label for="rating-4">4</label>';
-              echo '<input type="radio" id="rating-3" name="rating" value="3" /><label for="rating-3">3</label>';
-              echo '<input type="radio" id="rating-2" name="rating" value="2" /><label for="rating-2">2</label>';
-              echo '<input type="radio" id="rating-1" name="rating" value="1" /><label for="rating-1">1</label>';
-              echo '</div>';
-              echo '<input type="button" class="form-group" id="btnCalificar' .$row['idOA'].'" value="Calificar">';
-              echo '</div>';
-			}
             echo '<div class="row top5">';
             echo '<div class="col-3 text-right padding5">';
             echo '<b>Descripcion:</b>';
             echo '</div>';
             echo '<div class="col text-justify padding15">';
-            echo $row['descripcion'];
-            echo '</div>';
-            echo '</div>';
-            echo '<div class="row top5">';
-            echo '<div class="col-3 text-right padding5">';
-            echo '<b>Autor:</b>';
-            echo '</div>';
-            echo '<div class="col text-justify padding15">';
-            echo $row['autor'];
+            echo $row1['descripcion'];
             echo '</div>';
             echo '</div>';
             echo '<div class="row top5">';
@@ -316,7 +236,7 @@
             echo '<b>Institucion:</b>';
             echo '</div>';
             echo '<div class="col text-justify padding15">';
-            echo $row['institucion'];
+            echo $row1['institucion'];
             echo '</div>';
             echo '</div>';
             echo '<div class="row top5">';
@@ -324,7 +244,7 @@
             echo '<b>Fecha de Creacion:</b>';
             echo '</div>';
             echo '<div class="col text-justify padding15">';
-            echo $row['fecha'];
+            echo $row1['fecha'];
             echo '</div>';
             echo '</div>';
             echo '<div class="row top5">';
@@ -332,7 +252,7 @@
             echo '<b>Palabras Clave:</b>';
             echo '</div>';
             echo '<div class="col text-justify padding15">';
-            echo $row['p_clave'];
+            echo $row1['p_clave'];
             echo '</div>';
             echo '</div>';
             echo '<div class="row top5">';
@@ -340,7 +260,7 @@
             echo '<b>Tamaño:</b>';
             echo '</div>';
             echo '<div class="col text-justify padding15">';
-            echo $row['tamano'];
+            echo $row1['tamano'];
             echo '</div>';
             echo '</div>';
             echo '<div class="row top5">';
@@ -348,7 +268,7 @@
             echo '<b>Tipo:</b>';
             echo '</div>';
             echo '<div class="col text-justify padding15">';
-            echo $row['tipo'];
+            echo $row1['tipo'];
             echo '</div>';
             echo '</div>';
             echo '<div class="row top5 bottom5">';
@@ -356,31 +276,20 @@
             echo '<b>Fecha Ingreso:</b>';
             echo '</div>';
             echo '<div class="col text-justify padding15">';
-            echo $row['fecha_ing'];
+            echo $row1['fecha_ing'];
             echo '</div>';
             echo '</div>';
-            /*
-			echo '<div class="row top5 bottom5">';
-            echo '<div class="col-3 text-right padding5">';
-            echo '<b>Subido por:</b>';
-            echo '</div>';
-            echo '<div class="col text-justify padding15">';
-            echo $row['nombresProf'] . ' ' . $row['apellidosProf'];
-            echo '</div>';
-            echo '</div>';
-			*/
               echo '<div class="row top5 bottom5">';
               echo '<div class="col-3 text-right padding5">';
               echo '<b>Visualización:</b>';
               echo '</div>';
               echo '<div class="col text-justify padding15">';
-              $ruta=$row['ruta_zip'];
+              $ruta=$row1['ruta_zip'];
               //echo '<div>'.$ruta.'</div>';
               $zip = new ZipArchive;
               //en la función open se le pasa la ruta de nuestro archivo (alojada en carpeta temporal)
               if ($zip->open($ruta) === TRUE)
               {
-                  //función para extraer el ZIP, le pasamos la ruta donde queremos que nos descomprima
                   $zip->extractTo('almacen/');
                   $zip->close();
               }
@@ -397,30 +306,25 @@
             echo '<div class="comments">';
             echo '<ul class="list-group">';
             $sql = 'CALL cargarComentarios(:idOA)';
-                /*"SELECT detalleComent, nombresProf, apellidosProf
-                    FROM comentario c
-                    JOIN profesor p
-                    ON p.idProfesor = c.idProfesor
-                    WHERE idOA = :idOA";*/
             $stmt = $pdo->prepare($sql);
             $stmt->execute(array(':idOA' => $id));
+
             foreach ($stmt as $comment) {
               echo '<li class="list-group-item">';
               echo '<strong>' . $comment['userNameAutor'] . ' '.$comment['fechaComentario'].'</strong>&emsp;&emsp;&emsp;&emsp;';
               echo $comment['detalleComent'];
-			  if( $comment['pathImagen'] == "img/"){}else {
-				echo '<div><img src="'.$comment['pathImagen'].'" style="width: 50%; height: 80%">';
-			  }
-			  if ($comment['pathVideo']== ""){ }else {
-					echo '<div>'.$comment['pathVideo'].'</div>';
-			  }
+			             if( $comment['pathImagen'] == "img/"){}else {
+				                 echo '<div><img src="'.$comment['pathImagen'].'" style="width: 50%; height: 80%">';
+			             }
+			             if ($comment['pathVideo']== ""){ }else {
+					                echo '<div>'.$comment['pathVideo'].'</div>';
+			             }
               echo '</li>';
             }
+
             echo '</ul>';
             echo '</div>';
-
-            if ($_SESSION["userType"]!= "admin") {
-              echo '<form method="post" class="top5" enctype="multipart/form-data">';
+			 echo '<form method="post" class="top5" enctype="multipart/form-data">';
               echo '<div class="form-group">';
               echo '<textarea name="comment" placeholder="Ingrese un comentario." class="form-control"></textarea>';
               echo '<input id="imagen" name="imagen" type="file" maxlength="150">';
@@ -437,51 +341,22 @@
               echo '</div>';
               echo '</div>';
               echo '</form><hr>';
-            } else {
-              echo '<hr>';
-            }
-
             echo '<div class="form-group">';
             echo '<div class="form-row">';
-            if (!$userID) {
-              echo '<div class="col-3 offset-6">';
-            } else {
-              echo '<div class="col-3">';
-            }
-            if ($ruta == '')
-            {
-              echo '<button type="button" class="btn btn-primary btn-block" onclick="unzip(' . "'" . $row['ruta_zip'] . "', '" . $id . "'" . ')">Descomprimir</button>';
-            } else {
-              echo '<button type="button" class="btn btn-primary btn-block disabled">Descomprimir</button>';
-            }
+            echo '<div class="col-3 offset-6">';
             echo '</div>';
             echo '<div class="col-3">';
-            echo '<a class="btn btn-primary btn-block" id="Descargar'.$row['idOA'].'" href="'. $row['ruta_zip'] . '" download>Descargar</a>';
-            echo '</div>';
-
-			if ($_SESSION["userType"] == "admin") {
-              /*echo '<div class="col-3">';
-              echo '<button type="button" class="btn btn-primary btn-block" onclick="javascript:location.href=' . "'editaroa.php?id=" . $id . "'" . '">Editar</button>';
-              echo '</div>';
-			  */
-              echo '<div class="col-3">';
-              echo '<form method="post">';
-              echo '<input type="hidden" name="idOADelete" value="' . $id . '">';
-              echo '<input type="hidden" name="idOARuta" value="' . $row['ruta_zip'] . '">';
-              echo '<input class="btn btn-danger btn-block" type="submit" value="Borrar">';
-              echo '</form>';
-              echo '</div>';
-            }
-
+            echo '<a class="btn btn-primary btn-block" id="Descargar'.$row1['idOA'].'" href="'. $row1['ruta_zip'] . '" download>Descargar</a>';
             echo '</div>';
             echo '</div>';
             echo '</div>';
             echo '</div>';
             echo '</div>';
-
+            echo '</div>';
           }
         ?>
-      </table>
+      </table><hr>
+      <a class="btn btn-secondary" href="busColab.php"> Regresar </a>
     </div>
 
     <?php
@@ -579,8 +454,7 @@ $('[id*="btnCalificar"]').click(function () {
     var me = $(this);
     var strId=me.attr('id');
     var numeroId=strId.substring(12);
-    //var id=$('#idUsuario').val();
-	var id = document.getElementById('idUsuario').value;
+    var id=$("#idUsuario").val();
     $.ajax({
         method: "POST",
         url: "puntuacion.php",

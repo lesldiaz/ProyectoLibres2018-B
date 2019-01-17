@@ -14,7 +14,28 @@
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <?php
     require "navbar.php";
+
   ?>
+  <input type="hidden" id="variable" name="variable" value="<?php echo $_GET["comp"]?>">
+  <div class="modal fade" id="mostrarmodal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+
+            <h3>¡Felicidades!</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+     </div>
+         <div class="modal-body">
+            <h5>Ahora eres un Colaborador</h5>
+            Por favor completa el formulario con tus datos lo más pronto posible.
+     </div>
+         <div class="modal-footer">
+        <button type="button" class="btn btn-success btn-block" onclick="guardar()">Completar Ahora</button>
+        <a href="#" data-dismiss="modal" class="btn btn-danger">Ahorita no joven</a>
+     </div>
+      </div>
+   </div>
+</div>
   <div class="content-wrapper">
     <?php //En esta parte el $_SESSION[] succes controla que un usuario se haya logueado correctamente
       if ( isset($_SESSION["success"]) ) {
@@ -34,6 +55,7 @@
         echo('</div>');
         unset($_SESSION["reg"]);
       }
+
     ?>
       <div class="jumbotron">
           <img src="images/logoEPN.png" style="float:right; width:100px;height:100px; margin:1em">
@@ -52,5 +74,16 @@
 
   </div>
 </body>
-
+<script>
+$(document).ready(function()
+  {
+    var elemento = document.getElementById("variable").value;
+    if (elemento == "SI"){
+      $("#mostrarmodal").modal("show");
+    }
+  });
+  function guardar() {
+     window.location="datosColab.php";
+  }
+</script>
 </html>

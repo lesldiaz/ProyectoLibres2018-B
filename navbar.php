@@ -61,7 +61,7 @@
 
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components2">
                     <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents2" data-parent="#exampleAccordion">
-                        <i class="fa fa-handshake-o"></i>
+                        <i class="fa fa-comments-o"></i>
                         <span class="nav-link-text"> Foro Abierto</span>
                     </a>
                     <ul class="sidenav-second-level collapse" id="collapseComponents2">
@@ -78,6 +78,27 @@
                       <?php } ?>
                         <li>
                             <a href="busTemas.php">Todas las entradas</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components3">
+                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents3" data-parent="#exampleAccordion">
+                        <i class="fa fa-coffee"></i>
+                        <span class="nav-link-text">Colaboradores</span>
+                    </a>
+                    <ul class="sidenav-second-level collapse" id="collapseComponents3">
+                      <?php
+                      if ( $_SESSION["isColab"] == 'SI' ) { ?>
+                      <li>
+                             <a href="perfilColab.php">Mi Perfil</a>
+                      </li>
+                      <li>
+                          <a href="datosColab.php">Actualizar Datos</a>
+                      </li>
+                    <?php } ?>
+                        <li>
+                            <a href="busColab.php">Buscar Colaboradores</a>
                         </li>
                     </ul>
                 </li>

@@ -490,7 +490,7 @@ CREATE TABLE `foro` (
 --
 
 INSERT INTO `foro` (`idForo`, `asunto`, `descripcion`, `autor`, `userType`, `fechaapertura`, `nombreadjunto`) VALUES
-(32, 'Hola', 'Solo Texto jbjj', 'Administrador', 'admin', '2018-12-24 18:33:22', 'Tulips.jpg'),
+(32, 'Hola', 'Solo Texto', 'Administrador', 'admin', '2018-12-24 18:33:22', 'Tulips.jpg'),
 (33, 'Software Libre', 'Escriba un comentario sobre el software libre.', 'Leslie Diaz', 'est', '2018-12-31 17:29:36', ''),
 (34, 'Hola', 'Mundo', 'mario giler', 'prof', '2019-01-07 04:37:36', '');
 
