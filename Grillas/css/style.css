@@ -8,7 +8,7 @@ body{
     display: grid;
     grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)) ;
     justify-items: center;
-    grid-gap: 5px;
+    grid-gap: 15px;
     grid-row-gap: 0px;
 }
 .grid-box img{
