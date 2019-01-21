@@ -50,6 +50,39 @@
                                 $stmt->execute(array(':idPersona' => $_SESSION["userID"],
                                                       ':userType' => $_SESSION["userType"]));
                               foreach ($stmt as $row1) {
+                                if ($row1["perfil"]){
+                                      $valor = $row1["perfil"];
+                                      echo '<div class="form-group">
+                                        <label><b>Mantener su perfil: </b></label><br/><small>El modo semi-público no muestra su información de domicilio</small><br/>
+                                        <fieldset>';
+                                        if ($valor == 0){
+                                            echo '
+                                                <label><input type="radio" name="perfil" value="0" checked>Público</label>
+                                                <label><input type="radio" name="perfil" value="1" checked>Semi-Público</label>
+                                                <label><input type="radio" name="perfil" value="2" >Privado</label>';
+                                        } else if ($valor == 1){
+                                                echo '<label><input type="radio" name="perfil" value="0">Público</label>
+                                                <label><input type="radio" name="perfil" value="1" checked>Semi-Público</label>
+                                                <label><input type="radio" name="perfil" value="2">Privado</label>
+                                                ';
+                                        }else if ($valor == 2){
+                                                echo '<label><input type="radio" name="perfil" value="0">Público</label>
+                                                <label><input type="radio" name="perfil" value="1">Semi-Público</label>
+                                                <label><input type="radio" name="perfil" value="2" checked>Privado</label>
+                                                ';
+                                              }
+                                  echo ' </fieldset>
+                              </div>';
+                            }else {
+                              echo '<div class="form-group">
+                                    <label><b>Mantener su perfil: </b></label><br/><small>El modo semi-público no muestra su información de domicilio</small><br/>
+                                    <fieldset>
+                                    <label><input type="radio" name="perfil" value="0" checked>Público</label>
+                                    <label><input type="radio" name="perfil" value="1">Semi-Público</label>
+                                    <label><input type="radio" name="perfil" value="2">Privado</label>
+                                    </fieldset>
+                                </div>';
+                            }
                                 echo '<div class="form-group">
                                           <label for="cedula"><b>Cédula</b></label>
                                           <input class="form-control" id="cedula" name="cedula" type="text" value="'.$row1["cedula"].'" readonly>
@@ -110,6 +143,7 @@
                                             </fieldset>
                                         </div>';
                                     }
+
                                     echo '<div class="form-group">
                                       <label><b>Dirección de Domicilio</b></label><br/>
                                       <div class="form-row">
@@ -210,7 +244,7 @@
                       '' || document.getElementById('numcas').value == '' ||
                       document.getElementById('csec').value == '' || document.getElementById(
                           'sector').value ==
-                      '' || document.getElementById('fechana').value == '' || document.getElementById('ciudad').value == '' || document.getElementById('numconv').value == ''|| document.getElementById('numcel').value == '') {
+                      '' || document.getElementById('fechana').value == '' || document.getElementById('ciudad').value == '' || document.getElementById('numcel').value == '') {
 
                       alert("Error uno o mas campos vacios");
 
@@ -229,12 +263,21 @@
                           break;
                         }
                       }
-
+                      var radios1 = document.getElementsByName('perfil');
+                      var perfil = null;
+                      for (var i = 0, length = radios1.length; i < length; i++){
+                          if (radios1[i].checked)
+                          {
+                            perfil = radios1[i].value;
+                            break;
+                          }
+                        }
                       formdata.append("file1", file);
                       formdata.append("fechana", _("fechana").value);
                       formdata.append("cprin", _("cprin").value);
                       formdata.append("numcas", _("numcas").value);
                       formdata.append("genero", genero);
+                      formdata.append("perfil", perfil);
                       formdata.append("csec", _("csec").value);
                       formdata.append("sector", _("sector").value);
                       formdata.append("ciudad", _("ciudad").value);
@@ -254,7 +297,7 @@
               }
               */
               function ir(){
-                window.location="index.php";
+                window.location="perfilColab.php";
               }
 
               function numeros(e){

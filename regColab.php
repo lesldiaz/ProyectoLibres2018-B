@@ -1,8 +1,8 @@
 <?php
-    function modColab($iduser,$tipo,$fecha,$gen,$cprin,$numcas,$csec,$sec,$ciu,$conv,$cel,$adj) {
+    function modColab($iduser,$tipo,$fecha,$gen,$cprin,$numcas,$csec,$sec,$ciu,$conv,$cel,$adj,$perfil) {
 		$pdo = new PDO('mysql:host=localhost;dbname=sistemaoa;charset=utf8', 'root','');
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$sql = "CALL modColab(:idPersona, :userType, :fechana, :genero, :cprin, :numcas, :csec, :sec, :ciu, :conv, :cel, :adj )";
+		$sql = "CALL modColab(:idPersona, :userType, :fechana, :genero, :cprin, :numcas, :csec, :sec, :ciu, :conv, :cel, :adj, :perfil )";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(
             ':idPersona' => $iduser,
@@ -16,12 +16,13 @@
             ':ciu' => $ciu,
             ':conv' => $conv,
             ':cel' => $cel,
-            ':adj' => $adj));
+            ':adj' => $adj,
+            ':perfil' => $perfil));
     }
-    function modColabF($iduser,$tipo,$fecha,$gen,$cprin,$numcas,$csec,$sec,$ciu,$conv,$cel) {
+    function modColabF($iduser,$tipo,$fecha,$gen,$cprin,$numcas,$csec,$sec,$ciu,$conv,$cel,$perfil) {
 		$pdo = new PDO('mysql:host=localhost;dbname=sistemaoa;charset=utf8', 'root','');
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$sql = "CALL modColabF(:idPersona, :userType, :fechana, :genero, :cprin, :numcas, :csec, :sec, :ciu, :conv, :cel)";
+		$sql = "CALL modColabF(:idPersona, :userType, :fechana, :genero, :cprin, :numcas, :csec, :sec, :ciu, :conv, :cel, :perfil)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(
             ':idPersona' => $iduser,
@@ -34,6 +35,7 @@
             ':sec' => $sec,
             ':ciu' => $ciu,
             ':conv' => $conv,
-            ':cel' => $cel));
+            ':cel' => $cel,
+            ':perfil' => $perfil));
     }
 ?>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+<link rel="stylesheet" type="text/css" href="base.css" />
+<link rel="stylesheet" type="text/css" href="exe_lightbox.css" />
+<link rel="stylesheet" type="text/css" href="content.css" />
+<link rel="stylesheet" type="text/css" href="nav.css" />
+<meta http-equiv="content-type" content="text/html;  charset=utf-8" />
+<title>Implementación | Problema de los filósofos comensales </title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<meta name="author" content="Leslie Diaz Y." />
+<link rel="license" type="text/html" href="http://creativecommons.org/licenses/by-sa/4.0/" />
+<meta name="generator" content="eXeLearning 2.2 - exelearning.net" />
+<!--[if lt IE 9]><script type="text/javascript" src="exe_html5.js"></script><![endif]-->
+<script type="text/javascript" src="exe_jquery.js"></script>
+<script type="text/javascript" src="exe_lightbox.js"></script>
+<script type="text/javascript" src="common_i18n.js"></script>
+<script type="text/javascript" src="common.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body class="exe-web-site" id="exe-node-4"><script type="text/javascript">document.body.className+=" js"</script>
+<div id="content">
+<p id="skipNav"><a href="#main" class="sr-av">Saltar la navegación</a></p>
+<header id="header" ><div id="headerContent">Problema de los filósofos comensales</div></header>
+<nav id="siteNav">
+<ul>
+   <li><a href="index.html" class="daddy main-node">Filósofos Comensales</a></li>
+   <li><a href="el_problema.html" class="no-ch">El problema</a></li>
+   <li id="active"><a href="implementacin.html" class="active daddy">Implementación</a>
+   <ul>
+      <li><a href="requerimientos.html" class="no-ch">Requerimientos</a></li>
+      <li><a href="cdigo_principal.html" class="no-ch">Código Principal</a></li>
+      <li><a href="cdigo_filosofo.html" class="no-ch">Código Filosofo</a></li>
+   </ul>
+   </li>
+   <li><a href="bibliografa.html" class="no-ch">Bibliografía</a></li>
+</ul>
+</nav>
+<div id='topPagination'>
+<nav class="pagination noprt">
+<a href="el_problema.html" class="prev"><span><span>&laquo; </span>Anterior</span></a> <span class="sep">| </span><a href="requerimientos.html" class="next"><span>Siguiente<span> &raquo;</span></span></a>
+</nav>
+</div>
+<div id="main-wrapper">
+<section id="main">
+<header id="nodeDecoration"><h1 id="nodeTitle">Implementación</h1></header>
+<article class="iDevice_wrapper FreeTextIdevice" id="id6">
+<div class="iDevice emphasis0">
+<div id="ta6_85" class="block iDevice_content">
+<p>Se tomó como base un código implementado en JAVA encontrado en la página Baeldung [1]. En este caso, el orden de comer se da en sentido del reloj y un filósofo puede comer a la vez que los demás están pensando. Se ha implementado una clase Filosofo que hereda la interface Runnable, la cual permite que las instancias de esta clase sean ejecutadas por un thread. La interfaz Runnable declara obligatoriamente el método abstracto run, la cual contiene el código a ejecutar cuando el hilo comience.</p>
+<p>Inicialmente, tal como lo dice el pseudocódigo, todos los filósofos (threads) están pensando, a continuación, todos, a excepción del ultimo filósofo, toman el palillo izquierdo, si es que este no está siendo ocupado por otro filósofo. A continuación, todos intentan tomar el palillo derecho, en el caso de que ellos no puedan hacerlo, continúan pensando y a la espera de que su palillo derecho se desocupe.</p>
+<p>Dentro de esta implementación, se utilizó la palabra reservada synchronized para controlar que un palillo solo sea tomado por un solo filosofo. La palabra reservada synchronized se usa para indicar que ciertas partes del código, están sincronizadas, es decir, que solamente un subproceso (thread) puede acceder a dicho método a la vez. [2] En este caso, que puedan acceder al palillo.</p>
+<p>Se produce un <em>deadlock</em> al momento de que todos los filósofos toman el palillo izquierdo, todos esperan a que uno de los filósofos tome el derecho y empiece a comer, lo cual es imposible ya que todos los palillos están siendo ocupados. Para solucionar esto se define que el ultimo filósofo tome el palillo derecho primero, así, si todos tomaran el palillo izquierdo, el quinto filosofo se queda pensando porque su palillo derecho no está disponible y el primer filosofo comienza a comer porque su palillo derecho está libre.</p>
+<p>Los códigos correspondientes a la clase Principal, que alberga el método <em>main</em> y la clase Filosofo se encuentran en las subpestañas con su correspondiente nombre. A continuacion se enlista una galeria de imagenes que demuestran el funcionamiento del programa.</p>
+<p><em>*Se recomienda leer la subpestaña requerimientos antes de revisar los códigos de las clases.*</em><em></em></p>
+</div>
+</div>
+</article>
+<article class="iDevice_wrapper GalleryIdevice em_iDevice" id="id8">
+<div class="iDevice emphasis1" >
+<header class="iDevice_header"><h1 class="iDeviceTitle">Funcionamiento del programa</h1></header>
+<div class="iDevice_inner">
+<div class="iDevice_content_wrapper">
+<ul class="exeImageGallery" id="exeImageGallery8">
+<li><a title="Funcionamiento con 2 filósofos" href="Pantalla%202Filosofos.png"><img alt="Funcionamiento con 2 filósofos" width="128" height="128" src="Pantalla%202FilosofosThumbnail.png" /><span class="tit">Funcionamiento con 2 filósofos</span></a></li>
+<li><a title="Funcionamiento con 3 filósofos" href="Pantalla%203Filosofos.png"><img alt="Funcionamiento con 3 filósofos" width="128" height="128" src="Pantalla%203FilosofosThumbnail.png" /><span class="tit">Funcionamiento con 3 filósofos</span></a></li>
+<li><a title="Funcionamiento con 4 filósofos" href="Pantalla%204Filosofos.png"><img alt="Funcionamiento con 4 filósofos" width="128" height="128" src="Pantalla%204FilosofosThumbnail.png" /><span class="tit">Funcionamiento con 4 filósofos</span></a></li>
+<li><a title="Funcionamiento con 5 filósofos" href="Pantalla%205Filosofos.png"><img alt="Funcionamiento con 5 filósofos" width="128" height="128" src="Pantalla%205FilosofosThumbnail.png" /><span class="tit">Funcionamiento con 5 filósofos</span></a></li>
+</ul>
+<script type="text/javascript">$exe.imageGallery.init("exeImageGallery8");</script>
+</div>
+</div>
+</div>
+</article>
+<div id="packageLicense" class="cc cc-by-sa">
+<p><span>Obra publicada con</span> <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Reconocimiento Compartir igual 4.0</a></p>
+</div>
+</section>
+</div>
+<div id='bottomPagination'>
+<nav class="pagination noprt">
+<a href="el_problema.html" class="prev"><span><span>&laquo; </span>Anterior</span></a> <span class="sep">| </span><a href="requerimientos.html" class="next"><span>Siguiente<span> &raquo;</span></span></a>
+</nav>
+</div>
+</div>
+<script type="text/javascript" src="my_js.js"></script></body></html>

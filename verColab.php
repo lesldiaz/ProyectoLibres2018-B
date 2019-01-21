@@ -28,9 +28,7 @@
     ?>
 
     <div class="content-wrapper bg-light">
-        <?php
-          if ($_SESSION["isColab"]=="SI"){
-        ?>
+
         <div class="container">
             <div class="jumbotron">
                 <h2 class="display-5 text-center">Perfil de Colaborador</h2>
@@ -42,32 +40,17 @@
                     <div class="card-body">
                         <form method="post">
                         <?php
-                             if ($_SESSION["userType"] != "admin")
-                            {
-                                $sql = "CALL datosColaborador (:idPersona,:userType)";
-                                $stmt = $pdo->prepare($sql);
-                                $stmt->execute(array(':idPersona' => $_SESSION["userID"],
-                                                      ':userType' => $_SESSION["userType"]));
-                              foreach ($stmt as $row1) {
-                                if ($row1["adjFoto"]){
+                        $sql = "CALL datosColaborador (:idPersona,:userType)";
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute(array(':idPersona' => $_GET["id"],
+                                             ':userType' => $_GET["tipo"]));
+                        foreach ($stmt as $row1) {
+                              if ($row1["adjFoto"]){
                                   echo '<div align="center"> <img  src="fotoperfil/'.$row1['adjFoto'].'" style="width: 30%; height: 30%; border=1; solid=#000000;">
                                   </div>';
-                                }else {
-                                echo '<div align="center"> <label for="foto">Sin foto de perfil </label><br/><img  src="fotoperfil/sinfoto123.jpg" style="width: 20%; height: 20%; border=1; solid=#000000;" name="foto" id="foto">
-                                </div>';
-
-                              }
-                              if ($row1["perfil"]){
-                                $conf = $row1["perfil"];
-                                if ($conf==0){
-                                  echo '<label align="center">Su perfil es público</label>';
-                                }else if ($conf==1) {
-                                  echo '<label align="center">Su perfil es semi-público, es decir, no se muestra su información de domicilio.</label>';
-                                }else if ($conf==2) {
-                                  echo '<label align="center">Su perfil es privado</label>';
-                                }
                               }else {
-                                echo '<label align="center">Su perfil es público</label>';
+                                  echo '<div align="center"> <label for="foto">Sin foto de perfil </label><br/><img  src="fotoperfil/sinfoto123.jpg" style="width: 20%; height: 20%; border=1; solid=#000000;" name="foto" id="foto">
+                                  </div>';
                               }
 
                                 echo '
@@ -95,19 +78,19 @@
                                     <th>Género:</th>
                                     ';
                                     if ($row1["genero"]!=''){
-                                    if ($row1["genero"] == 0){
-                                      echo'<td>Masculino</td>';
-                                    } else if ($row1["genero"] == 1){
-                                      echo'<td>Femenino</td>';
-                                    } else{
-                                      echo'<td>Otros</td>';
+                                      if ($row1["genero"] == 0){
+                                        echo'<td>Masculino</td>';
+                                      } else if ($row1["genero"] == 1){
+                                        echo'<td>Femenino</td>';
+                                      } else{
+                                        echo'<td>Otros</td>';
+                                      }
+                                    }else {
+                                        echo'<td>Sin Especificar</td>';
                                     }
-                                  }else {
-                                    echo'<td>Sin Especificar</td>';
-                                  }
                                     echo '</tr>
                                     </table>';
-
+                                    if ($row1["perfil"]!=1){
                                     echo '<br/>
                                     <table style="width:100%" BORDER=2>
                                         <tr>
@@ -135,7 +118,7 @@
                                         </tr>
                                       </table>
                                     ';
-
+                                  }
                                     echo '<br/>
                                     <table style="width:100%" BORDER=2>
                                     <tr>
@@ -156,45 +139,12 @@
                               }
                                 echo '<div class="form-group">
                                     <div class="form-row">
-                                        <div class="col-4 offset-4">
-                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalBorrar">Borrar Perfil</button>
-                                        </div>
-                                        <div class="col-4">
-                                            <button type="button" class="btn btn-success btn-block" onclick="guardar()">Actualizar Información</button>
+                                    <div class="col-4">
+                                            <button type="button" class="btn btn-success btn-block" onclick="reg()">Regresar</button>
                                         </div>
                                     </div>
                                 </div>';
-                            }
-                            echo '<div id="modalBorrar" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
 
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                            <div class="modal-header" style="background-color: #d9534;">
-                             <h4 class="modal-title" style="color:#868e96;">Eliminar Perfil de Colaborador</h4>
-                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                             </div>
-                             <div class="modal-body">
-                             <p>¿Realmente desea eliminar su perfil como Colaborador? <br/> Esta opcion no se puede revertir.</p>
-                             </div>
-                             <div class="modal-footer">
-                             <a class="btn btn-danger" href="borrarColaborador.php"> Eliminar </a>
-                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                             </div>
-                             </div>
-
-                       </div>
-                     </div>';
-                   }else {
-                     echo '<div class="row bottom5 top5">';
-                     echo '<div class="col-10 offset-1">';
-                     echo '<div class="card-block">';
-                     echo '<h5 class="card-title" align="center"><i class="fa fa-hand-paper-o" aria-hidden="true"></i>
-<strong>Lo sentimos, usted no es un Colaborador</strong></h5>';
-                     echo '</div>';
-                     echo '</div>';
-                     echo '</div>';
-                   }
                         ?>
                         </form>
                     </div>
@@ -207,8 +157,8 @@
     </div>
           <script>
 
-              function guardar() {
-  				       window.location="datosColab.php";
+              function reg() {
+  				       window.location="busColab.php";
               }
               function ir(){
                 window.location="index.php";

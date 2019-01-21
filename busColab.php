@@ -208,7 +208,11 @@
             echo '<td>'.$cuenta.'</td>';
             echo '<td>
             <a class="btn btn-primary" href="verObjetosColab.php?idC='.$row['idPersona'].'">Visualizar Aportes</a>
-            </td>';
+            ';
+            if($val["perfil"]!=2){
+              echo '<a class="btn btn-primary" href="verColab.php?id='.$row['idPersona'].'&tipo='.$val["userType"].'">Ver Información</a>
+            ';}
+            echo '</td>';
             echo '</tr>';
         } ?>
       </table>
