@@ -4,11 +4,12 @@ body{
     margin: 0px;
     padding: 0px;
 }
+//nuevos estilos
 .picture-grid{
     display: grid;
     grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)) ;
     justify-items: center;
-    grid-gap: 15px;
+    grid-gap: 5px;
     grid-row-gap: 0px;
 }
 .grid-box img{
