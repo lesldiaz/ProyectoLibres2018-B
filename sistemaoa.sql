@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-01-2019 a las 23:15:29
+-- Tiempo de generación: 21-01-2019 a las 01:26:20
 -- Versión del servidor: 10.1.37-MariaDB
 -- Versión de PHP: 7.3.0
 
@@ -204,7 +204,7 @@ SELECT NOW() INTO fecha;
 INSERT INTO foro (asunto,descripcion,autor,userType,fechaapertura,nombreadjunto) values (asunto,descripcion,autor,userType,fecha,nombreadjunto);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `modColab` (IN `userID` INT, IN `tipo` VARCHAR(50), IN `fecha` DATE, IN `gen` INT, IN `cprin` VARCHAR(100), IN `numcas` VARCHAR(50), IN `csec` VARCHAR(100), IN `sec` VARCHAR(100), IN `ciu` VARCHAR(100), IN `conv` VARCHAR(9), IN `cel` VARCHAR(10), IN `adj` VARCHAR(100))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modColab` (IN `userID` INT, IN `tipo` VARCHAR(50), IN `fecha` DATE, IN `gen` INT, IN `cprin` VARCHAR(100), IN `numcas` VARCHAR(50), IN `csec` VARCHAR(100), IN `sec` VARCHAR(100), IN `ciu` VARCHAR(100), IN `conv` VARCHAR(9), IN `cel` VARCHAR(10), IN `adj` VARCHAR(100), IN `per` INT)  BEGIN
 UPDATE colaborador SET
 fechaNac=fecha,
 genero=gen,
@@ -215,11 +215,12 @@ sector=sec,
 ciudad=ciu,
 tfconvencional=conv,
 tfcelular=cel,
-adjFoto=adj
+adjFoto=adj,
+perfil=per
 WHERE idPersona = userID AND userType = tipo;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `modColabF` (IN `userID` INT, IN `tipo` VARCHAR(50), IN `fecha` DATE, IN `gen` INT, IN `cprin` VARCHAR(100), IN `numcas` VARCHAR(50), IN `csec` VARCHAR(100), IN `sec` VARCHAR(100), IN `ciu` VARCHAR(100), IN `conv` VARCHAR(9), IN `cel` VARCHAR(10))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modColabF` (IN `userID` INT, IN `tipo` VARCHAR(50), IN `fecha` DATE, IN `gen` INT, IN `cprin` VARCHAR(100), IN `numcas` VARCHAR(50), IN `csec` VARCHAR(100), IN `sec` VARCHAR(100), IN `ciu` VARCHAR(100), IN `conv` VARCHAR(9), IN `cel` VARCHAR(10), IN `per` INT)  BEGIN
 UPDATE colaborador SET
 fechaNac=fecha,
 genero=gen,
@@ -229,7 +230,8 @@ calleSec=csec,
 sector=sec,
 ciudad=ciu,
 tfconvencional=conv,
-tfcelular=cel
+tfcelular=cel,
+perfil=per
 WHERE idPersona = userID AND userType = tipo;
 END$$
 
@@ -423,15 +425,16 @@ CREATE TABLE `colaborador` (
   `ciudad` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
   `tfconvencional` varchar(9) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
   `tfcelular` varchar(10) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `adjFoto` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL
+  `adjFoto` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `perfil` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `colaborador`
 --
 
-INSERT INTO `colaborador` (`idColaborador`, `idPersona`, `userType`, `fechaNac`, `genero`, `callePrinc`, `numCasa`, `calleSec`, `sector`, `ciudad`, `tfconvencional`, `tfcelular`, `adjFoto`) VALUES
-(1, 17, 'est', '1997-11-06', 1, 'Calle 1', '1', 'Calle 2', 'La Ferroviaria', 'Quito', '999999999', '0996140513', 'Hydrangeas.jpg');
+INSERT INTO `colaborador` (`idColaborador`, `idPersona`, `userType`, `fechaNac`, `genero`, `callePrinc`, `numCasa`, `calleSec`, `sector`, `ciudad`, `tfconvencional`, `tfcelular`, `adjFoto`, `perfil`) VALUES
+(1, 17, 'est', '1997-11-06', 1, 'Calle 1', '1', 'Calle 2', 'La Ferroviaria', 'Quito', '999999999', '0996140513', 'Hydrangeas.jpg', 2);
 
 -- --------------------------------------------------------
 
