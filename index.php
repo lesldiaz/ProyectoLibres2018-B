@@ -31,7 +31,7 @@
      </div>
          <div class="modal-footer">
         <button type="button" class="btn btn-success btn-block" onclick="guardar()">Completar Ahora</button>
-        <a href="#" data-dismiss="modal" class="btn btn-danger">Ahorita no joven</a>
+        <a href="#" data-dismiss="modal" class="btn btn-danger">Más Tarde</a>
      </div>
       </div>
    </div>
