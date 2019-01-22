@@ -1,10 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Created by Grupo 6 Proyecto Libres.
  * User: mjg70
  * Date: 21/7/2018
  * Time: 23:03
  */
+
+//Gestion de objetos de aprendizajee — >
 require_once "pdo.php";
 $nombreMateria=$_POST['nombreMateria'];
 $lstMaterias=array();
