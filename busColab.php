@@ -171,16 +171,20 @@
         <label for="segun">Buscar por:</label>
         <select id="segun" class="form-control form-group">
           <option value="otro" disabled selected >Seleccione una opción</option>
-          <option value="nombre" onClick="hola()" >Nombre</option>
+          <option value="nombre" onClick="hola()" >Apellido</option>
           <option value="cedula" onClick="hola()">Cédula</option>
         </select>
       <input type="hidden" id="myInputc" onkeyup="cedula()" placeholder="Buscar...">
       <input type="hidden" id="myInputn" onkeyup="nombre()" placeholder="Buscar...">
       <table id="myTable">
         <tr class="header">
-          <th style="width:20%; display:none;">Cédula</th>
-          <th style="width:20%;">Colaborador</th>
-          <th style="width:20%;">Total Aportes</th>
+          <th style="width:10%; display:none;">Cédula</th>
+          <th style="width:10%; display:none;">NomAp</th>
+          <th style="width:10%; display:none;">ApNom</th>
+          <th style="width:10%;"></th>
+          <th style="width:10%;">Apellido</th>
+          <th style="width:10%;">Nombre</th>
+          <th style="width:10%;">Total Aportes</th>
 		  <!--<th style="width:20%;">Último Aporte</th>-->
           <th style="width:20%;">Opciones</th>
         </tr>
@@ -199,7 +203,11 @@
             $stmt->execute(array(':id' => $id));
             foreach ($stmt as $val) {
               echo '<td style="display:none;">'.$val["cedula"].'</td>';
-              echo '<td><img src="fotoperfil/'.$val["adjFoto"].'" width="16%", height="16%">   '.$val["nombres"].' '.$val["apellidos"].'</td>';
+              echo '<td style="display:none;">'.$val["apellidos"].' '.$val["nombres"].'</td>';
+              echo '<td style="display:none;">'.$val["nombres"].' '.$val["apellidos"].'</td>';
+              echo '<td><img src="fotoperfil/'.$val["adjFoto"].'" width="50%", height="50%"></td>';
+              echo '<td>'.$val["apellidos"].'</td>';
+              echo '<td>'.$val["nombres"].'</td>';
             }
             $sql="CALL aportesColab(:id)";
             $stmt = $pdo->prepare($sql);
@@ -267,15 +275,25 @@
       }
 
       function nombre() {
-        var input, filter, table, tr, tn, ta, i;
+        var input, filter, table, tr, tn, ta, tc, te, tf, i;
         input = document.getElementById("myInputn");
         filter = input.value.toUpperCase();
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
           ta = tr[i].getElementsByTagName("td")[1];
-          if (ta) {
+          tc = tr[i].getElementsByTagName("td")[2];
+          te = tr[i].getElementsByTagName("td")[4];
+          tf = tr[i].getElementsByTagName("td")[5];
+
+          if (ta || tc || te || tf) {
             if (ta.innerHTML.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else if (tc.innerHTML.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            }else if (te.innerHTML.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            }else if (tf.innerHTML.toUpperCase().indexOf(filter) > -1) {
               tr[i].style.display = "";
             } else {
               tr[i].style.display = "none";
