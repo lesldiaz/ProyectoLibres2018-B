@@ -53,4 +53,4 @@ Para conectar el sistema con la base de datos que acaba de modificar el archivo 
 
 ## Uso del Sistema
 
-Para el correcto uso del sistema se proporciona un [manual de usuario](https://github.com/).
+Para el correcto uso del sistema se proporciona un [manual de usuario](https://github.com/lesldiaz/ProyectoLibres2018-B/blob/master/Manual-Usuario.pdf).
