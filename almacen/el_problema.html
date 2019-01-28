@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+<link rel="stylesheet" type="text/css" href="base.css" />
+<link rel="stylesheet" type="text/css" href="content.css" />
+<link rel="stylesheet" type="text/css" href="nav.css" />
+<meta http-equiv="content-type" content="text/html;  charset=utf-8" />
+<title>El problema | Problema de los filósofos comensales </title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<meta name="author" content="Leslie Diaz Y." />
+<link rel="license" type="text/html" href="http://creativecommons.org/licenses/by-sa/4.0/" />
+<meta name="generator" content="eXeLearning 2.2 - exelearning.net" />
+<!--[if lt IE 9]><script type="text/javascript" src="exe_html5.js"></script><![endif]-->
+<script type="text/javascript" src="exe_jquery.js"></script>
+<script type="text/javascript" src="common_i18n.js"></script>
+<script type="text/javascript" src="common.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body class="exe-web-site" id="exe-node-2"><script type="text/javascript">document.body.className+=" js"</script>
+<div id="content">
+<p id="skipNav"><a href="#main" class="sr-av">Saltar la navegación</a></p>
+<header id="header" ><div id="headerContent">Problema de los filósofos comensales</div></header>
+<nav id="siteNav">
+<ul>
+   <li><a href="index.html" class="daddy main-node">Filósofos Comensales</a></li>
+   <li id="active"><a href="el_problema.html" class="active no-ch">El problema</a></li>
+   <li><a href="implementacin.html" class="daddy">Implementación</a>
+   <ul class="other-section">
+      <li><a href="requerimientos.html" class="no-ch">Requerimientos</a></li>
+      <li><a href="cdigo_principal.html" class="no-ch">Código Principal</a></li>
+      <li><a href="cdigo_filosofo.html" class="no-ch">Código Filosofo</a></li>
+   </ul>
+   </li>
+   <li><a href="bibliografa.html" class="no-ch">Bibliografía</a></li>
+</ul>
+</nav>
+<div id='topPagination'>
+<nav class="pagination noprt">
+<a href="index.html" class="prev"><span><span>&laquo; </span>Anterior</span></a> <span class="sep">| </span><a href="implementacin.html" class="next"><span>Siguiente<span> &raquo;</span></span></a>
+</nav>
+</div>
+<div id="main-wrapper">
+<section id="main">
+<header id="nodeDecoration"><h1 id="nodeTitle">El problema</h1></header>
+<article class="iDevice_wrapper FreeTextIdevice" id="id0">
+<div class="iDevice emphasis0">
+<div id="ta0_85" class="block iDevice_content">
+<p style="text-align: justify;">El problema de los filósofos comensales es un clásico problema que se utiliza para describir problemas de sincronización y el uso de multi-threads. Este consiste en 5 filósofos sentados sobre una mesa redonda, estos están distribuidos de tal forma que cada uno tiene un plato de fideos y un palillo izquierdo y un derecho compartido comparten con los filósofos que se encuentran a su izquierda y derecha tal y como podemos observar en la figura uno, existiendo un total de 5 palillos.</p>
+<figure class="exe-figure exe-image position-center" style="width: 300px; text-align: center;"><img src="fc2.png" alt="" width="300" height="311" />
+<figcaption class="figcaption"><span class="title"><em><strong>Figura 1.</strong> Filósofos comensales</em></span></figcaption>
+</figure>
+</div>
+</div>
+</article>
+<article class="iDevice_wrapper FreeTextIdevice" id="id1">
+<div class="iDevice emphasis0">
+<div id="ta1_85" class="block iDevice_content">
+<p style="text-align: justify;">Obviamente, para que un filósofo pueda comer, sus palillos izquierdo y derecho deben estar desocupados, es decir, los filósofos contiguos deben estar pensando. Al analizar la imagen podemos deducir que solo dos filósofos pueden comer al mismo tiempo mientras los demás filósofos están pensando. Una vez que un filósofo termine de comer, pone sus palillos sobre la mesa y otro filosofo tomará ese palillo y comerá, haciendo de este, un ciclo eterno de comer y pensar.</p>
+<p style="text-align: justify;">Para que este problema se solucione los filósofos deben cumplir su objetivo de comer y pensar sin morir de hambre para lo cual se propone un esquema que contempla como variables los palillos, el filósofo y como acciones comer y pensar. Inicialmente, los filósofos se encuentran pensando por un cierto tiempo hasta que uno de ellos tiene hambre y toma los palillos y empieza a comer. Una vez que este termine, suelta los palillos y vuelve a pensar. Los palillos corresponden a una variable de bloqueo que permite saber si un filósofo puede comer o no. Se ha establecido un método síncrono que toma como referencia el palillo izquierdo y derecho para la ejecución del código que muestra que el filósofo está comiendo y una vez que los suelta, el filósofo vuelve a pensar (sale del método síncrono) y los palillos están libres para ser tomados por otro filosofo.</p>
+<p style="text-align: justify;">Un esquema propuesto para un algoritmo que soluciones este problema es el que se muestra en la figura 2. Se observa que inicialmente todos los filosofos estan pensando hasta que todos ellos toman un palillo izquierdo, si este esta disponible, si es que no, entonces vuelven a pensar, los mismo ocurre con el palillo derecho y asi hasta que logran comer y vuelvan a pensar.</p>
+<figure class="exe-figure exe-image position-center" style="width: 333px;"><img src="Diagrama_Algoritmo.png" alt="" width="333" height="780" />
+<figcaption class="figcaption"><span class="title"><em><strong>Figura 2.</strong> Diagrama de flujo para el algoritmo propuesto.</em></span></figcaption>
+</figure>
+<p style="text-align: justify;"></p>
+</div>
+</div>
+</article>
+<div id="packageLicense" class="cc cc-by-sa">
+<p><span>Obra publicada con</span> <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Reconocimiento Compartir igual 4.0</a></p>
+</div>
+</section>
+</div>
+<div id='bottomPagination'>
+<nav class="pagination noprt">
+<a href="index.html" class="prev"><span><span>&laquo; </span>Anterior</span></a> <span class="sep">| </span><a href="implementacin.html" class="next"><span>Siguiente<span> &raquo;</span></span></a>
+</nav>
+</div>
+</div>
+<script type="text/javascript" src="my_js.js"></script></body></html>

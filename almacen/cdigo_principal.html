@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+<link rel="stylesheet" type="text/css" href="base.css" />
+<link rel="stylesheet" type="text/css" href="content.css" />
+<link rel="stylesheet" type="text/css" href="nav.css" />
+<meta http-equiv="content-type" content="text/html;  charset=utf-8" />
+<title>Código Principal | Problema de los filósofos comensales </title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<meta name="author" content="Leslie Diaz Y." />
+<link rel="license" type="text/html" href="http://creativecommons.org/licenses/by-sa/4.0/" />
+<meta name="generator" content="eXeLearning 2.2 - exelearning.net" />
+<!--[if lt IE 9]><script type="text/javascript" src="exe_html5.js"></script><![endif]-->
+<script type="text/javascript" src="exe_jquery.js"></script>
+<script type="text/javascript" src="common_i18n.js"></script>
+<script type="text/javascript" src="common.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body class="exe-web-site" id="exe-node-7"><script type="text/javascript">document.body.className+=" js"</script>
+<div id="content">
+<p id="skipNav"><a href="#main" class="sr-av">Saltar la navegación</a></p>
+<header id="header" ><div id="headerContent">Problema de los filósofos comensales</div></header>
+<nav id="siteNav">
+<ul>
+   <li><a href="index.html" class="daddy main-node">Filósofos Comensales</a></li>
+   <li><a href="el_problema.html" class="no-ch">El problema</a></li>
+   <li class="current-page-parent"><a href="implementacin.html" class="current-page-parent daddy">Implementación</a>
+   <ul>
+      <li><a href="requerimientos.html" class="no-ch">Requerimientos</a></li>
+      <li id="active"><a href="cdigo_principal.html" class="active no-ch">Código Principal</a></li>
+      <li><a href="cdigo_filosofo.html" class="no-ch">Código Filosofo</a></li>
+   </ul>
+   </li>
+   <li><a href="bibliografa.html" class="no-ch">Bibliografía</a></li>
+</ul>
+</nav>
+<div id='topPagination'>
+<nav class="pagination noprt">
+<a href="requerimientos.html" class="prev"><span><span>&laquo; </span>Anterior</span></a> <span class="sep">| </span><a href="cdigo_filosofo.html" class="next"><span>Siguiente<span> &raquo;</span></span></a>
+</nav>
+</div>
+<div id="main-wrapper">
+<section id="main">
+<header id="nodeDecoration"><h1 id="nodeTitle">Código Principal</h1></header>
+<article class="iDevice_wrapper FreeTextIdevice" id="id4">
+<div class="iDevice emphasis0">
+<div id="ta4_85" class="block iDevice_content">
+<p>package filosofos;</p>
+<p> </p>
+<p>public class Principal {</p>
+<p> </p>
+<p>    public static void main(String[] args) {</p>
+<p>       </p>
+<p>        //Arreglo de 5 filósofos</p>
+<p>        final Filosofo[] filocomen = new Filosofo[2];</p>
+<p>        //Arreglo de 5 tenedores/palillos, uno por cada filósofo</p>
+<p>        Object[] tenedores = new Object[filocomen.length];</p>
+<p>        //Declaración de tenedores/palillos dentro del arreglo</p>
+<p>        for (int i = 0; i &lt; tenedores.length; i++) {</p>
+<p>            tenedores[i] = new Object();</p>
+<p>        }</p>
+<p>        /*</p>
+<p>        Asignacion de tenedores a cada uno de los filosofos</p>
+<p>        */</p>
+<p>        for (int i = 0; i &lt; filocomen.length; i++) {</p>
+<p>            Object tenedorIzq = tenedores[i];</p>
+<p>            Object tenedorDer = tenedores[(i + 1) % tenedores.length];</p>
+<p>            if (i == filocomen.length - 1) {</p>
+<p>                // el ultimo filosofo toma el palillo derecho primero</p>
+<p>                filocomen[i] = new Filosofo(tenedorDer, tenedorIzq);</p>
+<p>            } else {</p>
+<p>                //Asignación normal para los demas filósofos</p>
+<p>                filocomen[i] = new Filosofo(tenedorIzq, tenedorDer);</p>
+<p>            }</p>
+<p>             //Declaracion de hilos para los filósofos</p>
+<p>           Thread t = new Thread(filocomen[i], "Filósofo " + (i + 1));</p>
+<p>            t.start();</p>
+<p>        }</p>
+<p>    }</p>
+<p>}</p>
+</div>
+</div>
+</article>
+<div id="packageLicense" class="cc cc-by-sa">
+<p><span>Obra publicada con</span> <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Reconocimiento Compartir igual 4.0</a></p>
+</div>
+</section>
+</div>
+<div id='bottomPagination'>
+<nav class="pagination noprt">
+<a href="requerimientos.html" class="prev"><span><span>&laquo; </span>Anterior</span></a> <span class="sep">| </span><a href="cdigo_filosofo.html" class="next"><span>Siguiente<span> &raquo;</span></span></a>
+</nav>
+</div>
+</div>
+<script type="text/javascript" src="my_js.js"></script></body></html>

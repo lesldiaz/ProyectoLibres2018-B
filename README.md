@@ -20,7 +20,7 @@ Es temporal.
 El sistema se instala clonando el repositorio de GitHub en su computador. Se puede ejecutar el siguiente comando en el terminal.
 
 ```
-git clone https://github.com/franizus/SistemaGestionOA.git
+git clone https://github.com/lesldiaz/ProyectoLibres2018-B.git
 ```
 
 O descargar el zip que proporciona GitHub y descomprimirlo en su computador.
@@ -53,4 +53,4 @@ Para conectar el sistema con la base de datos que acaba de modificar el archivo 
 
 ## Uso del Sistema
 
-Para el correcto uso del sistema se proporciona un [manual de usuario](https://github.com/franizus/SistemaGestionOA/blob/master/Manual-Usuario.pdf).
+Para el correcto uso del sistema se proporciona un [manual de usuario](https://github.com/lesldiaz/ProyectoLibres2018-B/blob/master/Manual-Usuario.pdf).

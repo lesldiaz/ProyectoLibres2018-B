@@ -15,13 +15,14 @@
 
     if(move_uploaded_file($fileTmpLoc,$fileName)){
         echo "$fileName upload is complete";
-        $sql = "INSERT INTO objetoaprendizaje (nombre, autor, descripcion, fecha, p_clave, institucion, tamano, tipo, fecha_ing, ruta_zip, idAutor)
-                VALUES (:nombre, :autor, :descripcion, :fecha, :p_clave, :institucion, :fileSize, :tipo, :fecha_ing,:ruta_zip, :idAutor)";
+        $sql = "INSERT INTO objetoaprendizaje (nombre, autor, descripcion, fecha, p_clave, institucion, tamano, tipo, fecha_ing, ruta_zip, idAutor, userType)
+                VALUES (:nombre, :autor, :descripcion, :fecha, :p_clave, :institucion, :fileSize, :tipo, :fecha_ing,:ruta_zip, :idAutor, :userType)";
         $stmt = $pdo->prepare($sql);
+
         $size = $fileSize . ' bytes';
         $tipo = 'WinRAR ZIP';
 		$prueba = "zip/"+$fileName;
-		
+
         $stmt->execute(array(
             ':nombre' => $_POST["nombreOA"],
             ':autor' => $_POST["autorOA"],
@@ -33,9 +34,13 @@
             ':tipo' => $tipo,
 			':fecha_ing' => "2018/10/01",
             ':ruta_zip' => $fileName,
-            ':idAutor' => $_SESSION['userID']));
-		
-		
+            ':idAutor' => $_SESSION['userID'],
+          ':userType' => $_SESSION['userType']));
+            $sql = "CALL insColaborador (:idAutor,:userType)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array(
+                ':idAutor' => $_SESSION['userID'],
+                ':userType' => $_SESSION['userType']));
     } else {
         echo "move_uploaded_file function failed";
     }

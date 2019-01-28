@@ -456,7 +456,7 @@
             }
             echo '</div>';
             echo '<div class="col-3">';
-            echo '<a class="btn btn-primary btn-block" id="Descargar'.$row['idOA'].'" href="zip/'. $row['ruta_zip'] . '" download>Descargar</a>';
+            echo '<a class="btn btn-primary btn-block" id="Descargar'.$row['idOA'].'" href="'. $row['ruta_zip'] . '" download>Descargar</a>';
             echo '</div>';
 
 			if ($_SESSION["userType"] == "admin") {

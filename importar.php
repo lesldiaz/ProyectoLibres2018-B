@@ -16,8 +16,8 @@ require_once "enviar_correoAprendizaje.php";
             padding-bottom: 20px;
         }
 
-        .bottom5 { 
-            margin-bottom:20px; 
+        .bottom5 {
+            margin-bottom:20px;
         }
     </style>
 </head>
@@ -110,8 +110,7 @@ require_once "enviar_correoAprendizaje.php";
         <?php
             require "footer.php";
         ?>
-	<script src="vendor/jszip/jszip.js"></script>
-        <script src="vendor/jszip/jszip-utils.js"></script>
+
         <script>
             /* Script written by Miguel Nunez @ minuvasoft10.com */
             function _(el) {
@@ -120,8 +119,8 @@ require_once "enviar_correoAprendizaje.php";
 
             function uploadFile() {
 				//enviarcorreobloc();
-				
-				
+
+
                 if (document.getElementById('nombreOA').value == '' || document.getElementById('descripcion').value ==
                     '' || document.getElementById('autorOA').value == '' ||
                     document.getElementById('institucionOA').value == '' || document.getElementById(
@@ -143,7 +142,7 @@ require_once "enviar_correoAprendizaje.php";
                     formdata.append("fechaCreacionOA", _("fechaCreacionOA").value);
                     formdata.append("idMateria", _("idMateria").value);
                     var ajax = new XMLHttpRequest();
-                    ajax.upload.addEventListener("progress", progressHandler, false);
+                    //ajax.upload.addEventListener("progress", progressHandler, false);
 					ajax.open('POST', 'upload.php');
                     ajax.send(formdata);
                     alert("Objeto de Aprendizaje guardado con exito!");
@@ -151,13 +150,14 @@ require_once "enviar_correoAprendizaje.php";
                 }
             }
 
-            function progressHandler(event) {
+            /*function progressHandler(event) {
                 _("loaded_n_total").innerHTML = "Subidos " + event.loaded + " bytes de " + event.total;
             }
+            */
       </script>
 	  <script src="vendor/jszip/jszip.js"></script>
         <script src="vendor/jszip/jszip-utils.js"></script>
-        <script> 
+        <script>
             document.getElementById('file1').addEventListener('change', unzipFile);
 
             function unzipFile(event) {
@@ -172,7 +172,7 @@ require_once "enviar_correoAprendizaje.php";
                             if (filename == "contentv3.xml") {
                                 temp = false;
                                 zip.files[filename].async('string').then(function (fileData) {
-                                    console.log(fileData) // These are your file contents      
+                                    console.log(fileData) // These are your file contents
                                     parser = new DOMParser();
                                     xmlDoc = parser.parseFromString(fileData, "text/xml");
                                     dublincore = xmlDoc.children[0].children[0];
@@ -240,7 +240,7 @@ require_once "enviar_correoAprendizaje.php";
                     });
                 });
             });
-			   
+
         </script>
 
     </div>

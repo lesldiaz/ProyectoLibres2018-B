@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+<link rel="stylesheet" type="text/css" href="base.css" />
+<link rel="stylesheet" type="text/css" href="content.css" />
+<link rel="stylesheet" type="text/css" href="nav.css" />
+<meta http-equiv="content-type" content="text/html;  charset=utf-8" />
+<title>Código Filosofo | Problema de los filósofos comensales </title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<meta name="author" content="Leslie Diaz Y." />
+<link rel="license" type="text/html" href="http://creativecommons.org/licenses/by-sa/4.0/" />
+<meta name="generator" content="eXeLearning 2.2 - exelearning.net" />
+<!--[if lt IE 9]><script type="text/javascript" src="exe_html5.js"></script><![endif]-->
+<script type="text/javascript" src="exe_jquery.js"></script>
+<script type="text/javascript" src="common_i18n.js"></script>
+<script type="text/javascript" src="common.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body class="exe-web-site" id="exe-node-8"><script type="text/javascript">document.body.className+=" js"</script>
+<div id="content">
+<p id="skipNav"><a href="#main" class="sr-av">Saltar la navegación</a></p>
+<header id="header" ><div id="headerContent">Problema de los filósofos comensales</div></header>
+<nav id="siteNav">
+<ul>
+   <li><a href="index.html" class="daddy main-node">Filósofos Comensales</a></li>
+   <li><a href="el_problema.html" class="no-ch">El problema</a></li>
+   <li class="current-page-parent"><a href="implementacin.html" class="current-page-parent daddy">Implementación</a>
+   <ul>
+      <li><a href="requerimientos.html" class="no-ch">Requerimientos</a></li>
+      <li><a href="cdigo_principal.html" class="no-ch">Código Principal</a></li>
+      <li id="active"><a href="cdigo_filosofo.html" class="active no-ch">Código Filosofo</a></li>
+   </ul>
+   </li>
+   <li><a href="bibliografa.html" class="no-ch">Bibliografía</a></li>
+</ul>
+</nav>
+<div id='topPagination'>
+<nav class="pagination noprt">
+<a href="cdigo_principal.html" class="prev"><span><span>&laquo; </span>Anterior</span></a> <span class="sep">| </span><a href="bibliografa.html" class="next"><span>Siguiente<span> &raquo;</span></span></a>
+</nav>
+</div>
+<div id="main-wrapper">
+<section id="main">
+<header id="nodeDecoration"><h1 id="nodeTitle">Código Filosofo</h1></header>
+<article class="iDevice_wrapper FreeTextIdevice" id="id3">
+<div class="iDevice emphasis0">
+<div id="ta3_85" class="block iDevice_content">
+<p>package filosofos;</p>
+<p> </p>
+<p>public class Filosofo implements Runnable{</p>
+<p>    private Object tenedorIzq;</p>
+<p>    private Object tenedorDer;</p>
+<p> </p>
+<p>    public Filosofo(Object tenedorIzq, Object tenedorDer) {</p>
+<p>        this.tenedorIzq = tenedorIzq;</p>
+<p>        this.tenedorDer = tenedorDer;</p>
+<p>    }</p>
+<p>    /*</p>
+<p>    Metodo que imprime la accion con el nombre del hilo y lo duerme durante un tiempo random</p>
+<p>    */</p>
+<p>     private void doAction(String action) throws InterruptedException {</p>
+<p>          System.out.println(</p>
+<p>          Thread.currentThread().getName() + " " + action);</p>
+<p>          Thread.sleep(((int) (Math.random() * 100)));</p>
+<p>    }</p>
+<p>    </p>
+<p>    @Override</p>
+<p>    public void run() {</p>
+<p>        try {</p>
+<p>            while (true) {</p>
+<p>                doAction(": Esta pensando");</p>
+<p>                synchronized (tenedorIzq){ //si el palillo izq esta desocupado</p>
+<p>                    doAction(": Toma el tenedor izquierdo");</p>
+<p>                synchronized (tenedorDer){ //si el palillo der esta desocupado</p>
+<p>                        doAction(": Toma el tenedor derecho || Esta comiendo");</p>
+<p>                        doAction(": Baja el tenedor derecho");</p>
+<p>                    }</p>
+<p>                    // Regresa a pensar</p>
+<p>                    doAction(": Baja el tenedor izquierdo || Regresa a pensar");</p>
+<p>                }</p>
+<p>            }</p>
+<p>        } catch (InterruptedException e) {</p>
+<p>            Thread.currentThread().interrupt();</p>
+<p>            System.err.print("Ocurrió un error con el filosofo " + Thread.currentThread().getName());</p>
+<p>            return;</p>
+<p>        }</p>
+<p>   </p>
+<p>    }  </p>
+<p>}</p>
+</div>
+</div>
+</article>
+<div id="packageLicense" class="cc cc-by-sa">
+<p><span>Obra publicada con</span> <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Reconocimiento Compartir igual 4.0</a></p>
+</div>
+</section>
+</div>
+<div id='bottomPagination'>
+<nav class="pagination noprt">
+<a href="cdigo_principal.html" class="prev"><span><span>&laquo; </span>Anterior</span></a> <span class="sep">| </span><a href="bibliografa.html" class="next"><span>Siguiente<span> &raquo;</span></span></a>
+</nav>
+</div>
+</div>
+<script type="text/javascript" src="my_js.js"></script></body></html>

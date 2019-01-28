@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-01-2019 a las 06:43:43
+-- Tiempo de generación: 21-01-2019 a las 01:26:20
 -- Versión del servidor: 10.1.37-MariaDB
 -- Versión de PHP: 7.3.0
 
@@ -26,12 +26,28 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `aportesColab` (IN `idCol` INT)  BEGIN
+IF (SELECT 1 = 1 FROM colaborador WHERE idColaborador=idCol) THEN
+BEGIN
+DECLARE tipo VARCHAR(50);
+DECLARE userID INT;
+SELECT userType INTO tipo FROM colaborador where idColaborador = idCol;
+SELECT idPersona INTO userID FROM colaborador where idColaborador = idCol;
+    SELECT * FROM objetoaprendizaje WHERE idAutor=userID and userType = tipo;
+END;
+END IF;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `borrarAdjF` (IN `idF` INT)  BEGIN
 UPDATE foro SET nombreadjunto = NULL WHERE idForo = idF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `borrarAdjFR` (IN `idR` INT)  BEGIN
 UPDATE resforo SET nombreadjunto = NULL WHERE idRespuesta = idR;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `borrarColaborador` (IN `idC` INT)  BEGIN
+DELETE FROM colaborador WHERE idColaborador=idC;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `borrarForo` (IN `idForoR` INT)  BEGIN
@@ -55,8 +71,24 @@ SELECT P.usuarioEst INTO usern FROM estudiante p
 DELETE FROM login WHERE username = usern;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `borrarPerfilF` (IN `idColab` INT)  BEGIN
+UPDATE colaborador SET adjFoto = NULL WHERE idColaborador = idColab;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `borrarResp` (IN `idR` INT)  BEGIN
 DELETE FROM resforo WHERE idRespuesta=idR;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `buscarColaborador` (IN `idCol` INT)  BEGIN
+DECLARE tipo VARCHAR(50);
+DECLARE userID INT;
+SELECT userType INTO tipo FROM colaborador where idColaborador = idCol;
+SELECT idPersona INTO userID FROM colaborador where idColaborador = idCol;
+IF tipo = 'est' then
+SELECT cedulaEst as cedula,nombresEst as nombres, apellidosEst as apellidos, correoEst as correo,c.* FROM estudiante e join colaborador c on c.idPersona=e.idEstudiante where idEstudiante = userID;
+ELSE
+SELECT cedulaProf as cedula,nombresProf as nombres, apellidosProf as apellidos, correoProf as correo,c.* FROM profesor p join colaborador c on p.idProfesor=c.idPersona where idProfesor = userID;
+end if;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `cargarComentarios` (IN `tmpIdOA` INT(11))  BEGIN
@@ -109,6 +141,26 @@ SELECT correoProf as correo, concat_ws(' ', nombresProf, apellidosProf) AS perso
 end if;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `datosColaborador` (IN `userID` INT, IN `tipo` VARCHAR(50))  NO SQL
+BEGIN
+IF tipo = 'est' then
+SELECT cedulaEst as cedula,nombresEst as nombres, apellidosEst as apellidos, correoEst as correo, c.* FROM estudiante e join colaborador c on e.idEstudiante=c.idPersona where idEstudiante = userID;
+ELSE
+SELECT cedulaProf as cedula,nombresProf as nombres, apellidosProf as apellidos, correoProf as correo, c.* FROM profesor p join colaborador c on p.idProfesor=c.idPersona where idProfesor = userID;
+end if;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insColaborador` (IN `userID` INT, IN `tipo` VARCHAR(100))  BEGIN
+IF (SELECT 1 = 1 FROM colaborador WHERE idPersona=userID AND userType=tipo) THEN
+BEGIN
+END;
+ELSE
+BEGIN
+INSERT INTO colaborador (idPersona,userType) VALUES (userID, tipo);  
+END;
+END IF;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarCalificacion` (IN `idObjetoAprendizaje` INT, IN `valorObjeto` INT, IN `idUsuario` INT)  begin
 if NOT EXISTS (select p.idObjetosAprendizaje from puntuacion p where p.idObjetosAprendizaje = idObjetoAprendizaje && p.username = idUsuario)
 then 
@@ -150,6 +202,37 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarTemaDis` (IN `asunto` VARCH
 DECLARE fecha DATETIME;
 SELECT NOW() INTO fecha;
 INSERT INTO foro (asunto,descripcion,autor,userType,fechaapertura,nombreadjunto) values (asunto,descripcion,autor,userType,fecha,nombreadjunto);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modColab` (IN `userID` INT, IN `tipo` VARCHAR(50), IN `fecha` DATE, IN `gen` INT, IN `cprin` VARCHAR(100), IN `numcas` VARCHAR(50), IN `csec` VARCHAR(100), IN `sec` VARCHAR(100), IN `ciu` VARCHAR(100), IN `conv` VARCHAR(9), IN `cel` VARCHAR(10), IN `adj` VARCHAR(100), IN `per` INT)  BEGIN
+UPDATE colaborador SET
+fechaNac=fecha,
+genero=gen,
+callePrinc=cprin,
+numCasa=numcas,
+calleSec=csec,
+sector=sec,
+ciudad=ciu,
+tfconvencional=conv,
+tfcelular=cel,
+adjFoto=adj,
+perfil=per
+WHERE idPersona = userID AND userType = tipo;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modColabF` (IN `userID` INT, IN `tipo` VARCHAR(50), IN `fecha` DATE, IN `gen` INT, IN `cprin` VARCHAR(100), IN `numcas` VARCHAR(50), IN `csec` VARCHAR(100), IN `sec` VARCHAR(100), IN `ciu` VARCHAR(100), IN `conv` VARCHAR(9), IN `cel` VARCHAR(10), IN `per` INT)  BEGIN
+UPDATE colaborador SET
+fechaNac=fecha,
+genero=gen,
+callePrinc=cprin,
+numCasa=numcas,
+calleSec=csec,
+sector=sec,
+ciudad=ciu,
+tfconvencional=conv,
+tfcelular=cel,
+perfil=per
+WHERE idPersona = userID AND userType = tipo;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `modForo` (IN `idF` INT, IN `asun` VARCHAR(200), IN `descrip` TEXT, IN `nomad` VARCHAR(100))  BEGIN
@@ -326,6 +409,36 @@ INSERT INTO `chat_message` (`chat_message_id`, `to_user_id`, `from_user_id`, `ch
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `colaborador`
+--
+
+CREATE TABLE `colaborador` (
+  `idColaborador` int(11) NOT NULL,
+  `idPersona` int(11) NOT NULL,
+  `userType` varchar(50) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `fechaNac` date DEFAULT NULL,
+  `genero` int(11) DEFAULT NULL,
+  `callePrinc` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `numCasa` varchar(50) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `calleSec` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `sector` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `ciudad` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `tfconvencional` varchar(9) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `tfcelular` varchar(10) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `adjFoto` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `perfil` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `colaborador`
+--
+
+INSERT INTO `colaborador` (`idColaborador`, `idPersona`, `userType`, `fechaNac`, `genero`, `callePrinc`, `numCasa`, `calleSec`, `sector`, `ciudad`, `tfconvencional`, `tfcelular`, `adjFoto`, `perfil`) VALUES
+(1, 17, 'est', '1997-11-06', 1, 'Calle 1', '1', 'Calle 2', 'La Ferroviaria', 'Quito', '999999999', '0996140513', 'Hydrangeas.jpg', 2);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `comentario`
 --
 
@@ -369,7 +482,8 @@ INSERT INTO `comentario` (`idComentario`, `detalleComent`, `idOA`, `idAutor`, `u
 (37, 'sknfds', 3, 2, 'mario giler', 'img/', '19/11/2018', ''),
 (38, 'mejore sus preguntas', 2, 2, 'mario giler', 'img/', '19/11/2018', ''),
 (41, 'nuevo comentario prueba', 3, 2, 'mario giler', 'img/', '27/11/2018', ''),
-(42, 'Que es esto', NULL, NULL, NULL, NULL, '', NULL);
+(42, 'Que es esto', NULL, NULL, NULL, NULL, '', NULL),
+(43, 'Hola que tal', 11, 17, 'Leslie Diaz', 'img/', '17/01/2019', '');
 
 -- --------------------------------------------------------
 
@@ -440,7 +554,8 @@ INSERT INTO `estudiante` (`idEstudiante`, `cedulaEst`, `nombresEst`, `apellidosE
 (5, '1725937302', 'Steven', 'zambrano', 'stevenzambrano1@hotmail.com', 2, 'steven', '$2y$10$xtLBOeb3.1qD9HosKA3YWeDkB.ygo/fW3yAqphJHcnh88QKkObB9y', NULL, 1),
 (7, '0502873326', 'Fernando', 'Pasquel', 'kfcp1234@gmail.com', 3, 'fernando', '$2y$10$iot5juohdtU.RFQp9GRtfe.0OWWSzAT79x6i/NTt2JuP0m53GPtuq', NULL, 1),
 (17, '1725116311', 'Leslie', 'Diaz', 'lmdiaz36@gmail.com', 33, 'lesliediaz', '$2y$10$1ZuWe.wSfKS4G7mscv3Fg..62DT5/H5CbMdlYz/SXcr/.3ILywcom', NULL, 1),
-(18, '1725116386', 'Traecy', 'Diaz', 'lmdiaz36@gmail.com', 11, 'traecydiaz', '$2y$10$enjSHIC4pFaw.Ya3ELMHCOxlwlAIf2Sl68czmIEuC1V9sfTX4SG0K', NULL, 1);
+(18, '1725116386', 'Traecy', 'Diaz', 'lmdiaz36@gmail.com', 11, 'traecydiaz', '$2y$10$enjSHIC4pFaw.Ya3ELMHCOxlwlAIf2Sl68czmIEuC1V9sfTX4SG0K', NULL, 1),
+(19, '1723902472', 'Mishelle', 'Quinchiguango', 'tefi_0095@outlook.com', 32, 'mishelle', '$2y$10$uZCpGe2jc1xsWaKLTuqukeoE4c.jqDVIQXxsKaG/AaDQWv8ZEZ4Eq', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -492,7 +607,8 @@ CREATE TABLE `foro` (
 INSERT INTO `foro` (`idForo`, `asunto`, `descripcion`, `autor`, `userType`, `fechaapertura`, `nombreadjunto`) VALUES
 (32, 'Hola', 'Solo Texto jbjj', 'Administrador', 'admin', '2018-12-24 18:33:22', 'Tulips.jpg'),
 (33, 'Software Libre', 'Escriba un comentario sobre el software libre.', 'Leslie Diaz', 'est', '2018-12-31 17:29:36', ''),
-(34, 'Hola', 'Mundo', 'mario giler', 'prof', '2019-01-07 04:37:36', '');
+(34, 'Hola', 'Mundo', 'mario giler', 'prof', '2019-01-07 04:37:36', ''),
+(35, 'Computacion Distribuida', 'Computacion ', 'Mishelle Quinchiguango', 'est', '2019-01-14 17:42:34', '');
 
 -- --------------------------------------------------------
 
@@ -534,7 +650,8 @@ CREATE TABLE `login` (
 INSERT INTO `login` (`user_id`, `usuario`, `username`, `password`) VALUES
 (1, 'Administrador', 'admin', '$2y$10$nXfCxVyPD5M8nTsPR3Dk3.tBDBY2WZKrQqFuKXk7pGy/DjPkjNIKC'),
 (2, 'Anonimo', 'anonimo', '$2y$10$rCgRmI9hw9qgLBv3BPBKue84TOGD7nne7i/Io5kV7LrEDilcGwmh6'),
-(3, 'Traecy Diaz', 'traecydiaz', '$2y$10$enjSHIC4pFaw.Ya3ELMHCOxlwlAIf2Sl68czmIEuC1V9sfTX4SG0K');
+(3, 'Traecy Diaz', 'traecydiaz', '$2y$10$enjSHIC4pFaw.Ya3ELMHCOxlwlAIf2Sl68czmIEuC1V9sfTX4SG0K'),
+(4, 'Mishelle Quinchiguango', 'mishelle', '$2y$10$uZCpGe2jc1xsWaKLTuqukeoE4c.jqDVIQXxsKaG/AaDQWv8ZEZ4Eq');
 
 -- --------------------------------------------------------
 
@@ -726,23 +843,25 @@ CREATE TABLE `objetoaprendizaje` (
   `ruta_zip` varchar(200) NOT NULL,
   `idAutor` int(11) DEFAULT NULL,
   `idMateria` int(11) DEFAULT NULL,
-  `descargas` int(11) DEFAULT '0'
+  `descargas` int(11) DEFAULT '0',
+  `userType` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `objetoaprendizaje`
 --
 
-INSERT INTO `objetoaprendizaje` (`idOA`, `nombre`, `autor`, `descripcion`, `fecha`, `p_clave`, `institucion`, `tamano`, `tipo`, `fecha_ing`, `ruta_zip`, `idAutor`, `idMateria`, `descargas`) VALUES
-(2, 'Fundamentos de Software Libre', 'Charles giler', 'Objeto de aprendizaje de metodos agiles', '2018-06-15', 'OAcharles', 'Escuela Politecnica Nacional', '1195349 bytes', 'WinRAR ZIP', '2018-06-15 00:00:00', 'zip/SCROM.zip', 3, 1, 4),
-(3, 'Interfaz de Usuario', 'Fernando Carrasco', 'Documento para saber sobre la interfaz de usuario', '2018-06-15', 'OAusuario', 'Escuela Politecnica Nacional', '111760 bytes', 'WinRAR ZIP', '2018-06-15 00:00:00', 'zip/DisenioDeInterfazDeUsuario.zip', 4, 2, 3),
-(4, 'DISEÑO A NIVEL DE COMPONENTES', 'Tamayo Edison', 'Son líneas de diseño bien definidas que adecuan la estructura de diseño, el interfaz y diseño.', '2018-01-02', 'Diseño a nivel de Componentes', 'Escuela Politecnica Nacional', '561523 bytes', 'WinRAR ZIP', '2018-01-02 00:00:00', 'zip/DisenioDeComponentes.zip', 2, 2, 2),
-(5, 'Refactorizar', 'Mario Giler', 'Concepto de refactorizar', '2018-07-11', 'refactorizar', 'Escuela Politecnica Nacional', '372035 bytes', 'WinRAR ZIP', '2018-07-11 00:00:00', 'zip/Refactorizar.zip', 2, 2, 1),
-(6, 'DISEÑO A NIVEL DE COMPONENTES', 'Tamayo Edison', 'Son líneas de diseño bien definidas que adecuan la estructura de diseño, el interfaz y diseño.', '2018-01-02', 'Diseño a nivel de Componentes', 'EPN', '561523 bytes', 'WinRAR ZIP', '2018-01-02 00:00:00', 'zip/DisenioDeComponentes.zip', 4, 41, 1),
-(7, 'Diseño arquitectónico del repositorio de Objetos de Aprendizaje', 'Luis Orquera', 'Es el diseño previo a la creación previa del  repositorio  el cual permitirá crear objetos de aprendizajes.', '2018-02-01', 'Diseño Arquitectonico', 'EPN', '425394 bytes', 'WinRAR ZIP', '2018-02-01 00:00:00', 'zip/DisenioArquitectonicoDeOA.zip', 5, 29, 1),
-(8, 'Algebra Lineal', 'Luis Orquera', 'ejercicios', '2018-07-13', 'Algebra', 'EPN', '179039 bytes', 'WinRAR ZIP', '2018-07-13 00:00:00', 'zip/SoftwareLibre.zip', 5, 30, 2),
-(9, 'Web', 'Charles', 'consultas Web', '2018-07-11', 'WEB', 'EPN', '1174849 bytes', 'WinRAR ZIP', '2018-07-11 00:00:00', 'zip/WEB.zip', 3, 39, NULL),
-(10, 'Scrum', 'Charles Giler', 'Metodologia de desarrollo de sotware', '2018-07-11', 'Metodologias, Scrum', 'EPN', '1195349 bytes', 'WinRAR ZIP', '2018-07-11 00:00:00', 'zip/SCROM.zip', 3, 72, NULL);
+INSERT INTO `objetoaprendizaje` (`idOA`, `nombre`, `autor`, `descripcion`, `fecha`, `p_clave`, `institucion`, `tamano`, `tipo`, `fecha_ing`, `ruta_zip`, `idAutor`, `idMateria`, `descargas`, `userType`) VALUES
+(2, 'Fundamentos de Software Libre', 'Charles giler', 'Objeto de aprendizaje de metodos agiles', '2018-06-15', 'OAcharles', 'Escuela Politecnica Nacional', '1195349 bytes', 'WinRAR ZIP', '2018-06-15 00:00:00', 'zip/SCROM.zip', 3, 1, 4, 'prof'),
+(3, 'Interfaz de Usuario', 'Fernando Carrasco', 'Documento para saber sobre la interfaz de usuario', '2018-06-15', 'OAusuario', 'Escuela Politecnica Nacional', '111760 bytes', 'WinRAR ZIP', '2018-06-15 00:00:00', 'zip/DisenioDeInterfazDeUsuario.zip', 4, 2, 3, 'prof'),
+(4, 'DISEÑO A NIVEL DE COMPONENTES', 'Tamayo Edison', 'Son líneas de diseño bien definidas que adecuan la estructura de diseño, el interfaz y diseño.', '2018-01-02', 'Diseño a nivel de Componentes', 'Escuela Politecnica Nacional', '561523 bytes', 'WinRAR ZIP', '2018-01-02 00:00:00', 'zip/DisenioDeComponentes.zip', 2, 2, 2, 'prof'),
+(5, 'Refactorizar', 'Mario Giler', 'Concepto de refactorizar', '2018-07-11', 'refactorizar', 'Escuela Politecnica Nacional', '372035 bytes', 'WinRAR ZIP', '2018-07-11 00:00:00', 'zip/Refactorizar.zip', 2, 2, 1, 'prof'),
+(6, 'DISEÑO A NIVEL DE COMPONENTES', 'Tamayo Edison', 'Son líneas de diseño bien definidas que adecuan la estructura de diseño, el interfaz y diseño.', '2018-01-02', 'Diseño a nivel de Componentes', 'EPN', '561523 bytes', 'WinRAR ZIP', '2018-01-02 00:00:00', 'zip/DisenioDeComponentes.zip', 4, 41, 1, 'prof'),
+(7, 'Diseño arquitectónico del repositorio de Objetos de Aprendizaje', 'Luis Orquera', 'Es el diseño previo a la creación previa del  repositorio  el cual permitirá crear objetos de aprendizajes.', '2018-02-01', 'Diseño Arquitectonico', 'EPN', '425394 bytes', 'WinRAR ZIP', '2018-02-01 00:00:00', 'zip/DisenioArquitectonicoDeOA.zip', 5, 29, 1, 'prof'),
+(8, 'Algebra Lineal', 'Luis Orquera', 'ejercicios', '2018-07-13', 'Algebra', 'EPN', '179039 bytes', 'WinRAR ZIP', '2018-07-13 00:00:00', 'zip/SoftwareLibre.zip', 5, 30, 2, 'prof'),
+(9, 'Web', 'Charles', 'consultas Web', '2018-07-11', 'WEB', 'EPN', '1174849 bytes', 'WinRAR ZIP', '2018-07-11 00:00:00', 'zip/WEB.zip', 3, 39, NULL, 'prof'),
+(10, 'Scrum', 'Charles Giler', 'Metodologia de desarrollo de sotware', '2018-07-11', 'Metodologias, Scrum', 'EPN', '1195349 bytes', 'WinRAR ZIP', '2018-07-11 00:00:00', 'zip/SCROM.zip', 3, 72, NULL, 'prof'),
+(11, 'Problema de los filósofos comensales', 'Leslie Diaz Y.', 'Este objeto de aprendizaje pretende ser una guía para la solución del problema de los filósofos comensales. Aquí se puede encontrar una breve descripción del problema, un esquema de solución, la imple', '2019-01-16', 'Filósofos', 'EPN', '1542261 bytes', 'WinRAR ZIP', '2018-10-01 00:00:00', 'zip/DiazLeslie_OAFilosofosComensales.zip', 17, NULL, 2, 'est');
 
 -- --------------------------------------------------------
 
@@ -819,6 +938,14 @@ CREATE TABLE `resforo` (
   `edAutor` int(11) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `resforo`
+--
+
+INSERT INTO `resforo` (`idRespuesta`, `idForo`, `asunto`, `descripcion`, `autor`, `userType`, `fechaapertura`, `nombreadjunto`, `edAutor`) VALUES
+(11, 33, 'Re: Software Libre', 'El software libre es todo programa informático cuyo código fuente puede ser estudiado, modificado, y utilizado libremente con cualquier fin y redistribuido', 'mario giler', 'prof', '2019-01-08 19:30:17', '', 0),
+(13, 35, 'Re: Computacion Distribuida', 'La computación distribuida o informática en malla (grid) es un modelo para resolver problemas de computación masiva utilizando un gran número de ordenadores organizados en clústeres incrustados en una infraestructura de telecomunicaciones distribuida.', 'Leslie Diaz', 'est', '2019-01-14 19:11:12', '', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -877,6 +1004,12 @@ ALTER TABLE `carrera`
 --
 ALTER TABLE `chat_message`
   ADD PRIMARY KEY (`chat_message_id`);
+
+--
+-- Indices de la tabla `colaborador`
+--
+ALTER TABLE `colaborador`
+  ADD PRIMARY KEY (`idColaborador`);
 
 --
 -- Indices de la tabla `comentario`
@@ -1002,10 +1135,16 @@ ALTER TABLE `chat_message`
   MODIFY `chat_message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT de la tabla `colaborador`
+--
+ALTER TABLE `colaborador`
+  MODIFY `idColaborador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de la tabla `comentario`
 --
 ALTER TABLE `comentario`
-  MODIFY `idComentario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `idComentario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT de la tabla `departamento`
@@ -1017,7 +1156,7 @@ ALTER TABLE `departamento`
 -- AUTO_INCREMENT de la tabla `estudiante`
 --
 ALTER TABLE `estudiante`
-  MODIFY `idEstudiante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `idEstudiante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `facultad`
@@ -1041,7 +1180,7 @@ ALTER TABLE `imagen`
 -- AUTO_INCREMENT de la tabla `login`
 --
 ALTER TABLE `login`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `login_details`
@@ -1059,7 +1198,7 @@ ALTER TABLE `materias`
 -- AUTO_INCREMENT de la tabla `objetoaprendizaje`
 --
 ALTER TABLE `objetoaprendizaje`
-  MODIFY `idOA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idOA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `profesor`
@@ -1077,7 +1216,7 @@ ALTER TABLE `puntuacion`
 -- AUTO_INCREMENT de la tabla `resforo`
 --
 ALTER TABLE `resforo`
-  MODIFY `idRespuesta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idRespuesta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `rutaoa`

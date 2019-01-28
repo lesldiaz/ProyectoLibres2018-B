@@ -17,7 +17,7 @@
       $pwType = 'pwAdmin';
       $idType = 'idAdministrador';
 	  $bloqueoEst = 'bloqueo';
-	  
+
     } elseif ($_POST["userType"] == 'prof') {
       $sql = 'SELECT * FROM profesor WHERE usuarioProf = :usuario';
       $pwType = 'pwProf';
@@ -35,7 +35,7 @@
 	  $bloqueoEst = 'bloqueo';
 	  $correo = 'correoEst';
     }
-	
+
     $stmt = $pdo->prepare($sql);
     $stmt->execute(array(':usuario' => $_POST["inputUser"]));
     if ($stmt->rowCount() > 0) {
@@ -43,21 +43,55 @@
       $passwd = $result[$pwType];
 	  $blo = $result[$bloqueoEst];
 	  $correo1 = $result[$correo];
-	  
+
 	  if ($blo == 1){
       if (password_verify($_POST["inputPW"], $passwd )) {
         $_SESSION["user"] = $_POST["inputUser"];
         $_SESSION["userType"] = $_POST["userType"];
         $_SESSION["userID"] = $result[$idType];
-		
+        $incompleto = "NO";
         if ($_POST["userType"] != 'admin') {
-          $_SESSION["userName"] = $result[$nameType] . ' ' . $result[$apellidoType];
+        $sql="SELECT * FROM colaborador where idPersona = :id AND userType = :tipo";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(':id' => $result[$idType],':tipo' => $_POST["userType"]));
+        $cuenta = $stmt->rowCount();
+        if ($cuenta == 1){
+          $_SESSION["isColab"] = "SI";
+          $sql1="SELECT idColaborador, fechaNac, callePrinc, tfcelular, numCasa, adjFoto FROM `colaborador` WHERE idPersona= :id AND userType = :tipo ";
+          $stmt1 = $pdo->prepare($sql1);
+          $stmt1->execute(array(':id' => $result[$idType],':tipo' => $_POST["userType"]));
+            foreach ($stmt1 as $row1) {
+            $_SESSION["idColaborador"]= $row1["idColaborador"];
+            if ($row1["fechaNac"] == '' || $row1["callePrinc"] == '' || $row1["numCasa"] == '' || $row1["tfcelular"] == '' || $row1["adjFoto"] == ''){
+                $incompleto = "SI";
+
+            }else {
+                $incompleto = "NO";
+            }
+          }
         }else {
-			$_SESSION["userName"] = "Administrador";
-		}
+          $_SESSION["isColab"] = "NO";
+          $_SESSION["idColaborador"]= 0;
+
+        }
+        $_SESSION["userName"] = $result[$nameType] . ' ' . $result[$apellidoType];
+        }else {
+          $_SESSION["isColab"] = "NO";
+          $_SESSION["idColaborador"]= 0;
+			    $_SESSION["userName"] = "Administrador";
+		    }
         $_SESSION["success"] = "Logged in.";
-        header( 'Location: index.php' ) ;
+        $loc = "Location: index.php?comp=";
+        $loc.=$incompleto;
+        header($loc);
         return;
+      /*  if ($completo){
+          header( 'Location: datosColab.php' ) ;
+          return;
+        }else {
+          header( 'Location: index.php' );
+          return;
+        }*/
       } else {
         $_SESSION['error'] = 'Contraseña no coincide con el usuario ingresado.';
       }
@@ -143,8 +177,8 @@
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-  
-  
+
+
   <!-- function __construct($usuario, /* $clave, */ $rol, $codCliente, $dni, $nombre, $apellido1, $apellido2) {
         $this->usuario = $usuario;
 //        $this->clave = $clave;
@@ -155,7 +189,7 @@
         $this->apellido1 = $apellido1;
         $this->apellido2 = $apellido2;
     } if (password_verify($_POST["inputPW"], $passwd )) {
-		  
+
         $_SESSION["user"] = $_POST["inputUser"];
         $_SESSION["userType"] = $_POST["userType"];
         $_SESSION["userID"] = $result[$idType];
